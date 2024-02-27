@@ -1,4 +1,4 @@
-package com.diploma.cinema.config;
+package sit.tu_varna.bg.rest.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

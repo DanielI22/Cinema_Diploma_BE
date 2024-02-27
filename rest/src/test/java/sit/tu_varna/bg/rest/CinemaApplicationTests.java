@@ -1,4 +1,4 @@
-package com.diploma.cinema;
+package sit.tu_varna.bg.rest;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

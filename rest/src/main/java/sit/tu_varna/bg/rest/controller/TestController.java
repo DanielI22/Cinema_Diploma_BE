@@ -1,4 +1,4 @@
-package com.diploma.cinema.controller;
+package sit.tu_varna.bg.rest.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
