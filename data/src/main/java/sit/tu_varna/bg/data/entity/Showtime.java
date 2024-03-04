@@ -5,12 +5,12 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cinemas")
+@Table(name = "showtimes")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,18 +18,26 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode
 @SoftDelete
-public class Cinema {
+public class Showtime {
     @Id
     @GeneratedValue
     private UUID id;
 
-    private String name;
-    private String location;
-    private String imageUrl;
+    private LocalDateTime startTime;
+    private BigDecimal ticketPrice;
 
     @CreationTimestamp
     private LocalDateTime createdOn;
 
-    @OneToMany(mappedBy = "cinema", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Hall> halls;
+    @ManyToOne
+    @JoinColumn(name = "movie_id", nullable = false)
+    private Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name = "hall_id", nullable = false)
+    private Hall hall;
+
+    @ManyToOne
+    @JoinColumn(name = "cinema_id", nullable = false)
+    private Cinema cinema;
 }

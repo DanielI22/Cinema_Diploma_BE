@@ -6,11 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cinemas")
+@Table(name = "rows")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,18 +18,20 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode
 @SoftDelete
-public class Cinema {
+public class Row {
     @Id
     @GeneratedValue
     private UUID id;
 
-    private String name;
-    private String location;
-    private String imageUrl;
+    private int rowNumber;
 
     @CreationTimestamp
     private LocalDateTime createdOn;
 
-    @OneToMany(mappedBy = "cinema", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Hall> halls;
+    @ManyToOne
+    @JoinColumn(name = "hall_id")
+    private Hall hall;
+
+    @OneToMany(mappedBy = "row", cascade = CascadeType.ALL)
+    private List<Seat> seats;
 }

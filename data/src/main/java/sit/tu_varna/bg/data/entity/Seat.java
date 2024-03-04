@@ -4,13 +4,13 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SoftDelete;
+import sit.tu_varna.bg.data.enums.SeatStatus;
 
 import java.time.LocalDateTime;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Table(name = "cinemas")
+@Table(name = "seats")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -18,18 +18,21 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode
 @SoftDelete
-public class Cinema {
+public class Seat {
     @Id
     @GeneratedValue
     private UUID id;
 
-    private String name;
-    private String location;
-    private String imageUrl;
+    private int seatNumber;
+    private boolean isEmptySpace;
+
+    @Enumerated(EnumType.STRING)
+    private SeatStatus status;
 
     @CreationTimestamp
     private LocalDateTime createdOn;
 
-    @OneToMany(mappedBy = "cinema", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<Hall> halls;
+    @ManyToOne
+    @JoinColumn(name = "row_id")
+    private Row row;
 }

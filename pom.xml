@@ -17,11 +17,13 @@
     </parent>
     <groupId>sit.tu_varna.bg</groupId>
     <artifactId>Cinema</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <name>Cinema</name>
     <description>Cinema</description>
     <properties>
         <java.version>17</java.version>
+        <revision>0.0.1-SNAPSHOT</revision>
+        <jjwt.revision>0.11.5</jjwt.revision>
     </properties>
 
     <dependencies>
@@ -29,6 +31,11 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+            <version>3.2.1</version>
         </dependency>
     </dependencies>
 </project>
