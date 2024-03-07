@@ -31,12 +31,6 @@
         </dependency>
         <dependency>
             <groupId>sit.tu_varna.bg</groupId>
-            <artifactId>data</artifactId>
-            <version>${revision}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>sit.tu_varna.bg</groupId>
             <artifactId>core</artifactId>
             <version>${revision}</version>
             <scope>compile</scope>

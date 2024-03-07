@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import sit.tu_varna.bg.data.enums.UserRole;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -29,9 +30,13 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
+    private boolean isArchived;
 
     @CreationTimestamp
     private LocalDateTime createdOn;
+
+    @Column
+    private Timestamp lastLoginTime;
 
     @Enumerated(EnumType.STRING)
     private UserRole role;

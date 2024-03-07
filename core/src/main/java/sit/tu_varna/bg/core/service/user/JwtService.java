@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.core.services;
+package sit.tu_varna.bg.core.service.user;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
