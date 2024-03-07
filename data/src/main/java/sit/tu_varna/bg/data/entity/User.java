@@ -19,7 +19,7 @@ import java.util.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder=true)
 @EqualsAndHashCode
 @SoftDelete
 public class User implements UserDetails {
@@ -30,7 +30,6 @@ public class User implements UserDetails {
     private String username;
     private String email;
     private String password;
-    private boolean isArchived;
 
     @CreationTimestamp
     private LocalDateTime createdOn;
@@ -41,7 +40,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_favorite_movies",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -49,13 +48,13 @@ public class User implements UserDetails {
     )
     private Set<Movie> favoriteMovies = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Review> reviews = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Booking> bookings = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
     private Set<Ticket> tickets = new HashSet<>();
 
     @Override

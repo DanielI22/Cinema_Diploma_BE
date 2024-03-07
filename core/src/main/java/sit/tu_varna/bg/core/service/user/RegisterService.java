@@ -39,7 +39,6 @@ public class RegisterService implements RegisterOperation {
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
                 .role(UserRole.USER)
-                .isArchived(false)
                 .build();
 
         userRepository.save(user);
@@ -47,7 +46,6 @@ public class RegisterService implements RegisterOperation {
         return RegisterResponse.builder()
                 .userId(user.getId().toString())
                 .username(user.getUsername())
-                .role(user.getRole().name())
                 .build();
     }
 }

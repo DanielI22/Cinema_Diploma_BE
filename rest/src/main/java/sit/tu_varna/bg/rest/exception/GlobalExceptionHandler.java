@@ -12,7 +12,7 @@ import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<String> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<?> handleValidationExceptions(MethodArgumentNotValidException ex) {
         StringBuilder errors = new StringBuilder();
 
         ex.getBindingResult().getAllErrors().forEach((error) -> {

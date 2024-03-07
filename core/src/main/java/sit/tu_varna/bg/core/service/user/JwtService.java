@@ -5,9 +5,13 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import sit.tu_varna.bg.core.constant.SecurityConstants;
+import sit.tu_varna.bg.data.entity.Token;
+import sit.tu_varna.bg.data.repository.TokenRepository;
 
 import java.security.Key;
 import java.util.Date;
@@ -16,7 +20,10 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
+    private final TokenRepository tokenRepository;
+
     @Value("${jwt.secret}")
     private String SECRET_KEY;
 
@@ -33,27 +40,32 @@ public class JwtService {
         return generateToken(new HashMap<>(), userDetails);
     }
 
-    public String generateToken(
-            Map<String, Object> extraClaims,
-            UserDetails userDetails
-    ) {
+    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(userDetails.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24))
+                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstants.ACCESS_TOKEN_VALIDITY_SECONDS))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
 
     public boolean isTokenValid(String jwtToken, UserDetails userDetails) {
         final String username = extractUsername(jwtToken);
-        return (username.equals(userDetails.getUsername())) && !isTokenExpired(jwtToken);
+        boolean tokenExpired = isTokenExpired(jwtToken);
+        boolean tokenRevoked = isTokenRevoked(jwtToken);
+        return username.equals(userDetails.getUsername()) && !tokenExpired && !tokenRevoked;
     }
 
     private boolean isTokenExpired(String jwtToken) {
         return extractExpiration(jwtToken).before(new Date());
+    }
+
+    public boolean isTokenRevoked(String jwtToken) {
+        return tokenRepository.findByToken(jwtToken)
+                .map(Token::getRevoked)
+                .orElse(true);
     }
 
     private Date extractExpiration(String jwtToken) {

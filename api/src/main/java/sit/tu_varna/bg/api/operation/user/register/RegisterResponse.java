@@ -11,5 +11,4 @@ import sit.tu_varna.bg.api.base.ServiceResponse;
 public class RegisterResponse implements ServiceResponse {
     private String userId;
     private String username;
-    private String role;
 }

@@ -1,13 +1,10 @@
 package sit.tu_varna.bg.core.service.user;
 
-import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.user.login.LoginOperation;
 import sit.tu_varna.bg.api.operation.user.login.LoginRequest;
@@ -41,16 +38,12 @@ public class LoginService implements LoginOperation {
         );
 
         User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User " + username + " not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException("User not found"));
 
         String token = jwtService.generateToken(user);
         revokeAllUserTokens(user);
         saveToken(user, token);
         updateLastLogonTime(user);
-
-        ServletRequestAttributes httpRequest = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-        HttpSession session = httpRequest.getRequest().getSession();
-        session.setAttribute("user", user.getId());
 
         return LoginResponse
                 .builder()
@@ -66,10 +59,7 @@ public class LoginService implements LoginOperation {
         if (validUserTokens.isEmpty()) {
             return;
         }
-        validUserTokens.forEach(t -> {
-            t.setExpired(true);
-            t.setRevoked(true);
-        });
+        validUserTokens.forEach(t -> t.setRevoked(true));
         tokenRepository.saveAll(validUserTokens);
     }
 
@@ -79,7 +69,6 @@ public class LoginService implements LoginOperation {
                 .user(user)
                 .token(token)
                 .tokenType(TokenType.BEARER)
-                .expired(false)
                 .revoked(false)
                 .build();
         tokenRepository.save(toPersist);

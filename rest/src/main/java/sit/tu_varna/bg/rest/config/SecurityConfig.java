@@ -25,8 +25,7 @@ public class SecurityConfig {
     private final LogoutHandler logoutHandler;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter,
-                          AuthenticationProvider authenticationProvider,
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter, AuthenticationProvider authenticationProvider,
                           @Qualifier("logoutService") LogoutHandler logoutHandler) {
         this.jwtAuthFilter = jwtAuthFilter;
         this.authenticationProvider = authenticationProvider;
@@ -42,6 +41,7 @@ public class SecurityConfig {
                                 .requestMatchers(
                                         "/user/register",
                                         "/user/login",
+                                        "/movies",
                                         "/v2/api-docs",
                                         "/v3/api-docs",
                                         "/v3/api-docs/**",
@@ -51,7 +51,8 @@ public class SecurityConfig {
                                         "/configuration/security",
                                         "/swagger-ui/**",
                                         "/webjars/**",
-                                        "/swagger-ui.html"
+                                        "/swagger-ui.html",
+                                        "/error"
                                 )
                                 .permitAll()
                                 .requestMatchers("/api/v1/get-requested")
@@ -62,7 +63,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .logout(logout ->
                         logout
-                                .logoutUrl("/api/v1/user/logout")
+                                .logoutUrl("/user/logout")
                                 .addLogoutHandler(logoutHandler)
                                 .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
                 )
