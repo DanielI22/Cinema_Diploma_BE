@@ -29,7 +29,7 @@ public class Booking {
     private LocalDateTime createdOn;
 
     @OneToMany(mappedBy = "booking")
-    private Set<Ticket> tickets;
+    private Set<ShowtimeSeat> showtimeSeats;
 
     @ManyToOne
     @JoinColumn(name = "showtime_id", nullable = false)

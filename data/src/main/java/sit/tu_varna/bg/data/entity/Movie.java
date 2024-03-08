@@ -35,7 +35,7 @@ public class Movie {
     @OneToMany(mappedBy = "movie")
     private Set<Review> reviews = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "movie_genre",
             joinColumns = @JoinColumn(name = "movie_id"),

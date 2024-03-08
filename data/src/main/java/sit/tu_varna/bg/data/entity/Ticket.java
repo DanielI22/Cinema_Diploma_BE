@@ -28,16 +28,8 @@ public class Ticket {
     private LocalDateTime createdOn;
 
     @ManyToOne
-    @JoinColumn(name = "seat_id", nullable = false)
-    private Seat seat;
-
-    @ManyToOne
-    @JoinColumn(name = "showtime_id", nullable = false)
-    private Showtime showtime;
-
-    @ManyToOne
-    @JoinColumn(name = "booking_id")
-    private Booking booking;
+    @JoinColumn(name = "showtime_seat_id", nullable = false)
+    private ShowtimeSeat showtimeSeat;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
