@@ -38,6 +38,7 @@ public class MovieSeeder {
                 .description("Earth's mightiest heroes must come together...")
                 .posterImageUrl("https://example.com/posters/the-avengers.jpg")
                 .trailerUrl("https://example.com/trailers/the-avengers.mp4")
+                .duration(120)
                 .genres(new HashSet<>(List.of(drama, comedy)))
                 .build();
 
@@ -47,6 +48,7 @@ public class MovieSeeder {
                 .description("Four teenagers are sucked into a magical video game...")
                 .posterImageUrl("https://example.com/posters/jumanji.jpg")
                 .trailerUrl("https://example.com/trailers/jumanji.mp4")
+                .duration(120)
                 .genres(new HashSet<>(List.of(fantasy)))
                 .build();
 
@@ -56,6 +58,7 @@ public class MovieSeeder {
                 .description("A thief who steals corporate secrets through use of dream-sharing technology...")
                 .posterImageUrl("https://example.com/posters/inception.jpg")
                 .trailerUrl("https://example.com/trailers/inception.mp4")
+                .duration(120)
                 .genres(new HashSet<>(List.of(thriller)))
                 .build();
 
@@ -65,6 +68,7 @@ public class MovieSeeder {
                 .description("A team of explorers travel through a wormhole in space...")
                 .posterImageUrl("https://example.com/posters/interstellar.jpg")
                 .trailerUrl("https://example.com/trailers/interstellar.mp4")
+                .duration(120)
                 .genres(new HashSet<>(List.of(action, fantasy)))
                 .build();
 
@@ -74,6 +78,7 @@ public class MovieSeeder {
                 .description("The aging patriarch of an organized crime dynasty transfers control...")
                 .posterImageUrl("https://example.com/posters/the-godfather.jpg")
                 .trailerUrl("https://example.com/trailers/the-godfather.mp4")
+                .duration(120)
                 .genres(new HashSet<>(List.of(action)))
                 .build();
 

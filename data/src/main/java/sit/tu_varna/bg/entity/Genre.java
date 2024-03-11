@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -28,7 +29,8 @@ public class Genre extends PanacheEntityBase {
     private String name;
 
     @ManyToMany(mappedBy = "genres")
-    private Set<Movie> movies;
+    @Builder.Default
+    private Set<Movie> movies = new HashSet<>();
 
     @CreationTimestamp
     private Instant createdOn;

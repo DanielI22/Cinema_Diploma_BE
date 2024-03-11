@@ -3,11 +3,9 @@ package sit.tu_varna.bg.entity;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
-import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,8 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE rows SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 public class Row extends PanacheEntityBase {
     @Id
     @GeneratedValue
@@ -31,11 +27,12 @@ public class Row extends PanacheEntityBase {
     @JoinColumn(name = "hall_id")
     private Hall hall;
 
-    @OneToMany(mappedBy = "row", cascade = CascadeType.ALL)
-    private List<Seat> seats;
+    @OneToMany(mappedBy = "row", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Seat> seats = new ArrayList<>();
 
-    @CreationTimestamp
-    private Instant createdOn;
-
-    private boolean deleted = Boolean.FALSE;
+    public void addSeats(Collection<Seat> seats) {
+        this.seats.addAll(seats);
+        seats.forEach(s -> s.setRow(this));
+    }
 }

@@ -1,12 +1,12 @@
 package sit.tu_varna.bg.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
-import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -28,6 +28,7 @@ public class Showtime extends PanacheEntityBase {
 
     private LocalDateTime startTime;
     private BigDecimal ticketPrice;
+    private int duration;
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)

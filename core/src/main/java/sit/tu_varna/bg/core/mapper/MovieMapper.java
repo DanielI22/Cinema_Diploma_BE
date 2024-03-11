@@ -14,12 +14,14 @@ public class MovieMapper {
 
     public MovieDto movieToMovieDto(Movie movie) {
         return MovieDto.builder()
+                .id(movie.getId().toString())
                 .title(movie.getTitle())
                 .trailerUrl(movie.getTrailerUrl())
                 .imageUrl(movie.getPosterImageUrl())
                 .releaseYear(movie.getReleaseYear())
                 .description(movie.getDescription())
                 .description(movie.getDescription())
+                .duration(movie.getDuration())
                 .genres(movie.getGenres().
                         stream()
                         .map(g -> genreMapper.genreToGenreDto(g))

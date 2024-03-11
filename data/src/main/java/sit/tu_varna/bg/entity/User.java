@@ -35,12 +35,15 @@ public class User extends PanacheEntityBase {
     private Set<Movie> favoriteMovies = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private Set<Review> reviews = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private Set<Booking> bookings = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
+    @Builder.Default
     private Set<Ticket> tickets = new HashSet<>();
 
     @CreationTimestamp

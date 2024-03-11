@@ -10,10 +10,12 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MovieDto {
+    private String id;
     private String title;
     private String description;
     private String imageUrl;
     private String trailerUrl;
     private int releaseYear;
+    private int duration;
     private Collection<GenreDto> genres;
 }

@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.movie;
+package sit.tu_varna.bg.api.operation.movie.getall;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceResponse;

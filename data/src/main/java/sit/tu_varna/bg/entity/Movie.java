@@ -8,6 +8,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,9 +32,10 @@ public class Movie extends PanacheEntityBase {
     private int releaseYear;
     private String posterImageUrl;
     private String trailerUrl;
+    private int duration;
 
     @OneToMany(mappedBy = "movie")
-    private Set<Review> reviews;
+    private Set<Review> reviews = new HashSet<>();
 
     @ManyToMany
     @JoinTable(
@@ -40,10 +43,15 @@ public class Movie extends PanacheEntityBase {
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
     )
-    private Set<Genre> genres;
+    @Builder.Default
+    private Set<Genre> genres = new HashSet<>();
 
     @CreationTimestamp
     private Instant createdOn;
 
     private boolean deleted = Boolean.FALSE;
+
+    public static List<Movie> findByGenreName(String genreName) {
+        return find("SELECT m FROM Movie m JOIN m.genres g WHERE g.name = ?1", genreName).list();
+    }
 }

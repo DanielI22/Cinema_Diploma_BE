@@ -8,6 +8,8 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,8 +30,9 @@ public class Hall extends PanacheEntityBase {
     private String name;
     private int seatCapacity;
 
-    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL)
-    private List<Row> rows;
+    @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Builder.Default
+    private List<Row> rows = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "cinema_id")
@@ -39,4 +42,9 @@ public class Hall extends PanacheEntityBase {
     private Instant createdOn;
 
     private boolean deleted = Boolean.FALSE;
+
+    public void addRows(Collection<Row> rows) {
+        this.rows.addAll(rows);
+        rows.forEach(r -> r.setHall(this));
+    }
 }

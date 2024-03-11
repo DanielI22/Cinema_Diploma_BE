@@ -9,6 +9,7 @@ import org.hibernate.annotations.Where;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
@@ -29,7 +30,8 @@ public class Booking extends PanacheEntityBase {
     private BigDecimal price;
 
     @OneToMany(mappedBy = "booking")
-    private Set<ShowtimeSeat> showtimeSeats;
+    @Builder.Default
+    private Set<ShowtimeSeat> showtimeSeats = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "showtime_id", nullable = false)

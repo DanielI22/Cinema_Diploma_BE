@@ -21,5 +21,7 @@ public class DataSeeder {
     @Transactional
     void seedData() {
         MovieSeeder.seedMovies();
+        CinemaSeeder.seedCinema();
+        ShowtimeSeeder.seedShowtimes();
     }
 }

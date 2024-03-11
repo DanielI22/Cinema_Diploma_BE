@@ -3,9 +3,9 @@ package sit.tu_varna.bg.core.service.movie;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.dto.MovieDto;
-import sit.tu_varna.bg.api.operation.movie.GetAllMoviesOperation;
-import sit.tu_varna.bg.api.operation.movie.GetAllMoviesRequest;
-import sit.tu_varna.bg.api.operation.movie.GetAllMoviesResponse;
+import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesOperation;
+import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesRequest;
+import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesResponse;
 import sit.tu_varna.bg.core.mapper.MovieMapper;
 import sit.tu_varna.bg.entity.Movie;
 
