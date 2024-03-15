@@ -22,8 +22,8 @@ import java.util.UUID;
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 public class User extends PanacheEntityBase {
+
     @Id
-    @GeneratedValue
     private UUID id;
 
     @ManyToMany(fetch = FetchType.EAGER)

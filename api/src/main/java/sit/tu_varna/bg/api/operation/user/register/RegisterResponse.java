@@ -9,6 +9,6 @@ import sit.tu_varna.bg.api.base.ServiceResponse;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RegisterResponse implements ServiceResponse {
-    private String userId;
-    private String username;
+    private String accessToken;
+    private String refreshToken;
 }
