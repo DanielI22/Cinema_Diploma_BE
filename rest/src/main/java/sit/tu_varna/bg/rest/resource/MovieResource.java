@@ -1,6 +1,5 @@
 package sit.tu_varna.bg.rest.resource;
 
-import jakarta.inject.Inject;
 import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -18,12 +17,15 @@ import java.util.UUID;
 
 @Path("/api/movies")
 public class MovieResource {
-    @Inject
-    GetAllMoviesOperation getAllMoviesOperation;
-    @Inject
-    GetMovieByGenreOperation getMovieByGenreOperation;
-    @Inject
-    GetMovieOperation getMovieOperation;
+    private final GetAllMoviesOperation getAllMoviesOperation;
+    private final GetMovieByGenreOperation getMovieByGenreOperation;
+    private final GetMovieOperation getMovieOperation;
+
+    public MovieResource(GetAllMoviesOperation getAllMoviesOperation, GetMovieByGenreOperation getMovieByGenreOperation, GetMovieOperation getMovieOperation) {
+        this.getAllMoviesOperation = getAllMoviesOperation;
+        this.getMovieByGenreOperation = getMovieByGenreOperation;
+        this.getMovieOperation = getMovieOperation;
+    }
 
     @GET
     public Response getAllMovies() {

@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.core.service.movie;
+package sit.tu_varna.bg.core.operationservice.movie;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
