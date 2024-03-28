@@ -53,7 +53,6 @@ public class UserResource {
 
     @POST
     @Path("/refresh")
-    @Authenticated
     public Response refresh(@Valid RefreshRequest request) {
         return Response.ok(refreshOperation.process(request)).build();
     }

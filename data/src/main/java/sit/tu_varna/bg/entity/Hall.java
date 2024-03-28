@@ -47,4 +47,12 @@ public class Hall extends PanacheEntityBase {
         this.rows.addAll(rows);
         rows.forEach(r -> r.setHall(this));
     }
+
+    public static List<Hall> findAvailable() {
+        return find("SELECT h FROM Hall h WHERE h.cinema IS NULL").list();
+    }
+
+    public static List<Hall> findAllWithCinemas() {
+        return find("SELECT h FROM Hall h WHERE h.cinema IS NULL").list();
+    }
 }

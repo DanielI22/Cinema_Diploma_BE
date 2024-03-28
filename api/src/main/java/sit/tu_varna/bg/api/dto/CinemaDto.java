@@ -7,7 +7,9 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GenreDto {
+public class CinemaDto {
     private String id;
     private String name;
+    private String imageUrl;
+    private String location;
 }

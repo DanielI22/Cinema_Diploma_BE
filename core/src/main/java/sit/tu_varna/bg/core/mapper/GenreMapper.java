@@ -8,6 +8,7 @@ import sit.tu_varna.bg.entity.Genre;
 public class GenreMapper {
     public GenreDto genreToGenreDto(Genre genre) {
         return GenreDto.builder()
+                .id(genre.getId().toString())
                 .name(genre.getName())
                 .build();
     }

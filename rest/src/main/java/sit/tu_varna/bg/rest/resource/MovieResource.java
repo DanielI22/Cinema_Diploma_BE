@@ -1,5 +1,6 @@
 package sit.tu_varna.bg.rest.resource;
 
+import jakarta.inject.Inject;
 import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
@@ -17,15 +18,12 @@ import java.util.UUID;
 
 @Path("/api/movies")
 public class MovieResource {
-    private final GetAllMoviesOperation getAllMoviesOperation;
-    private final GetMovieByGenreOperation getMovieByGenreOperation;
-    private final GetMovieOperation getMovieOperation;
-
-    public MovieResource(GetAllMoviesOperation getAllMoviesOperation, GetMovieByGenreOperation getMovieByGenreOperation, GetMovieOperation getMovieOperation) {
-        this.getAllMoviesOperation = getAllMoviesOperation;
-        this.getMovieByGenreOperation = getMovieByGenreOperation;
-        this.getMovieOperation = getMovieOperation;
-    }
+    @Inject
+    GetAllMoviesOperation getAllMoviesOperation;
+    @Inject
+    GetMovieByGenreOperation getMovieByGenreOperation;
+    @Inject
+    GetMovieOperation getMovieOperation;
 
     @GET
     public Response getAllMovies() {
@@ -54,45 +52,4 @@ public class MovieResource {
                 .build();
         return Response.ok(getMovieByGenreOperation.process(request)).build();
     }
-
-
-//    @GET
-//    @Path("/user")
-//    @RolesAllowed({"client", "admin"})
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public String getUserName() {
-//        Principal principal = securityIdentity.getPrincipal();
-//        return principal.getName();
-//    }
-//
-//    @GET
-//    @Produces(MediaType.APPLICATION_JSON)
-//    @PermitAll
-//    public Response test() {
-//        return Response.ok("test").build();
-//    }
-//
-//    @GET
-//    @Path("client")
-//    @RolesAllowed({"client", "admin"})
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response testClient() {
-//        return Response.ok("test").build();
-//    }
-//
-//    @GET
-//    @Path("operator")
-//    @RolesAllowed("operator")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response testOperator() {
-//        return Response.ok("test").build();
-//    }
-//
-//    @GET
-//    @Path("admin")
-//    @RolesAllowed("admin")
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response testAdmin() {
-//        return Response.ok("test").build();
-//    }
 }

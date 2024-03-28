@@ -8,9 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Table(name = "cinemas")
@@ -30,7 +28,7 @@ public class Cinema extends PanacheEntityBase {
     private String location;
     private String imageUrl;
 
-    @OneToMany(mappedBy = "cinema", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "cinema")
     @Builder.Default
     private Set<Hall> halls = new HashSet<>();
 
