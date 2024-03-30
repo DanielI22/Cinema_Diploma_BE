@@ -9,5 +9,5 @@ import sit.tu_varna.bg.api.base.ServiceResponse;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LogoutResponse implements ServiceResponse {
-    private boolean success;
+    private Boolean success;
 }

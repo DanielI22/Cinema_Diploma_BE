@@ -15,7 +15,7 @@ public class MovieDto {
     private String description;
     private String imageUrl;
     private String trailerUrl;
-    private int releaseYear;
-    private int duration;
+    private Integer releaseYear;
+    private Integer duration;
     private Collection<GenreDto> genres;
 }

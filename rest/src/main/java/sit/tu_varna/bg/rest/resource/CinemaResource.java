@@ -13,8 +13,8 @@ import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaRequest;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasOperation;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasRequest;
-import sit.tu_varna.bg.api.operation.cinema.getbyid.GetCinemaOperation;
-import sit.tu_varna.bg.api.operation.cinema.getbyid.GetCinemaRequest;
+import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaOperation;
+import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
