@@ -35,4 +35,8 @@ public class Row extends PanacheEntityBase {
         this.seats.addAll(seats);
         seats.forEach(s -> s.setRow(this));
     }
+
+    public static long deleteByHallId(UUID hallId) {
+        return delete("hall_id", hallId);
+    }
 }

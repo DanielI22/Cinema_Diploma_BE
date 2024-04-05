@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.hall.deletehall;
+package sit.tu_varna.bg.api.operation.hall.delete;
 
 import sit.tu_varna.bg.api.base.ServiceOperation;
 

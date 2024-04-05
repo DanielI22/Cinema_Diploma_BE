@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.hall.deletehall;
+package sit.tu_varna.bg.api.operation.movie.delete;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceRequest;
@@ -10,6 +10,6 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class DeleteHallRequest implements ServiceRequest {
-    private UUID hallId;
+public class DeleteMovieRequest implements ServiceRequest {
+    private UUID movieId;
 }

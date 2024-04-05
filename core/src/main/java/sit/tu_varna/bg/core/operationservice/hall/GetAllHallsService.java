@@ -9,6 +9,7 @@ import sit.tu_varna.bg.api.operation.hall.getall.GetAllHallsResponse;
 import sit.tu_varna.bg.core.mapper.HallMapper;
 import sit.tu_varna.bg.entity.Hall;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,6 +23,7 @@ public class GetAllHallsService implements GetAllHallsOperation {
         List<HallCinemaDto> halls = Hall.findAll().stream()
                 .filter(Hall.class::isInstance)
                 .map(Hall.class::cast)
+                .sorted(Comparator.comparing(Hall::getCreatedOn))
                 .map(hallMapper::hallToHallCinemaDto)
                 .collect(Collectors.toList());
 

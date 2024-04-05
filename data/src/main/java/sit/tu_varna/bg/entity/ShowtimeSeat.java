@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import sit.tu_varna.bg.enums.SeatStatus;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,4 +35,8 @@ public class ShowtimeSeat extends PanacheEntityBase {
     @ManyToOne
     @JoinColumn(name = "booking_id")
     private Booking booking;
+
+    public static List<ShowtimeSeat> findBySeatId(UUID seatId) {
+        return find("SELECT st FROM ShowtimeSeat st WHERE st.seat.id = ?1", seatId).list();
+    }
 }

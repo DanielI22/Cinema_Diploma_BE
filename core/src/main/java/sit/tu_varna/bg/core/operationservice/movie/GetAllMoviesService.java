@@ -9,6 +9,7 @@ import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesResponse;
 import sit.tu_varna.bg.core.mapper.MovieMapper;
 import sit.tu_varna.bg.entity.Movie;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,7 +22,10 @@ public class GetAllMoviesService implements GetAllMoviesOperation {
     public GetAllMoviesResponse process(GetAllMoviesRequest request) {
         List<MovieDto> movies = Movie.listAll()
                 .stream()
-                .map(m -> movieMapper.movieToMovieDto((Movie) m))
+                .filter(Movie.class::isInstance)
+                .map(Movie.class::cast)
+                .sorted(Comparator.comparing(Movie::getCreatedOn).reversed())
+                .map(m -> movieMapper.movieToMovieDto(m))
                 .collect(Collectors.toList());
         return GetAllMoviesResponse.builder()
                 .movies(movies)
