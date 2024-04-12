@@ -7,7 +7,9 @@ import sit.tu_varna.bg.api.operation.movie.externalapi.MovieApiResult;
 import sit.tu_varna.bg.entity.Genre;
 import sit.tu_varna.bg.entity.Movie;
 
+import java.time.LocalDate;
 import java.util.Comparator;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -41,7 +43,8 @@ public class MovieMapper {
                         .stream().findFirst().map(MovieApiResult.VideoSingleApiResult::getKey)
                         .orElse(null))
                 .imageUrl(tmdbUri + movieApiResult.getPoster_path())
-                .releaseYear(movieApiResult.getRelease_date().getYear())
+                .releaseYear(Optional.ofNullable(movieApiResult.getRelease_date())
+                        .map(LocalDate::getYear).orElse(null))
                 .description(movieApiResult.getOverview())
                 .duration(movieApiResult.getRuntime())
                 .genres(movieApiResult.getGenres().

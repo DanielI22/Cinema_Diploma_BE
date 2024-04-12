@@ -27,7 +27,6 @@ public class EditHallService implements EditHallOperation {
 
         hall.setName(request.getName());
 
-        // Explicitly remove existing rows and seats
         hall.getRows().stream().map(Row.class::cast)
                 .forEach(r -> r.getSeats().forEach(s -> ShowtimeSeat.findBySeatId(s.getId()).forEach(PanacheEntityBase::delete)));
         hall.getRows().stream().map(Row.class::cast).forEach(r -> r.getSeats().forEach(Seat::delete));
@@ -53,7 +52,6 @@ public class EditHallService implements EditHallOperation {
         }
 
         hall.persist();
-        // Update the hall's seat capacity
         hall.setSeatCapacity(hall.getRows().stream()
                 .flatMapToInt(row -> row.getSeats().stream().filter(seat -> !seat.isEmptySpace()).mapToInt(s -> 1)).sum());
 

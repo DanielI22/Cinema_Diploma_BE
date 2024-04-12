@@ -28,6 +28,7 @@ public class Movie extends PanacheEntityBase {
     private UUID id;
 
     private String title;
+    @Column(length = 1024)
     private String description;
     private int releaseYear;
     private String posterImageUrl;

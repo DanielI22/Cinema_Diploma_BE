@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.core.operationservice.movie;
+package sit.tu_varna.bg.core.operationservice.genre;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -26,7 +26,7 @@ public class GetAllGenresService implements GetAllGenresOperation {
                 .stream()
                 .filter(Genre.class::isInstance)
                 .map(Genre.class::cast)
-                .sorted(Comparator.comparing(Genre::getCreatedOn))
+                .sorted(Comparator.comparing(Genre::getCreatedOn).reversed())
                 .map(g -> genreMapper.genreToGenreDto(g))
                 .collect(Collectors.toList());
 

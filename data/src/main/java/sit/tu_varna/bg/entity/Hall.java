@@ -52,7 +52,7 @@ public class Hall extends PanacheEntityBase {
         return find("SELECT h FROM Hall h WHERE h.cinema IS NULL").list();
     }
 
-    public static List<Hall> findAllWithCinemas() {
-        return find("SELECT h FROM Hall h WHERE h.cinema IS NULL").list();
+    public static List<Hall> findByCinemaId(UUID cinemaId) {
+        return find("SELECT h FROM Hall h WHERE h.cinema.id = ?1", cinemaId).list();
     }
 }

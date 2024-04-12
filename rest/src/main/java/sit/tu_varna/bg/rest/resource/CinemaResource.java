@@ -11,6 +11,8 @@ import sit.tu_varna.bg.api.operation.cinema.delete.DeleteCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.delete.DeleteCinemaRequest;
 import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaRequest;
+import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsOperation;
+import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsRequest;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasOperation;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasRequest;
 import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaOperation;
@@ -31,6 +33,8 @@ public class CinemaResource {
     EditCinemaOperation editCinemaOperation;
     @Inject
     DeleteCinemaOperation deleteCinemaOperation;
+    @Inject
+    GetCinemaHallsOperation getCinemaHallsOperation;
 
     @GET
     public Response getAllCinemas() {
@@ -76,5 +80,18 @@ public class CinemaResource {
                 .cinemaId(UUID.fromString(cinemaId))
                 .build();
         return Response.ok(deleteCinemaOperation.process(deleteCinemaRequest)).build();
+    }
+
+    @GET
+    @Path("/{cinemaId}/halls")
+    public Response getCinemaHalls(@PathParam("cinemaId")
+                                   @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                           message = "Invalid UUID format")
+                                           String cinemaId) {
+        GetCinemaHallsRequest getCinemaHallsRequest = GetCinemaHallsRequest
+                .builder()
+                .cinemaId(UUID.fromString(cinemaId))
+                .build();
+        return Response.ok(getCinemaHallsOperation.process(getCinemaHallsRequest)).build();
     }
 }

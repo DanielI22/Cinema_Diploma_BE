@@ -5,8 +5,6 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
-import sit.tu_varna.bg.api.operation.genre.getall.GetAllGenresOperation;
-import sit.tu_varna.bg.api.operation.genre.getall.GetAllGenresRequest;
 import sit.tu_varna.bg.api.operation.movie.add.AddMovieOperation;
 import sit.tu_varna.bg.api.operation.movie.add.AddMovieRequest;
 import sit.tu_varna.bg.api.operation.movie.delete.DeleteMovieOperation;
@@ -37,8 +35,6 @@ public class MovieResource {
     EditMovieOperation editMovieOperation;
     @Inject
     DeleteMovieOperation deleteMovieOperation;
-    @Inject
-    GetAllGenresOperation getAllGenresOperation;
     @Inject
     GetMovieByGenreOperation getMovieByGenreOperation;
     @Inject
@@ -98,12 +94,6 @@ public class MovieResource {
                 .query(query)
                 .build();
         return Response.ok(searchMoviesOperation.process(request)).build();
-    }
-
-    @GET
-    @Path("/genres")
-    public Response getAllGenres() {
-        return Response.ok(getAllGenresOperation.process(new GetAllGenresRequest())).build();
     }
 
     @GET

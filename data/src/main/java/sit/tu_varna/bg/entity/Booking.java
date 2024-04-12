@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import sit.tu_varna.bg.enums.BookingStatus;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -28,6 +29,10 @@ public class Booking extends PanacheEntityBase {
     private UUID id;
 
     private BigDecimal price;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private BookingStatus status = BookingStatus.AVAILABLE;
 
     @OneToMany(mappedBy = "booking")
     @Builder.Default

@@ -116,6 +116,18 @@ public class KeycloakService {
         }
     }
 
+    public UserRepresentation getUserRepresentation(String userId) {
+        try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
+            final RealmResource realmResource = keycloakAdmin.realm(realmName);
+            try {
+                final UserResource userResource = realmResource.users().get(userId);
+                return userResource.toRepresentation();
+            } catch (NotFoundException e) {
+                throw new WebApplicationException("Failed to fetch user: " + e.getMessage(), e.getResponse().getStatus());
+            }
+        }
+    }
+
     private UserRepresentation createUserRepresentation(String username, String email) {
         UserRepresentation newUser = new UserRepresentation();
         newUser.setUsername(username);

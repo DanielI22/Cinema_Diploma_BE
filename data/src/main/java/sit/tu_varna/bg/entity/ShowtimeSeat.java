@@ -39,4 +39,8 @@ public class ShowtimeSeat extends PanacheEntityBase {
     public static List<ShowtimeSeat> findBySeatId(UUID seatId) {
         return find("SELECT st FROM ShowtimeSeat st WHERE st.seat.id = ?1", seatId).list();
     }
+
+    public static List<ShowtimeSeat> findByShowtimeId(UUID showtimeId) {
+        return find("SELECT st FROM ShowtimeSeat st WHERE st.showtime.id = ?1", showtimeId).list();
+    }
 }
