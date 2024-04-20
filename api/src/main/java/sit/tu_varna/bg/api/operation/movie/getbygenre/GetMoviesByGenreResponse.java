@@ -11,6 +11,6 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetMovieByGenreResponse implements ServiceResponse {
+public class GetMoviesByGenreResponse implements ServiceResponse {
     private Collection<MovieDto> movies;
 }

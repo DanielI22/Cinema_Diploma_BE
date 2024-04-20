@@ -38,11 +38,13 @@ public class AddShowtimeService implements AddShowtimeOperation {
 
         for (Row row : hall.getRows()) {
             for (Seat seat : row.getSeats()) {
-                ShowtimeSeat showtimeSeat = ShowtimeSeat.builder()
-                        .seat(seat)
-                        .showtime(showtime)
-                        .build();
-                showtimeSeat.persist();
+                if (!seat.isEmptySpace()) {
+                    ShowtimeSeat showtimeSeat = ShowtimeSeat.builder()
+                            .seat(seat)
+                            .showtime(showtime)
+                            .build();
+                    showtimeSeat.persist();
+                }
             }
         }
 

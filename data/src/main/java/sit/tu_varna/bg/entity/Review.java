@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -39,4 +40,8 @@ public class Review extends PanacheEntityBase {
     private Instant createdOn;
 
     private boolean deleted = Boolean.FALSE;
+
+    public static List<Review> findByMovieId(UUID movieId) {
+        return find("SELECT r FROM Review r WHERE r.movie.id = ?1", movieId).list();
+    }
 }

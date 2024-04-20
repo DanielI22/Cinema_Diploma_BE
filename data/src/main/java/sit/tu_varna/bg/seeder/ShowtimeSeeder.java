@@ -21,7 +21,6 @@ public class ShowtimeSeeder {
                 .cinema(varnaCinema)
                 .movie(avengers)
                 .hall(alpha)
-                .duration(130)
                 .startTime(LocalDateTime.now().plusHours(1))
                 .ticketPrice(BigDecimal.valueOf(10))
                 .build();
@@ -30,14 +29,13 @@ public class ShowtimeSeeder {
                 .cinema(varnaCinema)
                 .movie(inception)
                 .hall(alpha)
-                .duration(130)
                 .startTime(LocalDateTime.now().plusHours(2))
                 .ticketPrice(BigDecimal.valueOf(10))
                 .build();
 
         Showtime.persist(List.of(showtime1, showtime2));
 
-        for(Seat seat : alpha.getRows().stream().flatMap(row -> row.getSeats().stream()).collect(Collectors.toList())) {
+        for (Seat seat : alpha.getRows().stream().flatMap(row -> row.getSeats().stream()).collect(Collectors.toList())) {
             ShowtimeSeat showtimeSeat1 = ShowtimeSeat.builder().seat(seat).showtime(showtime1).build();
             ShowtimeSeat showtimeSeat2 = ShowtimeSeat.builder().seat(seat).showtime(showtime2).build();
             ShowtimeSeat.persist(List.of(showtimeSeat1, showtimeSeat2));
@@ -47,7 +45,6 @@ public class ShowtimeSeeder {
                 .cinema(varnaCinema)
                 .movie(avengers)
                 .hall(omega)
-                .duration(130)
                 .startTime(LocalDateTime.now().plusHours(3))
                 .ticketPrice(BigDecimal.valueOf(10))
                 .build();
@@ -56,14 +53,13 @@ public class ShowtimeSeeder {
                 .cinema(varnaCinema)
                 .movie(inception)
                 .hall(omega)
-                .duration(130)
                 .startTime(LocalDateTime.now().plusHours(5))
                 .ticketPrice(BigDecimal.valueOf(10))
                 .build();
 
         Showtime.persist(List.of(showtime3, showtime4));
 
-        for(Seat seat : omega.getRows().stream().flatMap(row -> row.getSeats().stream()).collect(Collectors.toList())) {
+        for (Seat seat : omega.getRows().stream().flatMap(row -> row.getSeats().stream()).collect(Collectors.toList())) {
             ShowtimeSeat showtimeSeat3 = ShowtimeSeat.builder().seat(seat).showtime(showtime3).build();
             ShowtimeSeat showtimeSeat4 = ShowtimeSeat.builder().seat(seat).showtime(showtime4).build();
             ShowtimeSeat.persist(List.of(showtimeSeat3, showtimeSeat4));

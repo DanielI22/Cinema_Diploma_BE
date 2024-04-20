@@ -9,6 +9,10 @@ import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.delete.DeleteShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.delete.DeleteShowtimeRequest;
+import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeOperation;
+import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeRequest;
+import sit.tu_varna.bg.api.operation.showtime.get.GetShowtimeOperation;
+import sit.tu_varna.bg.api.operation.showtime.get.GetShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateOperation;
 import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
@@ -21,7 +25,11 @@ public class ShowtimeResource {
     @Inject
     GetShowtimesByDateOperation getShowtimesByDateOperation;
     @Inject
+    GetShowtimeOperation getShowtimeOperation;
+    @Inject
     AddShowtimeOperation addShowtimeOperation;
+    @Inject
+    EditShowtimeOperation editShowtimeOperation;
     @Inject
     DeleteShowtimeOperation deleteShowtimeOperation;
 
@@ -37,9 +45,32 @@ public class ShowtimeResource {
         return Response.ok(getShowtimesByDateOperation.process(request)).build();
     }
 
+    @GET
+    @Path("/{showtimeId}")
+    public Response getShowtime(@PathParam("showtimeId")
+                             @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                     message = "Invalid UUID format")
+                                     String showtimeId) {
+        GetShowtimeRequest request = GetShowtimeRequest
+                .builder()
+                .showtimeId(UUID.fromString(showtimeId))
+                .build();
+        return Response.ok(getShowtimeOperation.process(request)).build();
+    }
+
     @POST
     public Response addShowtime(@Valid AddShowtimeRequest addShowtimeRequest) {
         return Response.ok(addShowtimeOperation.process(addShowtimeRequest)).build();
+    }
+
+    @PUT
+    @Path("/{showtimeId}")
+    public Response editShowtime(@PathParam("showtimeId")
+                              @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                      message = "Invalid UUID format")
+                                      String showtimeId, @Valid EditShowtimeRequest editShowtimeRequest) {
+        editShowtimeRequest.setShowtimeId(UUID.fromString(showtimeId));
+        return Response.ok(editShowtimeOperation.process(editShowtimeRequest)).build();
     }
 
     @DELETE

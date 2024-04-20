@@ -30,7 +30,6 @@ public class Showtime extends PanacheEntityBase {
 
     private LocalDateTime startTime;
     private BigDecimal ticketPrice;
-    private int duration;
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)

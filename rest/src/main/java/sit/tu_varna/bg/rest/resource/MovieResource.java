@@ -17,10 +17,13 @@ import sit.tu_varna.bg.api.operation.movie.get.GetMovieOperation;
 import sit.tu_varna.bg.api.operation.movie.get.GetMovieRequest;
 import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesOperation;
 import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesRequest;
-import sit.tu_varna.bg.api.operation.movie.getbygenre.GetMovieByGenreOperation;
+import sit.tu_varna.bg.api.operation.movie.getbygenre.GetMoviesByGenreOperation;
 import sit.tu_varna.bg.api.operation.movie.getbygenre.GetMoviesByGenreRequest;
+import sit.tu_varna.bg.api.operation.showtime.getmovieall.GetMovieShowtimesByDateOperation;
+import sit.tu_varna.bg.api.operation.showtime.getmovieall.GetMovieShowtimesByDateRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Path("/api/movies")
@@ -36,9 +39,11 @@ public class MovieResource {
     @Inject
     DeleteMovieOperation deleteMovieOperation;
     @Inject
-    GetMovieByGenreOperation getMovieByGenreOperation;
+    GetMoviesByGenreOperation getMoviesByGenreOperation;
     @Inject
     SearchMoviesOperation searchMoviesOperation;
+    @Inject
+    GetMovieShowtimesByDateOperation getMovieShowtimesByDateOperation;
 
     @GET
     public Response getAllMovies() {
@@ -56,6 +61,24 @@ public class MovieResource {
                 .movieId(UUID.fromString(movieId))
                 .build();
         return Response.ok(getMovieOperation.process(request)).build();
+    }
+
+    @GET
+    @Path("/{movieId}/showtimes")
+    public Response getMovieShowtimesByDate(@PathParam("movieId")
+                                            @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                                    message = "Invalid UUID format")
+                                                    String movieId,
+                                            @QueryParam("date")
+                                            @Pattern(regexp = ValidationConstants.LOCAL_DATE_REGEX,
+                                                    message = "Invalid Local Date format")
+                                                    String dateStr) {
+        GetMovieShowtimesByDateRequest request = GetMovieShowtimesByDateRequest
+                .builder()
+                .movieId(movieId)
+                .showtimeDate(LocalDate.parse(dateStr))
+                .build();
+        return Response.ok(getMovieShowtimesByDateOperation.process(request)).build();
     }
 
     @POST
@@ -103,6 +126,6 @@ public class MovieResource {
                 .builder()
                 .genreName(genreName)
                 .build();
-        return Response.ok(getMovieByGenreOperation.process(request)).build();
+        return Response.ok(getMoviesByGenreOperation.process(request)).build();
     }
 }
