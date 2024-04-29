@@ -11,14 +11,17 @@ import sit.tu_varna.bg.api.operation.cinema.delete.DeleteCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.delete.DeleteCinemaRequest;
 import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaRequest;
+import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaOperation;
+import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaRequest;
 import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsOperation;
 import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsRequest;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasOperation;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasRequest;
-import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaOperation;
-import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaRequest;
+import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByDateOperation;
+import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByDateRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Path("/api/cinemas")
@@ -35,6 +38,8 @@ public class CinemaResource {
     DeleteCinemaOperation deleteCinemaOperation;
     @Inject
     GetCinemaHallsOperation getCinemaHallsOperation;
+    @Inject
+    GetCinemaShowtimesByDateOperation getCinemaShowtimesByDateOperation;
 
     @GET
     public Response getAllCinemas() {
@@ -94,4 +99,23 @@ public class CinemaResource {
                 .build();
         return Response.ok(getCinemaHallsOperation.process(getCinemaHallsRequest)).build();
     }
+
+    @GET
+    @Path("/{cinemaId}/showtimes")
+    public Response getCinemaShowtimesByDate(@PathParam("cinemaId")
+                                            @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                                    message = "Invalid UUID format")
+                                                    String cinemaId,
+                                            @QueryParam("date")
+                                            @Pattern(regexp = ValidationConstants.LOCAL_DATE_REGEX,
+                                                    message = "Invalid Local Date format")
+                                                    String dateStr) {
+        GetCinemaShowtimesByDateRequest request = GetCinemaShowtimesByDateRequest
+                .builder()
+                .cinemaId(cinemaId)
+                .showtimeDate(LocalDate.parse(dateStr))
+                .build();
+        return Response.ok(getCinemaShowtimesByDateOperation.process(request)).build();
+    }
+
 }

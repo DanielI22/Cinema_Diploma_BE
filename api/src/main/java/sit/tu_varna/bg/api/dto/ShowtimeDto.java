@@ -13,6 +13,7 @@ public class ShowtimeDto {
     private String id;
     private String cinemaName;
     private String movieName;
+    private String movieId;
     private String hallName;
     private LocalDateTime startTime;
     private Double ticketPrice;
