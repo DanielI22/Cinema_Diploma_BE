@@ -8,7 +8,12 @@ import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeResponse;
 import sit.tu_varna.bg.entity.*;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class AddShowtimeService implements AddShowtimeOperation {
@@ -27,27 +32,41 @@ public class AddShowtimeService implements AddShowtimeOperation {
         Hall hall = (Hall) Hall.findByIdOptional(hallId)
                 .orElseThrow(() -> new ResourceNotFoundException("Hall not found with ID: " + hallId));
 
-        Showtime showtime = new Showtime();
-        showtime.setCinema(cinema);
-        showtime.setMovie(movie);
-        showtime.setHall(hall);
-        showtime.setStartTime(request.getStartingTime());
-        showtime.setTicketPrice(request.getTicketPrice());
+        LocalDateTime startingTime = request.getStartingTime();
+        BigDecimal ticketPrice = request.getTicketPrice();
+        boolean addNext7Days = request.getAddNext7Days();
 
-        showtime.persist();
+        List<UUID> showtimeIds = new ArrayList<>();
 
-        for (Row row : hall.getRows()) {
-            for (Seat seat : row.getSeats()) {
-                if (!seat.isEmptySpace()) {
-                    ShowtimeSeat showtimeSeat = ShowtimeSeat.builder()
-                            .seat(seat)
-                            .showtime(showtime)
-                            .build();
-                    showtimeSeat.persist();
+        int daysToAdd = addNext7Days ? 7 : 1;
+        for (int i = 0; i < daysToAdd; i++) {
+            LocalDateTime showtimeStartingTime = startingTime.plusDays(i);
+
+            Showtime showtime = new Showtime();
+            showtime.setCinema(cinema);
+            showtime.setMovie(movie);
+            showtime.setHall(hall);
+            showtime.setStartTime(showtimeStartingTime);
+            showtime.setTicketPrice(ticketPrice);
+
+            showtime.persist();
+
+            for (Row row : hall.getRows()) {
+                for (Seat seat : row.getSeats()) {
+                    if (!seat.isEmptySpace()) {
+                        ShowtimeSeat showtimeSeat = ShowtimeSeat.builder()
+                                .seat(seat)
+                                .showtime(showtime)
+                                .build();
+                        showtimeSeat.persist();
+                    }
                 }
             }
+
+            showtimeIds.add(showtime.getId());
         }
 
-        return AddShowtimeResponse.builder().showtimeId(showtime.getId().toString()).build();
+
+        return AddShowtimeResponse.builder().showtimeIds(showtimeIds.stream().map(UUID::toString).collect(Collectors.toList())).build();
     }
 }

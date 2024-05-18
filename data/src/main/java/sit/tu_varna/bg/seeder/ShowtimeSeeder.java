@@ -1,68 +1,52 @@
 package sit.tu_varna.bg.seeder;
 
-import sit.tu_varna.bg.entity.*;
+import io.quarkus.runtime.StartupEvent;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.event.Observes;
+import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
+import sit.tu_varna.bg.entity.Showtime;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.concurrent.ThreadLocalRandom;
 
+@ApplicationScoped
 public class ShowtimeSeeder {
-    public static void seedShowtimes() {
-        Hall alpha = Hall.find("name", "Alpha").firstResult();
-        Hall omega = Hall.find("name", "Omega").firstResult();
+    @ConfigProperty(name = "app.update-showtimes")
+    boolean updateShowtimes;
 
-        Cinema varnaCinema = Cinema.find("name", "Cinema Varna").firstResult();
 
-        Movie avengers = Movie.find("title", "The Avengers").firstResult();
-        Movie inception = Movie.find("title", "Inception").firstResult();
-
-        Showtime showtime1 = Showtime.builder()
-                .cinema(varnaCinema)
-                .movie(avengers)
-                .hall(alpha)
-                .startTime(LocalDateTime.now().plusHours(1))
-                .ticketPrice(BigDecimal.valueOf(10))
-                .build();
-
-        Showtime showtime2 = Showtime.builder()
-                .cinema(varnaCinema)
-                .movie(inception)
-                .hall(alpha)
-                .startTime(LocalDateTime.now().plusHours(2))
-                .ticketPrice(BigDecimal.valueOf(10))
-                .build();
-
-        Showtime.persist(List.of(showtime1, showtime2));
-
-        for (Seat seat : alpha.getRows().stream().flatMap(row -> row.getSeats().stream()).collect(Collectors.toList())) {
-            ShowtimeSeat showtimeSeat1 = ShowtimeSeat.builder().seat(seat).showtime(showtime1).build();
-            ShowtimeSeat showtimeSeat2 = ShowtimeSeat.builder().seat(seat).showtime(showtime2).build();
-            ShowtimeSeat.persist(List.of(showtimeSeat1, showtimeSeat2));
+    void onStart(@Observes StartupEvent ev) {
+        if (updateShowtimes) {
+            updateShowtimes();
         }
+    }
 
-        Showtime showtime3 = Showtime.builder()
-                .cinema(varnaCinema)
-                .movie(avengers)
-                .hall(omega)
-                .startTime(LocalDateTime.now().plusHours(3))
-                .ticketPrice(BigDecimal.valueOf(10))
-                .build();
+    @Transactional
+    void updateShowtimes() {
+        List<Showtime> showtimes = Showtime.findAll().list();
 
-        Showtime showtime4 = Showtime.builder()
-                .cinema(varnaCinema)
-                .movie(inception)
-                .hall(omega)
-                .startTime(LocalDateTime.now().plusHours(5))
-                .ticketPrice(BigDecimal.valueOf(10))
-                .build();
-
-        Showtime.persist(List.of(showtime3, showtime4));
-
-        for (Seat seat : omega.getRows().stream().flatMap(row -> row.getSeats().stream()).collect(Collectors.toList())) {
-            ShowtimeSeat showtimeSeat3 = ShowtimeSeat.builder().seat(seat).showtime(showtime3).build();
-            ShowtimeSeat showtimeSeat4 = ShowtimeSeat.builder().seat(seat).showtime(showtime4).build();
-            ShowtimeSeat.persist(List.of(showtimeSeat3, showtimeSeat4));
+        for (Showtime showtime : showtimes) {
+            showtime.setStartTime(generateRandomDateTime());
+            showtime.persist();
         }
+    }
+
+    // in the next 7 days
+    private LocalDateTime generateRandomDateTime() {
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime end = now.plusDays(7);
+
+        // Convert LocalDateTime to epoch seconds
+        long nowEpochSecond = now.toEpochSecond(ZoneOffset.UTC);
+        long endEpochSecond = end.toEpochSecond(ZoneOffset.UTC);
+
+        // Generate a random epoch second between now and the end date
+        long randomEpochSecond = ThreadLocalRandom.current().nextLong(nowEpochSecond, endEpochSecond);
+
+        // Convert epoch seconds back to LocalDateTime
+        return LocalDateTime.ofEpochSecond(randomEpochSecond, 0, ZoneOffset.UTC);
     }
 }

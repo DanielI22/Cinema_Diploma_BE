@@ -28,7 +28,7 @@ public class GetHallService implements GetHallOperation {
                 .orElseThrow(() -> new ResourceNotFoundException("Hall with id " + hallId + " not found"));
         List<Row> rows = hall.getRows();
         return GetHallResponse.builder()
-                .hall(hallMapper.hallToCinemaHallDto(hall))
+                .hall(hallMapper.hallToHallDto(hall))
                 .rows(rows.stream().map(hallMapper::rowToRowDto).collect(Collectors.toList()))
                 .build();
     }

@@ -19,6 +19,7 @@ public class Seat extends PanacheEntityBase {
     private UUID id;
 
     private int seatNumber;
+
     private boolean isEmptySpace = Boolean.FALSE;
 
     @ManyToOne

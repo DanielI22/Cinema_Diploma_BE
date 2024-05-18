@@ -2,10 +2,11 @@ package sit.tu_varna.bg.core.mapper;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import sit.tu_varna.bg.api.dto.ShowtimeDto;
+import sit.tu_varna.bg.core.interfaces.ObjectMapper;
 import sit.tu_varna.bg.entity.Showtime;
 
 @ApplicationScoped
-public class ShowtimeMapper {
+public class ShowtimeMapper implements ObjectMapper {
 
     public ShowtimeDto showtimeToShowtimeDto(Showtime showtime) {
         return ShowtimeDto.builder()

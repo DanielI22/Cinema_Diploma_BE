@@ -2,7 +2,7 @@ package sit.tu_varna.bg.core.operationservice.hall;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import sit.tu_varna.bg.api.dto.HallCinemaDto;
+import sit.tu_varna.bg.api.dto.HallDto;
 import sit.tu_varna.bg.api.operation.hall.getall.GetAllHallsOperation;
 import sit.tu_varna.bg.api.operation.hall.getall.GetAllHallsRequest;
 import sit.tu_varna.bg.api.operation.hall.getall.GetAllHallsResponse;
@@ -20,11 +20,11 @@ public class GetAllHallsService implements GetAllHallsOperation {
 
     @Override
     public GetAllHallsResponse process(GetAllHallsRequest request) {
-        List<HallCinemaDto> halls = Hall.findAll().stream()
+        List<HallDto> halls = Hall.findAll().stream()
                 .filter(Hall.class::isInstance)
                 .map(Hall.class::cast)
                 .sorted(Comparator.comparing(Hall::getCreatedOn))
-                .map(hallMapper::hallToHallCinemaDto)
+                .map(hallMapper::hallToHallDto)
                 .collect(Collectors.toList());
 
         return GetAllHallsResponse.builder()

@@ -17,6 +17,8 @@ import sit.tu_varna.bg.api.operation.hall.getall.GetAllHallsOperation;
 import sit.tu_varna.bg.api.operation.hall.getall.GetAllHallsRequest;
 import sit.tu_varna.bg.api.operation.hall.getavailable.GetAvailableHallsOperation;
 import sit.tu_varna.bg.api.operation.hall.getavailable.GetAvailableHallsRequest;
+import sit.tu_varna.bg.api.operation.hall.getshowtimehall.GetShowtimeHallOperation;
+import sit.tu_varna.bg.api.operation.hall.getshowtimehall.GetShowtimeHallRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
@@ -29,6 +31,8 @@ public class HallResource {
     GetAllHallsOperation getAllHallsOperation;
     @Inject
     GetHallOperation getHallOperation;
+    @Inject
+    GetShowtimeHallOperation getShowtimeHallOperation;
     @Inject
     AddHallOperation addHallOperation;
     @Inject
@@ -58,6 +62,19 @@ public class HallResource {
                 .hallId(UUID.fromString(hallId))
                 .build();
         return Response.ok(getHallOperation.process(request)).build();
+    }
+
+    @GET
+    @Path("/showtimes/{showtimeId}")
+    public Response getShowtimeHall(@PathParam("showtimeId")
+                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                            message = "Invalid UUID format")
+                                            String showtimeId) {
+        GetShowtimeHallRequest request = GetShowtimeHallRequest
+                .builder()
+                .showtimeId(UUID.fromString(showtimeId))
+                .build();
+        return Response.ok(getShowtimeHallOperation.process(request)).build();
     }
 
     @POST

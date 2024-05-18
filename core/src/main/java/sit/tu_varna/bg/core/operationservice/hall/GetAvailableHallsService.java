@@ -2,7 +2,7 @@ package sit.tu_varna.bg.core.operationservice.hall;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import sit.tu_varna.bg.api.dto.CinemaHallDto;
+import sit.tu_varna.bg.api.dto.HallDto;
 import sit.tu_varna.bg.api.operation.hall.getavailable.GetAvailableHallsOperation;
 import sit.tu_varna.bg.api.operation.hall.getavailable.GetAvailableHallsRequest;
 import sit.tu_varna.bg.api.operation.hall.getavailable.GetAvailableHallsResponse;
@@ -21,13 +21,13 @@ public class GetAvailableHallsService implements GetAvailableHallsOperation {
     @Override
     public GetAvailableHallsResponse process(GetAvailableHallsRequest request) {
         List<Hall> availableHalls = Hall.findAvailable();
-        List<CinemaHallDto> halls;
+        List<HallDto> halls;
 
         if (availableHalls.isEmpty()) {
             halls = Collections.emptyList();
         } else {
             halls = availableHalls.stream()
-                    .map(hallMapper::hallToCinemaHallDto)
+                    .map(hallMapper::hallToHallDto)
                     .collect(Collectors.toList());
         }
         return GetAvailableHallsResponse.builder()

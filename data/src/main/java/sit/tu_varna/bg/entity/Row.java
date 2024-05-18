@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,13 +29,4 @@ public class Row extends PanacheEntityBase {
     @OneToMany(mappedBy = "row", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
     private List<Seat> seats = new ArrayList<>();
-
-    public void addSeats(Collection<Seat> seats) {
-        this.seats.addAll(seats);
-        seats.forEach(s -> s.setRow(this));
-    }
-
-    public static long deleteByHallId(UUID hallId) {
-        return delete("hall_id", hallId);
-    }
 }

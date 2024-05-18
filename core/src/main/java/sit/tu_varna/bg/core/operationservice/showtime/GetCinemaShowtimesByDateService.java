@@ -9,6 +9,7 @@ import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByD
 import sit.tu_varna.bg.core.mapper.ShowtimeMapper;
 import sit.tu_varna.bg.entity.Showtime;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,6 +22,7 @@ public class GetCinemaShowtimesByDateService implements GetCinemaShowtimesByDate
     public GetCinemaShowtimesByDateResponse process(GetCinemaShowtimesByDateRequest request) {
         List<ShowtimeDto> showtimes = Showtime.findByDate(request.getShowtimeDate())
                 .stream()
+                .sorted(Comparator.comparing(Showtime::getStartTime))
                 .filter(s -> s.getCinema().getId().toString().equals(request.getCinemaId()))
                 .map(sh -> showtimeMapper.showtimeToShowtimeDto(sh))
                 .collect(Collectors.toList());

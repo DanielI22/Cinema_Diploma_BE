@@ -9,7 +9,6 @@ import org.hibernate.annotations.Where;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
@@ -28,10 +27,12 @@ public class Hall extends PanacheEntityBase {
     private UUID id;
 
     private String name;
+
     private int seatCapacity;
 
     @OneToMany(mappedBy = "hall", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Builder.Default
+    @OrderColumn(name = "row_order")
     private List<Row> rows = new ArrayList<>();
 
     @ManyToOne
@@ -42,11 +43,6 @@ public class Hall extends PanacheEntityBase {
     private Instant createdOn;
 
     private boolean deleted = Boolean.FALSE;
-
-    public void addRows(Collection<Row> rows) {
-        this.rows.addAll(rows);
-        rows.forEach(r -> r.setHall(this));
-    }
 
     public static List<Hall> findAvailable() {
         return find("SELECT h FROM Hall h WHERE h.cinema IS NULL").list();

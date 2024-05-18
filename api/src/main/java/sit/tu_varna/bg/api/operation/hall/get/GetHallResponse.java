@@ -2,7 +2,7 @@ package sit.tu_varna.bg.api.operation.hall.get;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceResponse;
-import sit.tu_varna.bg.api.dto.CinemaHallDto;
+import sit.tu_varna.bg.api.dto.HallDto;
 import sit.tu_varna.bg.api.dto.RowDto;
 
 import java.util.Collection;
@@ -13,6 +13,6 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetHallResponse implements ServiceResponse {
-    private CinemaHallDto hall;
+    private HallDto hall;
     private Collection<RowDto> rows;
 }

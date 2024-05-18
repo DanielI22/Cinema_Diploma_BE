@@ -29,6 +29,7 @@ public class Showtime extends PanacheEntityBase {
     private UUID id;
 
     private LocalDateTime startTime;
+
     private BigDecimal ticketPrice;
 
     @ManyToOne

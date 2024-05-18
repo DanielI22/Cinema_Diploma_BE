@@ -4,6 +4,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.dto.MovieDto;
 import sit.tu_varna.bg.api.operation.movie.externalapi.MovieApiResult;
+import sit.tu_varna.bg.core.interfaces.ObjectMapper;
 import sit.tu_varna.bg.entity.Genre;
 import sit.tu_varna.bg.entity.Movie;
 
@@ -13,7 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class MovieMapper {
+public class MovieMapper implements ObjectMapper {
     @Inject
     GenreMapper genreMapper;
 

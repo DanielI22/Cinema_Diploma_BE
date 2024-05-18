@@ -32,7 +32,7 @@ public class GetCinemaService implements GetCinemaOperation {
         Set<Hall> halls = cinema.getHalls();
         return GetCinemaResponse.builder()
                 .cinema(cinemaMapper.cinemaToCinemaDto(cinema))
-                .halls(halls.stream().map(hallMapper::hallToCinemaHallDto).collect(Collectors.toList()))
+                .halls(halls.stream().map(hallMapper::hallToHallDto).collect(Collectors.toList()))
                 .build();
     }
 }

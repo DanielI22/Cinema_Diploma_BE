@@ -2,11 +2,10 @@ package sit.tu_varna.bg.core.operationservice.cinema;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import sit.tu_varna.bg.api.dto.CinemaHallDto;
+import sit.tu_varna.bg.api.dto.HallDto;
 import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsOperation;
 import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsRequest;
 import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsResponse;
-import sit.tu_varna.bg.api.operation.hall.getavailable.GetAvailableHallsResponse;
 import sit.tu_varna.bg.core.mapper.HallMapper;
 import sit.tu_varna.bg.entity.Hall;
 
@@ -22,13 +21,13 @@ public class GetCinemaHallsService implements GetCinemaHallsOperation {
     @Override
     public GetCinemaHallsResponse process(GetCinemaHallsRequest request) {
         List<Hall> cinemaHalls = Hall.findByCinemaId(request.getCinemaId());
-        List<CinemaHallDto> halls;
+        List<HallDto> halls;
 
         if (cinemaHalls.isEmpty()) {
             halls = Collections.emptyList();
         } else {
             halls = cinemaHalls.stream()
-                    .map(hallMapper::hallToCinemaHallDto)
+                    .map(hallMapper::hallToHallDto)
                     .collect(Collectors.toList());
         }
         return GetCinemaHallsResponse.builder()

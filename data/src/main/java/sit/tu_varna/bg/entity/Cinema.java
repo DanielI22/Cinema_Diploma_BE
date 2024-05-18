@@ -25,7 +25,9 @@ public class Cinema extends PanacheEntityBase {
     private UUID id;
 
     private String name;
+
     private String location;
+
     private String imageUrl;
 
     @OneToMany(mappedBy = "cinema")
@@ -36,9 +38,4 @@ public class Cinema extends PanacheEntityBase {
     private Instant createdOn;
 
     private boolean deleted = Boolean.FALSE;
-
-    public void addHall(Hall hall) {
-        halls.add(hall);
-        hall.setCinema(this);
-    }
 }
