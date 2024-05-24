@@ -2,11 +2,10 @@ package sit.tu_varna.bg.core.operationservice.booking;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import sit.tu_varna.bg.api.dto.BookingDto;
-import sit.tu_varna.bg.api.operation.booking.getall.GetAllBookingsOperation;
-import sit.tu_varna.bg.api.operation.booking.getall.GetAllBookingsRequest;
-import sit.tu_varna.bg.api.operation.booking.getall.GetAllBookingsResponse;
+import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsOperation;
+import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsRequest;
+import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsResponse;
 import sit.tu_varna.bg.core.mapper.BookingMapper;
 import sit.tu_varna.bg.entity.Booking;
 
@@ -15,22 +14,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
-public class GetAllBookingsService implements GetAllBookingsOperation {
+public class GetShowtimeBookingsService implements GetShowtimeBookingsOperation {
     @Inject
     BookingMapper bookingMapper;
 
-    @Transactional
     @Override
-    public GetAllBookingsResponse process(GetAllBookingsRequest request) {
-        List<BookingDto> bookings = Booking.listAll()
+    public GetShowtimeBookingsResponse process(GetShowtimeBookingsRequest request) {
+        List<BookingDto> bookings = Booking.findByShowtimeId(request.getShowtimeId())
                 .stream()
-                .filter(Booking.class::isInstance)
-                .map(Booking.class::cast)
                 .sorted(Comparator.comparing(Booking::getCreatedOn).reversed())
                 .map(b -> bookingMapper.bookingToBookingDto(b))
                 .collect(Collectors.toList());
 
-        return GetAllBookingsResponse.builder()
+        return GetShowtimeBookingsResponse.builder()
                 .bookings(bookings)
                 .build();
     }

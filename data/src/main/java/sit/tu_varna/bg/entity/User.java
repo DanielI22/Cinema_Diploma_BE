@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import java.time.Instant;
 import java.util.HashSet;
@@ -20,13 +19,14 @@ import java.util.UUID;
 @AllArgsConstructor
 @Builder
 @SQLDelete(sql = "UPDATE users SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 public class User extends PanacheEntityBase {
 
     @Id
     private UUID id;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    private String email;
+
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinTable(
             name = "user_favorite_movies",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -34,7 +34,7 @@ public class User extends PanacheEntityBase {
     )
     private Set<Movie> favoriteMovies = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     @Builder.Default
     private Set<Review> reviews = new HashSet<>();
 

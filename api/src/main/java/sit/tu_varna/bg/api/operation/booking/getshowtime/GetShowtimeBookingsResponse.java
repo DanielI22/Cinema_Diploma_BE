@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.booking.getall;
+package sit.tu_varna.bg.api.operation.booking.getshowtime;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceResponse;
@@ -11,6 +11,6 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetAllBookingsResponse implements ServiceResponse {
+public class GetShowtimeBookingsResponse implements ServiceResponse {
     private Collection<BookingDto> bookings;
 }

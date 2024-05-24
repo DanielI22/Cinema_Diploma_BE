@@ -27,7 +27,7 @@ public class Booking extends PanacheEntityBase {
     @Builder.Default
     private BookingStatus status = BookingStatus.AVAILABLE;
 
-    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "booking", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @Builder.Default
     private List<Ticket> tickets = new ArrayList<>();
 
@@ -41,4 +41,8 @@ public class Booking extends PanacheEntityBase {
 
     @CreationTimestamp
     private Instant createdOn;
+
+    public static List<Booking> findByShowtimeId(UUID showtimeId) {
+        return find("SELECT b FROM Booking b WHERE b.showtime.id = ?1", showtimeId).list();
+    }
 }

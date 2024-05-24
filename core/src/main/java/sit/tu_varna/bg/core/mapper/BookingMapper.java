@@ -3,22 +3,23 @@ package sit.tu_varna.bg.core.mapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.dto.BookingDto;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
 import sit.tu_varna.bg.core.interfaces.ObjectMapper;
 import sit.tu_varna.bg.entity.Booking;
+
+import java.util.Locale;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class BookingMapper implements ObjectMapper {
     @Inject
-    KeycloakService keycloakService;
-    @Inject
-    ShowtimeMapper showtimeMapper;
+    TicketMapper ticketMapper;
 
     public BookingDto bookingToBookingDto(Booking booking) {
         return BookingDto.builder()
                 .id(booking.getId().toString())
-                .userMail(keycloakService.getUserRepresentation(booking.getUser().getId().toString()).getEmail())
-                .showtime(showtimeMapper.showtimeToShowtimeDto(booking.getShowtime()))
+                .userMail(booking.getUser().getEmail())
+                .status(booking.getStatus().name().toLowerCase(Locale.ROOT))
+                .tickets(booking.getTickets().stream().map(ticketMapper::ticketToTicketDto).collect(Collectors.toList()))
                 .build();
     }
 }

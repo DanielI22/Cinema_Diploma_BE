@@ -9,6 +9,7 @@ import sit.tu_varna.bg.enums.TicketType;
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -34,6 +35,10 @@ public class Ticket extends PanacheEntityBase {
     private ShowtimeSeat showtimeSeat;
 
     @ManyToOne
+    @JoinColumn(name = "showtime_id", nullable = false)
+    private Showtime showtime;
+
+    @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -45,4 +50,8 @@ public class Ticket extends PanacheEntityBase {
 
     @CreationTimestamp
     private Instant createdOn;
+
+    public static List<Ticket> findByShowtimeId(UUID showtimeId) {
+        return find("SELECT t FROM Ticket t WHERE t.showtime.id = ?1", showtimeId).list();
+    }
 }

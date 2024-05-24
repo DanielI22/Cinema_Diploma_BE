@@ -10,6 +10,7 @@ import lombok.*;
 public class SeatDto {
     private String id;
     private Integer seatNumber;
+    private Integer rowNumber;
     private Boolean isEmpty;
     private Boolean isBooked;
 }

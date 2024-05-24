@@ -7,6 +7,7 @@ import jakarta.ws.rs.NotFoundException;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import org.jboss.resteasy.reactive.ClientWebApplicationException;
 import org.keycloak.OAuth2Constants;
 import org.keycloak.admin.client.CreatedResponseUtil;
 import org.keycloak.admin.client.Keycloak;
@@ -24,6 +25,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -127,6 +129,66 @@ public class KeycloakService {
             }
         }
     }
+
+    public Collection<RoleRepresentation> getUserRoles(String userId) {
+        try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
+            final RealmResource realmResource = keycloakAdmin.realm(realmName);
+            try {
+                final UserResource userResource = realmResource.users().get(userId);
+                return userResource.roles().realmLevel().listAll();
+            } catch (NotFoundException e) {
+                throw new WebApplicationException("Failed to fetch user: " + e.getMessage(), e.getResponse().getStatus());
+            }
+        }
+    }
+
+    public void deleteUser(String userId) {
+        try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
+            try {
+                RealmResource realmResource = keycloakAdmin.realm(realmName);
+                UserResource userResource = realmResource.users().get(userId);
+                userResource.remove();
+            } catch (NotFoundException ignored) {
+            }
+        }
+    }
+
+    public void updateUsername(String userId, String newUsername) {
+        try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
+            RealmResource realmResource = keycloakAdmin.realm(realmName);
+            try {
+                UserResource userResource = realmResource.users().get(userId);
+                UserRepresentation userRepresentation = userResource.toRepresentation();
+                userRepresentation.setUsername(newUsername);
+                userResource.update(userRepresentation);
+                userRepresentation.setUsername(newUsername);
+                userResource.update(userRepresentation);
+            } catch (Exception e) {
+                if (e instanceof ClientWebApplicationException) {
+                    throw new WebApplicationException("User with this username already exists", Response.Status.CONFLICT);
+                } else {
+                    throw new WebApplicationException(Response.status(500).entity("Failed to update").build());
+                }
+            }
+        }
+    }
+
+    public void updatePassword(String userId, String newPassword) {
+        try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
+            RealmResource realmResource = keycloakAdmin.realm(realmName);
+            try {
+                UserResource userResource = realmResource.users().get(userId);
+                CredentialRepresentation credential = new CredentialRepresentation();
+                credential.setTemporary(false);
+                credential.setType(CredentialRepresentation.PASSWORD);
+                credential.setValue(newPassword);
+                userResource.resetPassword(credential);
+            } catch (Exception e) {
+                throw new WebApplicationException(Response.status(500).entity("Failed to update").build());
+            }
+        }
+    }
+
 
     private UserRepresentation createUserRepresentation(String username, String email) {
         UserRepresentation newUser = new UserRepresentation();

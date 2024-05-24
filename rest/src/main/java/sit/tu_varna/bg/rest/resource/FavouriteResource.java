@@ -9,6 +9,8 @@ import sit.tu_varna.bg.api.operation.favourite.add.AddFavouriteOperation;
 import sit.tu_varna.bg.api.operation.favourite.add.AddFavouriteRequest;
 import sit.tu_varna.bg.api.operation.favourite.delete.DeleteFavouriteOperation;
 import sit.tu_varna.bg.api.operation.favourite.delete.DeleteFavouriteRequest;
+import sit.tu_varna.bg.api.operation.favourite.getall.GetFavouritesOperation;
+import sit.tu_varna.bg.api.operation.favourite.getall.GetFavouritesRequest;
 import sit.tu_varna.bg.api.operation.favourite.verify.VerifyFavouriteOperation;
 import sit.tu_varna.bg.api.operation.favourite.verify.VerifyFavouriteRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
@@ -18,6 +20,8 @@ import java.util.UUID;
 @Path("/api/favourites")
 public class FavouriteResource {
     @Inject
+    GetFavouritesOperation getFavouritesOperation;
+    @Inject
     VerifyFavouriteOperation verifyFavouriteOperation;
     @Inject
     AddFavouriteOperation addFavouriteOperation;
@@ -26,6 +30,14 @@ public class FavouriteResource {
     @Inject
     @SuppressWarnings("all")
     JsonWebToken jwt;
+
+
+    @GET
+    public Response getFavourites() {
+        String userId = jwt.getClaim("sub").toString();
+        GetFavouritesRequest getFavouritesRequest = GetFavouritesRequest.builder().userId(UUID.fromString(userId)).build();
+        return Response.ok(getFavouritesOperation.process(getFavouritesRequest)).build();
+    }
 
     @GET
     @Path("/{movieId}")

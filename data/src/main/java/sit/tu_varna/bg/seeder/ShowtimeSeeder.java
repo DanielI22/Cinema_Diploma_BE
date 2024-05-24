@@ -46,7 +46,12 @@ public class ShowtimeSeeder {
         // Generate a random epoch second between now and the end date
         long randomEpochSecond = ThreadLocalRandom.current().nextLong(nowEpochSecond, endEpochSecond);
 
-        // Convert epoch seconds back to LocalDateTime
-        return LocalDateTime.ofEpochSecond(randomEpochSecond, 0, ZoneOffset.UTC);
+        // Adjust to the nearest 5-minute mark
+        long randomEpochMinute = randomEpochSecond / 60;
+        long adjustedEpochMinute = randomEpochMinute - (randomEpochMinute % 5);
+
+        // Convert epoch minutes back to LocalDateTime
+        return LocalDateTime.ofEpochSecond(adjustedEpochMinute * 60, 0, ZoneOffset.UTC);
     }
+
 }

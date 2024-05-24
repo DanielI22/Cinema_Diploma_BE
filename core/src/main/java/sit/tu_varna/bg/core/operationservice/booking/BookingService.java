@@ -65,6 +65,7 @@ public class BookingService implements BookingOperation {
                     .booking(booking)
                     .user(user)
                     .showtimeSeat(showtimeSeat)
+                    .showtime(showtime)
                     .ticketType(ticketType)
                     .price(pricingService.calculateTicketPrice(ticketType, showtime.getTicketPrice()))
                     .ticketStatus(TicketStatus.BOOKED)

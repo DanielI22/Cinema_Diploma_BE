@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.user.register;
+package sit.tu_varna.bg.api.operation.user.add;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import sit.tu_varna.bg.api.base.ServiceRequest;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest implements ServiceRequest {
+public class AddUserRequest implements ServiceRequest {
     @NotBlank(message = "Username is required.")
     @Size(min = 3, max = 255, message = "'Username' must have a length between 3 and 255")
     private String username;
@@ -21,6 +21,7 @@ public class RegisterRequest implements ServiceRequest {
     private String email;
 
     @NotBlank(message = "Password is required.")
-    @Size(min = 3, max = 100, message = "'Password' must have a length between 3 and 100")
     private String password;
+
+    private String role;
 }

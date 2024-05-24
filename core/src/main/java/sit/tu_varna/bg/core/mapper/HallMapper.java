@@ -27,6 +27,7 @@ public class HallMapper implements ObjectMapper {
         return SeatDto.builder()
                 .id(seat.getId().toString())
                 .seatNumber(seat.getSeatNumber())
+                .rowNumber(seat.getRow().getRowNumber())
                 .isEmpty(seat.isEmptySpace())
                 .build();
     }
@@ -47,6 +48,7 @@ public class HallMapper implements ObjectMapper {
         return SeatDto.builder()
                 .id(seat.getId().toString())
                 .seatNumber(seat.getSeatNumber())
+                .rowNumber(seat.getRow().getRowNumber())
                 .isEmpty(seat.isEmptySpace())
                 .isBooked(showtimeSeat.isPresent() && showtimeSeat.get().isBooked())
                 .build();

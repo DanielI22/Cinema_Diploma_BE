@@ -4,8 +4,6 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.Where;
 
 import java.time.Instant;
 import java.util.List;
@@ -18,8 +16,6 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@SQLDelete(sql = "UPDATE reviews SET deleted = true WHERE id=?")
-@Where(clause = "deleted=false")
 public class Review extends PanacheEntityBase {
     @Id
     @GeneratedValue
@@ -38,8 +34,6 @@ public class Review extends PanacheEntityBase {
 
     @CreationTimestamp
     private Instant createdOn;
-
-    private boolean deleted = Boolean.FALSE;
 
     public static List<Review> findByMovieId(UUID movieId) {
         return find("SELECT r FROM Review r WHERE r.movie.id = ?1", movieId).list();

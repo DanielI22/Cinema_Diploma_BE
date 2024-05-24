@@ -11,8 +11,8 @@ import sit.tu_varna.bg.api.operation.booking.book.BookingOperation;
 import sit.tu_varna.bg.api.operation.booking.book.BookingRequest;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingOperation;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingRequest;
-import sit.tu_varna.bg.api.operation.booking.getall.GetAllBookingsOperation;
-import sit.tu_varna.bg.api.operation.booking.getall.GetAllBookingsRequest;
+import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsOperation;
+import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
@@ -20,7 +20,7 @@ import java.util.UUID;
 @Path("/api/bookings")
 public class BookingResource {
     @Inject
-    GetAllBookingsOperation getAllBookingsOperation;
+    GetShowtimeBookingsOperation getShowtimeBookingsOperation;
     @Inject
     BookingOperation bookingOperation;
     @Inject
@@ -30,8 +30,16 @@ public class BookingResource {
     JsonWebToken jwt;
 
     @GET
-    public Response getAllBookings() {
-        return Response.ok(getAllBookingsOperation.process(new GetAllBookingsRequest())).build();
+    @Path("showtimes/{showtimeId}")
+    public Response getShowtimeBookings(@PathParam("showtimeId")
+                                        @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                                message = "Invalid UUID format")
+                                                String showtimeId) {
+        GetShowtimeBookingsRequest request = GetShowtimeBookingsRequest
+                .builder()
+                .showtimeId(UUID.fromString(showtimeId))
+                .build();
+        return Response.ok(getShowtimeBookingsOperation.process(request)).build();
     }
 
     @POST
@@ -42,7 +50,7 @@ public class BookingResource {
         return Response.ok(bookingOperation.process(bookingRequest)).build();
     }
 
-    @DELETE
+    @PUT
     @Path("/{bookingId}")
     public Response cancelBooking(@PathParam("bookingId")
                                   @Pattern(regexp = ValidationConstants.UUID_REGEX,

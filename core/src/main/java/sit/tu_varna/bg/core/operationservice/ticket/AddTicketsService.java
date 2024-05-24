@@ -65,6 +65,7 @@ public class AddTicketsService implements AddTicketsOperation {
             Ticket ticket = Ticket.builder()
                     .user(user)
                     .showtimeSeat(showtimeSeat)
+                    .showtime(showtime)
                     .ticketType(ticketType)
                     .price(ticketPrice)
                     .ticketStatus(TicketStatus.PURCHASED)
