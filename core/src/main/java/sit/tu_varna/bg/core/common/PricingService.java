@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.core.externalservice;
+package sit.tu_varna.bg.core.common;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import sit.tu_varna.bg.api.dto.PurchaseSeatDto;

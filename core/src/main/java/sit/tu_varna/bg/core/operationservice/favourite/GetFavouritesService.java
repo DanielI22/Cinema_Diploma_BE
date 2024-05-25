@@ -8,11 +8,9 @@ import sit.tu_varna.bg.api.operation.favourite.getall.GetFavouritesOperation;
 import sit.tu_varna.bg.api.operation.favourite.getall.GetFavouritesRequest;
 import sit.tu_varna.bg.api.operation.favourite.getall.GetFavouritesResponse;
 import sit.tu_varna.bg.core.mapper.MovieMapper;
-import sit.tu_varna.bg.entity.Genre;
 import sit.tu_varna.bg.entity.User;
 
 import java.util.Collection;
-import java.util.Comparator;
 import java.util.UUID;
 import java.util.stream.Collectors;
 

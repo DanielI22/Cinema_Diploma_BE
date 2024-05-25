@@ -10,8 +10,8 @@ import sit.tu_varna.bg.api.operation.payment.PaymentOperation;
 import sit.tu_varna.bg.api.operation.payment.PaymentRequest;
 import sit.tu_varna.bg.api.operation.payment.PaymentResponse;
 import sit.tu_varna.bg.core.constants.BusinessConstants;
-import sit.tu_varna.bg.core.externalservice.PricingService;
-import sit.tu_varna.bg.core.externalservice.StripePaymentService;
+import sit.tu_varna.bg.core.common.PricingService;
+import sit.tu_varna.bg.core.common.StripePaymentService;
 import sit.tu_varna.bg.entity.Showtime;
 import sit.tu_varna.bg.entity.ShowtimeSeat;
 import sit.tu_varna.bg.entity.User;
@@ -53,21 +53,6 @@ public class PaymentService implements PaymentOperation {
             if (showtimeSeat.isBooked()) {
                 throw new ResourceAlreadyExistsException("Seat already booked");
             }
-
-//            showtimeSeat.setBooked(true);
-//            showtimeSeat.persist();
-//
-//            TicketType ticketType = TicketType.valueOf(bookingSeat.getTicketType().name().toUpperCase(Locale.ROOT));
-//            BigDecimal ticketPrice = pricingService.calculateTicketPrice(ticketType, showtime.getTicketPrice());
-//            Ticket ticket = Ticket.builder()
-//                    .user(user)
-//                    .showtimeSeat(showtimeSeat)
-//                    .ticketType(ticketType)
-//                    .price(ticketPrice)
-//                    .ticketStatus(TicketStatus.PURCHASED)
-//                    .build();
-//
-//            ticket.persist();
         }
 
         BigDecimal totalSum = pricingService.calculateOrderPrice(request.getOrderInfo().getSeats(), showtime.getTicketPrice());

@@ -7,7 +7,7 @@ import org.keycloak.representations.AccessTokenResponse;
 import sit.tu_varna.bg.api.operation.user.register.RegisterOperation;
 import sit.tu_varna.bg.api.operation.user.register.RegisterRequest;
 import sit.tu_varna.bg.api.operation.user.register.RegisterResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 import sit.tu_varna.bg.entity.User;
 
 import java.util.*;

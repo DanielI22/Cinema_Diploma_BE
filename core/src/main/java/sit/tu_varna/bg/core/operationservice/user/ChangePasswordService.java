@@ -6,7 +6,7 @@ import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.user.changepassword.ChangePasswordOperation;
 import sit.tu_varna.bg.api.operation.user.changepassword.ChangePasswordRequest;
 import sit.tu_varna.bg.api.operation.user.changepassword.ChangePasswordResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 import sit.tu_varna.bg.entity.User;
 
 import java.util.UUID;

@@ -11,6 +11,8 @@ import sit.tu_varna.bg.api.operation.booking.book.BookingOperation;
 import sit.tu_varna.bg.api.operation.booking.book.BookingRequest;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingOperation;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingRequest;
+import sit.tu_varna.bg.api.operation.booking.getmybookings.GetMyBookingsOperation;
+import sit.tu_varna.bg.api.operation.booking.getmybookings.GetMyBookingsRequest;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsOperation;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
@@ -20,6 +22,8 @@ import java.util.UUID;
 @Path("/api/bookings")
 public class BookingResource {
     @Inject
+    GetMyBookingsOperation getMyBookingsOperation;
+    @Inject
     GetShowtimeBookingsOperation getShowtimeBookingsOperation;
     @Inject
     BookingOperation bookingOperation;
@@ -28,6 +32,17 @@ public class BookingResource {
     @Inject
     @SuppressWarnings("all")
     JsonWebToken jwt;
+
+    @GET
+    @Path("my-bookings")
+    public Response getMyBookings() {
+        String userId = jwt.getClaim("sub").toString();
+        GetMyBookingsRequest request = GetMyBookingsRequest
+                .builder()
+                .userId(UUID.fromString(userId))
+                .build();
+        return Response.ok(getMyBookingsOperation.process(request)).build();
+    }
 
     @GET
     @Path("showtimes/{showtimeId}")

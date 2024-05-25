@@ -7,7 +7,7 @@ import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.user.delete.DeleteUserOperation;
 import sit.tu_varna.bg.api.operation.user.delete.DeleteUserRequest;
 import sit.tu_varna.bg.api.operation.user.delete.DeleteUserResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 import sit.tu_varna.bg.entity.User;
 
 import java.util.UUID;

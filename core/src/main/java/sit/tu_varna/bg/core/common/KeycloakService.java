@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.core.externalservice;
+package sit.tu_varna.bg.core.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.enterprise.context.ApplicationScoped;

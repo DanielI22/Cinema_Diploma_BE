@@ -23,6 +23,9 @@ public class Booking extends PanacheEntityBase {
     @GeneratedValue
     private UUID id;
 
+    @Column(unique = true, nullable = false)
+    private String shortCode;
+
     @Enumerated(EnumType.STRING)
     @Builder.Default
     private BookingStatus status = BookingStatus.AVAILABLE;
@@ -44,5 +47,9 @@ public class Booking extends PanacheEntityBase {
 
     public static List<Booking> findByShowtimeId(UUID showtimeId) {
         return find("SELECT b FROM Booking b WHERE b.showtime.id = ?1", showtimeId).list();
+    }
+
+    public static List<Booking> findByUserId(UUID userId) {
+        return find("SELECT b FROM Booking b WHERE b.user.id = ?1", userId).list();
     }
 }

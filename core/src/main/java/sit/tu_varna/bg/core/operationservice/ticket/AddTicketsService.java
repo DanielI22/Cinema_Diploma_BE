@@ -9,8 +9,9 @@ import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.ticket.purchase.AddTicketsOperation;
 import sit.tu_varna.bg.api.operation.ticket.purchase.AddTicketsRequest;
 import sit.tu_varna.bg.api.operation.ticket.purchase.AddTicketsResponse;
+import sit.tu_varna.bg.core.common.PricingService;
+import sit.tu_varna.bg.core.common.ShortCodeGenerator;
 import sit.tu_varna.bg.core.constants.BusinessConstants;
-import sit.tu_varna.bg.core.externalservice.PricingService;
 import sit.tu_varna.bg.entity.Showtime;
 import sit.tu_varna.bg.entity.ShowtimeSeat;
 import sit.tu_varna.bg.entity.Ticket;
@@ -60,10 +61,15 @@ public class AddTicketsService implements AddTicketsOperation {
             showtimeSeat.setBooked(true);
             showtimeSeat.persist();
 
+            String shortCode = ShortCodeGenerator.generateShortCode();
+            while (Ticket.find("shortCode", shortCode).firstResult() != null) {
+                shortCode = ShortCodeGenerator.generateShortCode();
+            }
             TicketType ticketType = TicketType.valueOf(bookingSeat.getTicketType().name().toUpperCase(Locale.ROOT));
             BigDecimal ticketPrice = pricingService.calculateTicketPrice(ticketType, showtime.getTicketPrice());
             Ticket ticket = Ticket.builder()
                     .user(user)
+                    .shortCode(shortCode)
                     .showtimeSeat(showtimeSeat)
                     .showtime(showtime)
                     .ticketType(ticketType)

@@ -2,6 +2,7 @@ package sit.tu_varna.bg.core.operationservice.booking;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
+import sit.tu_varna.bg.api.exception.ResourceAlreadyExistsException;
 import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingOperation;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingRequest;
@@ -20,8 +21,11 @@ public class CancelBookingService implements CancelBookingOperation {
         Booking booking = (Booking) Booking.findByIdOptional(request.getBookingId())
                 .orElseThrow(() -> new ResourceNotFoundException("Booking does not exist"));
 
-        booking.setStatus(BookingStatus.CANCELLED);
+        if (!booking.getStatus().equals(BookingStatus.AVAILABLE)) {
+            throw new ResourceAlreadyExistsException("Booking is not available to be cancelled");
+        }
 
+        booking.setStatus(BookingStatus.CANCELLED);
         for (Ticket ticket : booking.getTickets()) {
             ShowtimeSeat showtimeSeat = ticket.getShowtimeSeat();
             showtimeSeat.setBooked(false);

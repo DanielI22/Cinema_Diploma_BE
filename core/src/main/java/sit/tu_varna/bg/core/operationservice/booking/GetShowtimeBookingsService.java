@@ -2,7 +2,7 @@ package sit.tu_varna.bg.core.operationservice.booking;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import sit.tu_varna.bg.api.dto.BookingDto;
+import sit.tu_varna.bg.api.dto.ShowtimeBookingDto;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsOperation;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsRequest;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsResponse;
@@ -20,10 +20,10 @@ public class GetShowtimeBookingsService implements GetShowtimeBookingsOperation 
 
     @Override
     public GetShowtimeBookingsResponse process(GetShowtimeBookingsRequest request) {
-        List<BookingDto> bookings = Booking.findByShowtimeId(request.getShowtimeId())
+        List<ShowtimeBookingDto> bookings = Booking.findByShowtimeId(request.getShowtimeId())
                 .stream()
                 .sorted(Comparator.comparing(Booking::getCreatedOn).reversed())
-                .map(b -> bookingMapper.bookingToBookingDto(b))
+                .map(b -> bookingMapper.bookingToShowtimeBookingDto(b))
                 .collect(Collectors.toList());
 
         return GetShowtimeBookingsResponse.builder()

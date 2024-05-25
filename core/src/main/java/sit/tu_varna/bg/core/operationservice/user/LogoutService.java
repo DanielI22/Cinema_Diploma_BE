@@ -5,7 +5,7 @@ import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.operation.user.logout.LogoutOperation;
 import sit.tu_varna.bg.api.operation.user.logout.LogoutRequest;
 import sit.tu_varna.bg.api.operation.user.logout.LogoutResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 
 @ApplicationScoped
 public class LogoutService implements LogoutOperation {

@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.core.externalservice;
+package sit.tu_varna.bg.core.common;
 
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;

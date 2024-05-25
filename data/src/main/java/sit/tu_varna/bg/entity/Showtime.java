@@ -55,4 +55,8 @@ public class Showtime extends PanacheEntityBase {
 
         return list("startTime between ?1 and ?2", startOfDay, endOfDay);
     }
+
+    public static List<Showtime> findStartingSoon(LocalDateTime now, LocalDateTime threshold) {
+        return list("startTime between ?1 and ?2", now, threshold);
+    }
 }

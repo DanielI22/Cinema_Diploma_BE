@@ -6,7 +6,7 @@ import org.keycloak.representations.AccessTokenResponse;
 import sit.tu_varna.bg.api.operation.user.refresh.RefreshOperation;
 import sit.tu_varna.bg.api.operation.user.refresh.RefreshRequest;
 import sit.tu_varna.bg.api.operation.user.refresh.RefreshResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 
 @ApplicationScoped
 public class RefreshService implements RefreshOperation {

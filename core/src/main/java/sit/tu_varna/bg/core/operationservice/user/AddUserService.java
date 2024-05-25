@@ -6,7 +6,7 @@ import jakarta.transaction.Transactional;
 import sit.tu_varna.bg.api.operation.user.add.AddUserOperation;
 import sit.tu_varna.bg.api.operation.user.add.AddUserRequest;
 import sit.tu_varna.bg.api.operation.user.add.AddUserResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 import sit.tu_varna.bg.entity.User;
 
 import java.util.*;

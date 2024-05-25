@@ -7,7 +7,7 @@ import org.keycloak.representations.AccessTokenResponse;
 import sit.tu_varna.bg.api.operation.user.login.LoginOperation;
 import sit.tu_varna.bg.api.operation.user.login.LoginRequest;
 import sit.tu_varna.bg.api.operation.user.login.LoginResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 
 @ApplicationScoped
 public class LoginService implements LoginOperation {

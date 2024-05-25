@@ -24,6 +24,9 @@ public class Ticket extends PanacheEntityBase {
     @GeneratedValue
     private UUID id;
 
+    @Column(unique = true)
+    private String shortCode;
+
     private BigDecimal price;
 
     @ManyToOne

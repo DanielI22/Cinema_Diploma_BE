@@ -7,7 +7,7 @@ import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.user.changeusername.ChangeUsernameOperation;
 import sit.tu_varna.bg.api.operation.user.changeusername.ChangeUsernameRequest;
 import sit.tu_varna.bg.api.operation.user.changeusername.ChangeUsernameResponse;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 import sit.tu_varna.bg.entity.User;
 
 import java.util.UUID;

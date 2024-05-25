@@ -2,7 +2,7 @@ package sit.tu_varna.bg.api.operation.booking.getshowtime;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceResponse;
-import sit.tu_varna.bg.api.dto.BookingDto;
+import sit.tu_varna.bg.api.dto.ShowtimeBookingDto;
 
 import java.util.Collection;
 
@@ -12,5 +12,5 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetShowtimeBookingsResponse implements ServiceResponse {
-    private Collection<BookingDto> bookings;
+    private Collection<ShowtimeBookingDto> bookings;
 }

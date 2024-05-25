@@ -9,8 +9,8 @@ import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.booking.book.BookingOperation;
 import sit.tu_varna.bg.api.operation.booking.book.BookingRequest;
 import sit.tu_varna.bg.api.operation.booking.book.BookingResponse;
-import sit.tu_varna.bg.core.constants.BusinessConstants;
-import sit.tu_varna.bg.core.externalservice.PricingService;
+import sit.tu_varna.bg.core.common.PricingService;
+import sit.tu_varna.bg.core.common.ShortCodeGenerator;
 import sit.tu_varna.bg.entity.*;
 import sit.tu_varna.bg.enums.BookingStatus;
 import sit.tu_varna.bg.enums.TicketStatus;
@@ -20,6 +20,9 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Locale;
 import java.util.UUID;
+
+import static sit.tu_varna.bg.core.constants.BusinessConstants.BOOKING_EXPIRE_TIME;
+import static sit.tu_varna.bg.core.constants.BusinessConstants.MAX_BOOKING_SEATS;
 
 @ApplicationScoped
 public class BookingService implements BookingOperation {
@@ -36,12 +39,21 @@ public class BookingService implements BookingOperation {
         Showtime showtime = (Showtime) Showtime.findByIdOptional(showtimeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Showtime with id " + showtimeId + " not found"));
 
-        if (Duration.between(LocalDateTime.now(), showtime.getStartTime()).toMinutes() <= BusinessConstants.BOOKING_EXPIRE_TIME) {
+        if (Duration.between(LocalDateTime.now(), showtime.getStartTime()).toMinutes() <= BOOKING_EXPIRE_TIME) {
             throw new ResourceAlreadyExistsException("Showtime has already started");
         }
 
+        if (request.getOrderInfo().getSeats().size() > MAX_BOOKING_SEATS) {
+            throw new ResourceAlreadyExistsException("More than 5 seats selected");
+        }
+
+        String shortCode = ShortCodeGenerator.generateShortCode();
+        while (Ticket.find("shortCode", shortCode).firstResult() != null) {
+            shortCode = ShortCodeGenerator.generateShortCode();
+        }
         Booking booking = Booking.builder()
                 .user(user)
+                .shortCode(shortCode)
                 .showtime(showtime)
                 .status(BookingStatus.AVAILABLE)
                 .build();

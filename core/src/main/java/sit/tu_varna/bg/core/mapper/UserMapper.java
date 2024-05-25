@@ -6,7 +6,7 @@ import org.keycloak.representations.idm.RoleRepresentation;
 import org.keycloak.representations.idm.UserRepresentation;
 import sit.tu_varna.bg.api.dto.UserDto;
 import sit.tu_varna.bg.core.constants.BusinessConstants;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 import sit.tu_varna.bg.core.interfaces.ObjectMapper;
 import sit.tu_varna.bg.entity.User;
 

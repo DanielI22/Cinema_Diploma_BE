@@ -3,7 +3,7 @@ package sit.tu_varna.bg.core.mapper;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.dto.ReviewDto;
-import sit.tu_varna.bg.core.externalservice.KeycloakService;
+import sit.tu_varna.bg.core.common.KeycloakService;
 import sit.tu_varna.bg.core.interfaces.ObjectMapper;
 import sit.tu_varna.bg.entity.Review;
 
