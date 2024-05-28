@@ -111,10 +111,14 @@ public class KeycloakService {
             if (response.statusCode() == 200) {
                 return objectMapper.readValue(response.body(), AccessTokenResponse.class);
             } else {
-                throw new WebApplicationException(Response.status(500).entity("Failed to refresh").build());
+                throw new WebApplicationException("Invalid refresh token", Response.Status.BAD_REQUEST);
             }
         } catch (Exception e) {
-            throw new WebApplicationException(Response.status(500).entity("Failed to refresh").build());
+            if (e instanceof WebApplicationException) {
+                throw new WebApplicationException("Invalid refresh token", Response.Status.BAD_REQUEST);
+            } else {
+                throw new WebApplicationException(Response.status(500).entity("Failed to refresh").build());
+            }
         }
     }
 

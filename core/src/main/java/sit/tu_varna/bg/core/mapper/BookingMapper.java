@@ -26,7 +26,7 @@ public class BookingMapper implements ObjectMapper {
                 .cinemaName(booking.getShowtime().getCinema().getName())
                 .showtimeStartTime(booking.getShowtime().getStartTime())
                 .status(booking.getStatus().name().toLowerCase(Locale.ROOT))
-                .tickets(booking.getTickets().stream().map(ticketMapper::ticketToTicketDto).collect(Collectors.toList()))
+                .tickets(booking.getTickets().stream().map(ticketMapper::ticketToShowtimeTicketDto).collect(Collectors.toList()))
                 .totalPrice(booking.getTickets().stream().map(Ticket::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add).doubleValue())
                 .build();
     }
@@ -36,7 +36,7 @@ public class BookingMapper implements ObjectMapper {
                 .id(booking.getId().toString())
                 .userMail(booking.getUser().getEmail())
                 .status(booking.getStatus().name().toLowerCase(Locale.ROOT))
-                .tickets(booking.getTickets().stream().map(ticketMapper::ticketToTicketDto).collect(Collectors.toList()))
+                .tickets(booking.getTickets().stream().map(ticketMapper::ticketToShowtimeTicketDto).collect(Collectors.toList()))
                 .build();
     }
 }

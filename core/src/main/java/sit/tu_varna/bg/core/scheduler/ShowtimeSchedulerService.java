@@ -6,10 +6,12 @@ import jakarta.transaction.Transactional;
 import sit.tu_varna.bg.entity.Booking;
 import sit.tu_varna.bg.entity.Showtime;
 import sit.tu_varna.bg.entity.ShowtimeSeat;
+import sit.tu_varna.bg.entity.Ticket;
 import sit.tu_varna.bg.enums.BookingStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class ShowtimeSchedulerService {
@@ -24,18 +26,18 @@ public class ShowtimeSchedulerService {
         List<Showtime> showtimesStartingSoon = Showtime.findStartingSoon(now, threshold);
 
         for (Showtime showtime : showtimesStartingSoon) {
-            // Update bookings to expired
             List<Booking> bookings = Booking.findByShowtimeId(showtime.getId());
             for (Booking booking : bookings) {
                 booking.setStatus(BookingStatus.EXPIRED);
+                List<ShowtimeSeat> showtimeSeats = booking.getTickets()
+                        .stream()
+                        .map(Ticket::getShowtimeSeat)
+                        .collect(Collectors.toList());
+                for (ShowtimeSeat showtimeSeat : showtimeSeats) {
+                    showtimeSeat.setBooked(false);
+                    showtimeSeat.persist();
+                }
                 booking.persist();
-            }
-
-            // Free up showtime seats
-            List<ShowtimeSeat> showtimeSeats = ShowtimeSeat.findByShowtimeId(showtime.getId());
-            for (ShowtimeSeat showtimeSeat : showtimeSeats) {
-                showtimeSeat.setBooked(false);
-                showtimeSeat.persist();
             }
         }
     }

@@ -18,6 +18,6 @@ public class BookingDto {
     private LocalDateTime showtimeStartTime;
     private String status;
     private String shortcode;
-    private Collection<TicketDto> tickets;
+    private Collection<ShowtimeTicketDto> tickets;
     private Double totalPrice;
 }

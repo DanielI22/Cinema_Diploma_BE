@@ -8,6 +8,7 @@ import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeResponse;
 import sit.tu_varna.bg.entity.*;
+import sit.tu_varna.bg.enums.ShowtimeType;
 
 import java.util.UUID;
 
@@ -53,6 +54,7 @@ public class EditShowtimeService implements EditShowtimeOperation {
             showtime.setHall(hall);
             showtime.setStartTime(request.getStartingTime());
             showtime.setTicketPrice(request.getTicketPrice());
+            showtime.setType(ShowtimeType.valueOf(request.getType()));
 
             showtime.persist();
         }

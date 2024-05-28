@@ -25,5 +25,7 @@ public class AddShowtimeRequest implements ServiceRequest {
     @NotNull
     private BigDecimal ticketPrice;
     @NotNull
+    private String type;
+    @NotNull
     private Boolean addNext7Days;
 }

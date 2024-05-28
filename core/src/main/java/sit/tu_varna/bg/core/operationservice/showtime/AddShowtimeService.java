@@ -7,6 +7,7 @@ import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeResponse;
 import sit.tu_varna.bg.entity.*;
+import sit.tu_varna.bg.enums.ShowtimeType;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -48,6 +49,7 @@ public class AddShowtimeService implements AddShowtimeOperation {
             showtime.setHall(hall);
             showtime.setStartTime(showtimeStartingTime);
             showtime.setTicketPrice(ticketPrice);
+            showtime.setType(ShowtimeType.valueOf(request.getType()));
 
             showtime.persist();
 

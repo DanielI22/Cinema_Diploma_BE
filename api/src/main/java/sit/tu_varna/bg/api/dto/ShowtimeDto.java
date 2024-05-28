@@ -16,5 +16,6 @@ public class ShowtimeDto {
     private String movieId;
     private String hallName;
     private LocalDateTime startTime;
+    private String type;
     private Double ticketPrice;
 }

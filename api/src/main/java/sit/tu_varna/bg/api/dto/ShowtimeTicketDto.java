@@ -2,16 +2,15 @@ package sit.tu_varna.bg.api.dto;
 
 import lombok.*;
 
-import java.util.Collection;
-
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ShowtimeBookingDto {
+public class ShowtimeTicketDto {
     private String id;
+    private String type;
+    private Double price;
     private String userMail;
-    private String status;
-    private Collection<ShowtimeTicketDto> tickets;
+    private SeatDto seat;
 }

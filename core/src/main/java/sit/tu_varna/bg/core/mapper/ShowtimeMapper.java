@@ -16,6 +16,7 @@ public class ShowtimeMapper implements ObjectMapper {
                 .movieId(showtime.getMovie().getId().toString())
                 .hallName(showtime.getHall().getName())
                 .startTime(showtime.getStartTime())
+                .type(showtime.getType().toString())
                 .ticketPrice(showtime.getTicketPrice().doubleValue())
                 .build();
     }

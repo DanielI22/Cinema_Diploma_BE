@@ -2,7 +2,7 @@ package sit.tu_varna.bg.core.operationservice.ticket;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import sit.tu_varna.bg.api.dto.TicketDto;
+import sit.tu_varna.bg.api.dto.ShowtimeTicketDto;
 import sit.tu_varna.bg.api.operation.ticket.getshowtime.GetShowtimePurchasedTicketsOperation;
 import sit.tu_varna.bg.api.operation.ticket.getshowtime.GetShowtimePurchasedTicketsRequest;
 import sit.tu_varna.bg.api.operation.ticket.getshowtime.GetShowtimePurchasedTicketsResponse;
@@ -21,13 +21,13 @@ public class GetShowtimePurchasedTicketsService implements GetShowtimePurchasedT
 
     @Override
     public GetShowtimePurchasedTicketsResponse process(GetShowtimePurchasedTicketsRequest request) {
-        List<TicketDto> tickets = Ticket.findByShowtimeId(request.getShowtimeId())
+        List<ShowtimeTicketDto> tickets = Ticket.findByShowtimeId(request.getShowtimeId())
                 .stream()
                 .filter(ticket -> ticket.getTicketStatus().equals(TicketStatus.PURCHASED))
                 .sorted(Comparator
                         .comparing((Ticket t) -> t.getShowtimeSeat().getSeat().getRow().getRowNumber())
                         .thenComparing(t -> t.getShowtimeSeat().getSeat().getSeatNumber()))
-                .map(t -> ticketMapper.ticketToTicketDto(t))
+                .map(t -> ticketMapper.ticketToShowtimeTicketDto(t))
                 .collect(Collectors.toList());
 
         return GetShowtimePurchasedTicketsResponse.builder()

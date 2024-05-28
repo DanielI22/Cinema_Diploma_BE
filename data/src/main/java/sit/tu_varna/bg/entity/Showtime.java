@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
+import sit.tu_varna.bg.enums.ShowtimeType;
 
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -31,6 +32,10 @@ public class Showtime extends PanacheEntityBase {
     private LocalDateTime startTime;
 
     private BigDecimal ticketPrice;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private ShowtimeType type;
 
     @ManyToOne
     @JoinColumn(name = "movie_id", nullable = false)

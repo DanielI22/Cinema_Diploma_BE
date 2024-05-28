@@ -1,6 +1,5 @@
 package sit.tu_varna.bg.rest.resource;
 
-import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -106,10 +105,7 @@ public class UserResource {
 
     @POST
     @Path("/logout")
-    @Authenticated
-    public Response logout() {
-        String userId = jwt.getClaim("sub").toString();
-        LogoutRequest request = LogoutRequest.builder().userId(userId).build();
+    public Response logout(@Valid LogoutRequest request) {
         return Response.ok(logoutOperation.process(request)).build();
     }
 

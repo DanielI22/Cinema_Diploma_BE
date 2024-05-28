@@ -25,4 +25,6 @@ public class EditShowtimeRequest implements ServiceRequest {
     private LocalDateTime startingTime;
     @NotNull
     private BigDecimal ticketPrice;
+    @NotNull
+    private String type;
 }

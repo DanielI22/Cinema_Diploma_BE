@@ -57,4 +57,8 @@ public class Ticket extends PanacheEntityBase {
     public static List<Ticket> findByShowtimeId(UUID showtimeId) {
         return find("SELECT t FROM Ticket t WHERE t.showtime.id = ?1", showtimeId).list();
     }
+
+    public static List<Ticket> findByUserId(UUID userId) {
+        return find("SELECT t FROM Ticket t WHERE t.user.id = ?1", userId).list();
+    }
 }
