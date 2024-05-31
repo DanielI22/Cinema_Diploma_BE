@@ -54,7 +54,7 @@ public class AddTicketsService implements AddTicketsOperation {
                     .findFirst()
                     .orElseThrow(() -> new ResourceNotFoundException("Invalid showtime seat"));
 
-            if (showtimeSeat.isBooked()) {
+            if (request.getOrderInfo().getBookingId() == null && showtimeSeat.isBooked()) {
                 throw new ResourceAlreadyExistsException("Seat already booked");
             }
 

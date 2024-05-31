@@ -3,21 +3,17 @@ package sit.tu_varna.bg.api.dto;
 import lombok.*;
 
 import java.time.LocalDateTime;
-
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TicketDto {
+public class OperatorTicketDto {
     private String id;
     private String shortcode;
     private String movieTitle;
-    private String moviePoster;
-    private String cinemaName;
-    private String hallName;
     private LocalDateTime showtimeStartTime;
     private String type;
     private Double price;
-    private SeatDto seat;
+    private LocalDateTime soldTime;
 }

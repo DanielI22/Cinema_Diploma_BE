@@ -1,9 +1,11 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.hibernate.validator.runtime.interceptor.MethodValidated;
 import io.quarkus.security.Authenticated;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -15,6 +17,10 @@ import sit.tu_varna.bg.api.operation.booking.getmybookings.GetMyBookingsOperatio
 import sit.tu_varna.bg.api.operation.booking.getmybookings.GetMyBookingsRequest;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsOperation;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsRequest;
+import sit.tu_varna.bg.api.operation.booking.take.TakeBookingOperation;
+import sit.tu_varna.bg.api.operation.booking.take.TakeBookingRequest;
+import sit.tu_varna.bg.api.operation.booking.validate.ValidateBookingOperation;
+import sit.tu_varna.bg.api.operation.booking.validate.ValidateBookingRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
@@ -29,6 +35,10 @@ public class BookingResource {
     BookingOperation bookingOperation;
     @Inject
     CancelBookingOperation cancelBookingOperation;
+    @Inject
+    ValidateBookingOperation validateBookingOperation;
+    @Inject
+    TakeBookingOperation takeBookingOperation;
     @Inject
     @SuppressWarnings("all")
     JsonWebToken jwt;
@@ -76,5 +86,36 @@ public class BookingResource {
                 .bookingId(UUID.fromString(bookingId))
                 .build();
         return Response.ok(cancelBookingOperation.process(cancelBookingRequest)).build();
+    }
+
+    @GET
+    @MethodValidated
+    @Path("validate/{bookingShortCode}")
+    public Response validateBooking(@PathParam("bookingShortCode") @Size(min = 5, max = 5) String bookingShortCode,
+                                    @QueryParam("cinema")
+                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                            message = "Invalid UUID format")
+                                            String cinema) {
+        ValidateBookingRequest request = ValidateBookingRequest
+                .builder()
+                .shortCode(bookingShortCode)
+                .cinemaId(UUID.fromString(cinema))
+                .build();
+        return Response.ok(validateBookingOperation.process(request)).build();
+    }
+
+    @GET
+    @Path("take/{bookingId}")
+    public Response validateBooking(@PathParam("bookingId")
+                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                            message = "Invalid UUID format")
+                                            String bookingId) {
+        String userId = jwt.getClaim("sub").toString();
+        TakeBookingRequest request = TakeBookingRequest
+                .builder()
+                .bookingId(UUID.fromString(bookingId))
+                .userId(UUID.fromString(userId))
+                .build();
+        return Response.ok(takeBookingOperation.process(request)).build();
     }
 }

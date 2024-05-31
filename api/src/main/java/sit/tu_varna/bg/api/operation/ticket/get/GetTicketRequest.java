@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.ticket.getmytickets;
+package sit.tu_varna.bg.api.operation.ticket.get;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceRequest;
@@ -10,6 +10,6 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetMyTicketsRequest implements ServiceRequest {
-    private UUID userId;
+public class GetTicketRequest implements ServiceRequest {
+    private UUID ticketId;
 }

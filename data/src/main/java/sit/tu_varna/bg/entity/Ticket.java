@@ -1,6 +1,7 @@
 package sit.tu_varna.bg.entity;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import io.quarkus.panache.common.Page;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -60,5 +61,17 @@ public class Ticket extends PanacheEntityBase {
 
     public static List<Ticket> findByUserId(UUID userId) {
         return find("SELECT t FROM Ticket t WHERE t.user.id = ?1", userId).list();
+    }
+
+    public static List<Ticket> findLastSoldTickets(UUID userId, UUID cinemaId, int index, int limit) {
+        return find("SELECT t FROM Ticket t JOIN t.showtime s WHERE t.user.id = ?1 AND s.cinema.id = ?2 AND t.ticketStatus = ?3 ORDER BY t.createdOn DESC",
+                userId, cinemaId, TicketStatus.PURCHASED)
+                .page(Page.of(index, limit))
+                .list();
+    }
+
+    public static long countTickets(UUID userId, UUID cinemaId) {
+        return count("WHERE user.id = ?1 AND showtime.cinema.id = ?2 AND ticketStatus = ?3",
+                userId, cinemaId, TicketStatus.PURCHASED);
     }
 }

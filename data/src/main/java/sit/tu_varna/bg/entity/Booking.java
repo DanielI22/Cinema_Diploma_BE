@@ -9,6 +9,7 @@ import sit.tu_varna.bg.enums.BookingStatus;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -51,5 +52,9 @@ public class Booking extends PanacheEntityBase {
 
     public static List<Booking> findByUserId(UUID userId) {
         return find("SELECT b FROM Booking b WHERE b.user.id = ?1", userId).list();
+    }
+
+    public static Optional<Booking> findByShortCode(String bookingShortCode) {
+        return find("SELECT b FROM Booking b WHERE b.shortCode = ?1", bookingShortCode).firstResultOptional();
     }
 }

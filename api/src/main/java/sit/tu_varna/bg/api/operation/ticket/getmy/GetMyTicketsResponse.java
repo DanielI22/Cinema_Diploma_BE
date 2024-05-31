@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.ticket.getmytickets;
+package sit.tu_varna.bg.api.operation.ticket.getmy;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceResponse;

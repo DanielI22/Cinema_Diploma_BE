@@ -15,6 +15,8 @@ public class BookingDto {
     private String movieTitle;
     private String moviePoster;
     private String cinemaName;
+    private String hallName;
+    private String showtimeId;
     private LocalDateTime showtimeStartTime;
     private String status;
     private String shortcode;

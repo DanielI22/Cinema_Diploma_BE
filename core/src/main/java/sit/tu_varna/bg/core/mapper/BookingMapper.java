@@ -24,6 +24,8 @@ public class BookingMapper implements ObjectMapper {
                 .moviePoster(booking.getShowtime().getMovie().getPosterImageUrl())
                 .movieTitle(booking.getShowtime().getMovie().getTitle())
                 .cinemaName(booking.getShowtime().getCinema().getName())
+                .hallName(booking.getShowtime().getHall().getName())
+                .showtimeId(booking.getShowtime().getId().toString())
                 .showtimeStartTime(booking.getShowtime().getStartTime())
                 .status(booking.getStatus().name().toLowerCase(Locale.ROOT))
                 .tickets(booking.getTickets().stream().map(ticketMapper::ticketToShowtimeTicketDto).collect(Collectors.toList()))

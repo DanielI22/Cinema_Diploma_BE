@@ -28,7 +28,9 @@ public class ShowtimeSchedulerService {
         for (Showtime showtime : showtimesStartingSoon) {
             List<Booking> bookings = Booking.findByShowtimeId(showtime.getId());
             for (Booking booking : bookings) {
-                booking.setStatus(BookingStatus.EXPIRED);
+                if (booking.getStatus().equals(BookingStatus.AVAILABLE)) {
+                    booking.setStatus(BookingStatus.EXPIRED);
+                }
                 List<ShowtimeSeat> showtimeSeats = booking.getTickets()
                         .stream()
                         .map(Ticket::getShowtimeSeat)
