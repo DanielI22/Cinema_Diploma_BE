@@ -104,12 +104,12 @@ public class BookingResource {
         return Response.ok(validateBookingOperation.process(request)).build();
     }
 
-    @GET
+    @PUT
     @Path("take/{bookingId}")
-    public Response validateBooking(@PathParam("bookingId")
-                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
-                                            message = "Invalid UUID format")
-                                            String bookingId) {
+    public Response takeBooking(@PathParam("bookingId")
+                                @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                        message = "Invalid UUID format")
+                                        String bookingId) {
         String userId = jwt.getClaim("sub").toString();
         TakeBookingRequest request = TakeBookingRequest
                 .builder()

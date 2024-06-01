@@ -26,9 +26,9 @@ public class ValidateBookingService implements ValidateBookingOperation {
         Booking booking = Booking.findByShortCode(shortcode)
                 .orElseThrow(() -> new ResourceNotFoundException("Invalid booking code."));
 
-
+        // Check availability
         if (!booking.getShowtime().getCinema().getId().equals(request.getCinemaId())) {
-            throw new ResourceNotFoundException("Invalid booking code.");
+            throw new ResourceNotFoundException("Invalid booking code. Wrong cinema");
         }
         // Check booking status
         if (booking.getStatus().equals(BookingStatus.CANCELLED)) {

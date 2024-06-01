@@ -49,6 +49,10 @@ public class Showtime extends PanacheEntityBase {
     @JoinColumn(name = "cinema_id", nullable = false)
     private Cinema cinema;
 
+    private boolean isCurrent = Boolean.FALSE;
+
+    private boolean isEnded = Boolean.FALSE;
+
     @CreationTimestamp
     private Instant createdOn;
 

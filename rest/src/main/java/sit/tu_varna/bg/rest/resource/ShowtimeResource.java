@@ -11,10 +11,14 @@ import sit.tu_varna.bg.api.operation.showtime.delete.DeleteShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.delete.DeleteShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeRequest;
+import sit.tu_varna.bg.api.operation.showtime.end.EndShowtimeOperation;
+import sit.tu_varna.bg.api.operation.showtime.end.EndShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.get.GetShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.get.GetShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateOperation;
 import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateRequest;
+import sit.tu_varna.bg.api.operation.showtime.set.SetShowtimeOperation;
+import sit.tu_varna.bg.api.operation.showtime.set.SetShowtimeRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.time.LocalDate;
@@ -32,6 +36,10 @@ public class ShowtimeResource {
     EditShowtimeOperation editShowtimeOperation;
     @Inject
     DeleteShowtimeOperation deleteShowtimeOperation;
+    @Inject
+    SetShowtimeOperation setShowtimeOperation;
+    @Inject
+    EndShowtimeOperation endShowtimeOperation;
 
     @GET
     public Response getShowtimesByDate(@QueryParam("date")
@@ -48,9 +56,9 @@ public class ShowtimeResource {
     @GET
     @Path("/{showtimeId}")
     public Response getShowtime(@PathParam("showtimeId")
-                             @Pattern(regexp = ValidationConstants.UUID_REGEX,
-                                     message = "Invalid UUID format")
-                                     String showtimeId) {
+                                @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                        message = "Invalid UUID format")
+                                        String showtimeId) {
         GetShowtimeRequest request = GetShowtimeRequest
                 .builder()
                 .showtimeId(UUID.fromString(showtimeId))
@@ -66,9 +74,9 @@ public class ShowtimeResource {
     @PUT
     @Path("/{showtimeId}")
     public Response editShowtime(@PathParam("showtimeId")
-                              @Pattern(regexp = ValidationConstants.UUID_REGEX,
-                                      message = "Invalid UUID format")
-                                      String showtimeId, @Valid EditShowtimeRequest editShowtimeRequest) {
+                                 @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                         message = "Invalid UUID format")
+                                         String showtimeId, @Valid EditShowtimeRequest editShowtimeRequest) {
         editShowtimeRequest.setShowtimeId(UUID.fromString(showtimeId));
         return Response.ok(editShowtimeOperation.process(editShowtimeRequest)).build();
     }
@@ -84,5 +92,31 @@ public class ShowtimeResource {
                 .showtimeId(UUID.fromString(showtimeId))
                 .build();
         return Response.ok(deleteShowtimeOperation.process(deleteShowtimeRequest)).build();
+    }
+
+    @PUT
+    @Path("/{showtimeId}/current")
+    public Response setCurrentShowtime(@PathParam("showtimeId")
+                                       @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                               message = "Invalid UUID format")
+                                               String showtimeId) {
+        SetShowtimeRequest setShowtimeRequest = SetShowtimeRequest
+                .builder()
+                .showtimeId(UUID.fromString(showtimeId))
+                .build();
+        return Response.ok(setShowtimeOperation.process(setShowtimeRequest)).build();
+    }
+
+    @PUT
+    @Path("/{showtimeId}/end")
+    public Response endShowtime(@PathParam("showtimeId")
+                                @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                        message = "Invalid UUID format")
+                                        String showtimeId) {
+        EndShowtimeRequest endShowtimeRequest = EndShowtimeRequest
+                .builder()
+                .showtimeId(UUID.fromString(showtimeId))
+                .build();
+        return Response.ok(endShowtimeOperation.process(endShowtimeRequest)).build();
     }
 }

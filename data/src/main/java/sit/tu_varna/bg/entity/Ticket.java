@@ -11,6 +11,7 @@ import sit.tu_varna.bg.enums.TicketType;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Entity
@@ -61,6 +62,10 @@ public class Ticket extends PanacheEntityBase {
 
     public static List<Ticket> findByUserId(UUID userId) {
         return find("SELECT t FROM Ticket t WHERE t.user.id = ?1", userId).list();
+    }
+
+    public static Optional<Ticket> findByShortCode(String ticketShortCode) {
+        return find("SELECT t FROM Ticket t WHERE t.shortCode = ?1", ticketShortCode).firstResultOptional();
     }
 
     public static List<Ticket> findLastSoldTickets(UUID userId, UUID cinemaId, int index, int limit) {
