@@ -3,9 +3,9 @@ package sit.tu_varna.bg.core.operationservice.showtime;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.dto.ShowtimeDto;
-import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateOperation;
-import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateRequest;
-import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateResponse;
+import sit.tu_varna.bg.api.operation.showtime.getbydate.GetShowtimesByDateOperation;
+import sit.tu_varna.bg.api.operation.showtime.getbydate.GetShowtimesByDateRequest;
+import sit.tu_varna.bg.api.operation.showtime.getbydate.GetShowtimesByDateResponse;
 import sit.tu_varna.bg.core.mapper.ShowtimeMapper;
 import sit.tu_varna.bg.entity.Showtime;
 

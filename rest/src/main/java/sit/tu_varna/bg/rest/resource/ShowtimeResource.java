@@ -7,6 +7,8 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Response;
 import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.add.AddShowtimeRequest;
+import sit.tu_varna.bg.api.operation.showtime.current.SetCurrentShowtimeOperation;
+import sit.tu_varna.bg.api.operation.showtime.current.SetCurrentShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.delete.DeleteShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.delete.DeleteShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.edit.EditShowtimeOperation;
@@ -15,10 +17,12 @@ import sit.tu_varna.bg.api.operation.showtime.end.EndShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.end.EndShowtimeRequest;
 import sit.tu_varna.bg.api.operation.showtime.get.GetShowtimeOperation;
 import sit.tu_varna.bg.api.operation.showtime.get.GetShowtimeRequest;
-import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateOperation;
-import sit.tu_varna.bg.api.operation.showtime.getall.GetShowtimesByDateRequest;
-import sit.tu_varna.bg.api.operation.showtime.set.SetShowtimeOperation;
-import sit.tu_varna.bg.api.operation.showtime.set.SetShowtimeRequest;
+import sit.tu_varna.bg.api.operation.showtime.getbydate.GetShowtimesByDateOperation;
+import sit.tu_varna.bg.api.operation.showtime.getbydate.GetShowtimesByDateRequest;
+import sit.tu_varna.bg.api.operation.showtime.gethallbydate.GetShowtimesByHallOperation;
+import sit.tu_varna.bg.api.operation.showtime.gethallbydate.GetShowtimesByHallRequest;
+import sit.tu_varna.bg.api.operation.showtime.upcoming.SetUpcomingShowtimeOperation;
+import sit.tu_varna.bg.api.operation.showtime.upcoming.SetUpcomingShowtimeRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.time.LocalDate;
@@ -29,6 +33,8 @@ public class ShowtimeResource {
     @Inject
     GetShowtimesByDateOperation getShowtimesByDateOperation;
     @Inject
+    GetShowtimesByHallOperation getShowtimesByHallOperation;
+    @Inject
     GetShowtimeOperation getShowtimeOperation;
     @Inject
     AddShowtimeOperation addShowtimeOperation;
@@ -37,7 +43,9 @@ public class ShowtimeResource {
     @Inject
     DeleteShowtimeOperation deleteShowtimeOperation;
     @Inject
-    SetShowtimeOperation setShowtimeOperation;
+    SetCurrentShowtimeOperation setCurrentShowtimeOperation;
+    @Inject
+    SetUpcomingShowtimeOperation setUpcomingShowtimeOperation;
     @Inject
     EndShowtimeOperation endShowtimeOperation;
 
@@ -51,6 +59,23 @@ public class ShowtimeResource {
                 .showtimeDate(LocalDate.parse(dateStr))
                 .build();
         return Response.ok(getShowtimesByDateOperation.process(request)).build();
+    }
+
+    @GET
+    @Path("halls/{hallId}")
+    public Response getShowtimesByHall(@PathParam("hallId")
+                                       @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                               message = "Invalid UUID format")
+                                               String hallId, @QueryParam("date")
+                                       @Pattern(regexp = ValidationConstants.LOCAL_DATE_REGEX,
+                                               message = "Invalid Local Date format")
+                                               String dateStr) {
+        GetShowtimesByHallRequest request = GetShowtimesByHallRequest
+                .builder()
+                .hallId(UUID.fromString(hallId))
+                .showtimeDate(LocalDate.parse(dateStr))
+                .build();
+        return Response.ok(getShowtimesByHallOperation.process(request)).build();
     }
 
     @GET
@@ -100,12 +125,26 @@ public class ShowtimeResource {
                                        @Pattern(regexp = ValidationConstants.UUID_REGEX,
                                                message = "Invalid UUID format")
                                                String showtimeId) {
-        SetShowtimeRequest setShowtimeRequest = SetShowtimeRequest
+        SetCurrentShowtimeRequest setCurrentShowtimeRequest = SetCurrentShowtimeRequest
                 .builder()
                 .showtimeId(UUID.fromString(showtimeId))
                 .build();
-        return Response.ok(setShowtimeOperation.process(setShowtimeRequest)).build();
+        return Response.ok(setCurrentShowtimeOperation.process(setCurrentShowtimeRequest)).build();
     }
+
+    @PUT
+    @Path("/{showtimeId}/upcoming")
+    public Response setUpcomingShowtime(@PathParam("showtimeId")
+                                        @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                                message = "Invalid UUID format")
+                                                String showtimeId) {
+        SetUpcomingShowtimeRequest setUpcomingShowtimeRequest = SetUpcomingShowtimeRequest
+                .builder()
+                .showtimeId(UUID.fromString(showtimeId))
+                .build();
+        return Response.ok(setUpcomingShowtimeOperation.process(setUpcomingShowtimeRequest)).build();
+    }
+
 
     @PUT
     @Path("/{showtimeId}/end")

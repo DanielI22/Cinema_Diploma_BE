@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.cinema.getHalls;
+package sit.tu_varna.bg.api.operation.cinema.gethalls;
 
 import sit.tu_varna.bg.api.base.ServiceOperation;
 

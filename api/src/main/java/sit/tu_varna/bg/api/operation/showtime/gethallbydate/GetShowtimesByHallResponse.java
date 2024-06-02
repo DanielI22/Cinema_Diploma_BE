@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.showtime.getcinemaall;
+package sit.tu_varna.bg.api.operation.showtime.gethallbydate;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceResponse;
@@ -11,6 +11,6 @@ import java.util.Collection;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class GetCinemaShowtimesByDateResponse implements ServiceResponse {
+public class GetShowtimesByHallResponse implements ServiceResponse {
     private Collection<ShowtimeDto> showtimes;
 }

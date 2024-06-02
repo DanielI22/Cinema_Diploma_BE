@@ -7,9 +7,11 @@ import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import sit.tu_varna.bg.entity.Showtime;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @ApplicationScoped
@@ -29,14 +31,35 @@ public class ShowtimeSeeder {
         List<Showtime> showtimes = Showtime.findAll().list();
 
         for (Showtime showtime : showtimes) {
-            showtime.setStartTime(generateRandomDateTime());
+            LocalDateTime newStartTime;
+            do {
+                newStartTime = generateRandomDateTime();
+            } while (isOverlapping(showtime.getHall().getId(), newStartTime, showtime.getMovie().getDuration()));
+
+            showtime.setStartTime(newStartTime);
             showtime.persist();
         }
     }
 
-    // in the next 7 days
+    private boolean isOverlapping(UUID hallId, LocalDateTime newStartTime, int duration) {
+        LocalDateTime newEndTime = newStartTime.plusMinutes(duration);
+
+        List<Showtime> existingShowtimes = Showtime.find("hall.id", hallId).list();
+        for (Showtime existingShowtime : existingShowtimes) {
+            LocalDateTime existingStartTime = existingShowtime.getStartTime();
+            LocalDateTime existingEndTime = existingStartTime.plusMinutes(existingShowtime.getMovie().getDuration());
+
+            // Check for overlap
+            if ((newStartTime.isBefore(existingEndTime) && newEndTime.isAfter(existingStartTime))) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    // Generate a random date-time within the next 7 days, adjusted to the nearest 5-minute mark
     private LocalDateTime generateRandomDateTime() {
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = LocalDate.now().atStartOfDay();
         LocalDateTime end = now.plusDays(7);
 
         // Convert LocalDateTime to epoch seconds

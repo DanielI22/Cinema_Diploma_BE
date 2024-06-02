@@ -13,12 +13,12 @@ import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaRequest;
 import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaRequest;
-import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsOperation;
-import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsRequest;
+import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsOperation;
+import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsRequest;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasOperation;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasRequest;
-import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByDateOperation;
-import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByDateRequest;
+import sit.tu_varna.bg.api.operation.showtime.getcinemabydate.GetCinemaShowtimesByDateOperation;
+import sit.tu_varna.bg.api.operation.showtime.getcinemabydate.GetCinemaShowtimesByDateRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.time.LocalDate;
@@ -112,7 +112,7 @@ public class CinemaResource {
                                                     String dateStr) {
         GetCinemaShowtimesByDateRequest request = GetCinemaShowtimesByDateRequest
                 .builder()
-                .cinemaId(cinemaId)
+                .cinemaId(UUID.fromString(cinemaId))
                 .showtimeDate(LocalDate.parse(dateStr))
                 .build();
         return Response.ok(getCinemaShowtimesByDateOperation.process(request)).build();

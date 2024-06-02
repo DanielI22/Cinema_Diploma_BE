@@ -3,9 +3,9 @@ package sit.tu_varna.bg.core.operationservice.cinema;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.dto.HallDto;
-import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsOperation;
-import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsRequest;
-import sit.tu_varna.bg.api.operation.cinema.getHalls.GetCinemaHallsResponse;
+import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsOperation;
+import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsRequest;
+import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsResponse;
 import sit.tu_varna.bg.core.mapper.HallMapper;
 import sit.tu_varna.bg.entity.Hall;
 

@@ -13,9 +13,12 @@ public class ShowtimeDto {
     private String id;
     private String cinemaName;
     private String movieName;
+    private Integer movieDuration;
     private String movieId;
     private String hallName;
     private LocalDateTime startTime;
     private String type;
     private Double ticketPrice;
+    private Boolean isCurrent;
+    private Boolean isEnded;
 }

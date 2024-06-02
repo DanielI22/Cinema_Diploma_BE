@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.showtime.set;
+package sit.tu_varna.bg.api.operation.showtime.current;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceRequest;
@@ -10,6 +10,6 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SetShowtimeRequest implements ServiceRequest {
+public class SetCurrentShowtimeRequest implements ServiceRequest {
     private UUID showtimeId;
 }

@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.showtime.getall;
+package sit.tu_varna.bg.api.operation.showtime.getbydate;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceRequest;

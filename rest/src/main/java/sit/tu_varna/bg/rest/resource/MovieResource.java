@@ -19,8 +19,8 @@ import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesOperation;
 import sit.tu_varna.bg.api.operation.movie.getall.GetAllMoviesRequest;
 import sit.tu_varna.bg.api.operation.movie.getbygenre.GetMoviesByGenreOperation;
 import sit.tu_varna.bg.api.operation.movie.getbygenre.GetMoviesByGenreRequest;
-import sit.tu_varna.bg.api.operation.showtime.getmovieall.GetMovieShowtimesByDateOperation;
-import sit.tu_varna.bg.api.operation.showtime.getmovieall.GetMovieShowtimesByDateRequest;
+import sit.tu_varna.bg.api.operation.showtime.getmoviebydate.GetMovieShowtimesByDateOperation;
+import sit.tu_varna.bg.api.operation.showtime.getmoviebydate.GetMovieShowtimesByDateRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.time.LocalDate;
@@ -75,7 +75,7 @@ public class MovieResource {
                                                     String dateStr) {
         GetMovieShowtimesByDateRequest request = GetMovieShowtimesByDateRequest
                 .builder()
-                .movieId(movieId)
+                .movieId(UUID.fromString(movieId))
                 .showtimeDate(LocalDate.parse(dateStr))
                 .build();
         return Response.ok(getMovieShowtimesByDateOperation.process(request)).build();

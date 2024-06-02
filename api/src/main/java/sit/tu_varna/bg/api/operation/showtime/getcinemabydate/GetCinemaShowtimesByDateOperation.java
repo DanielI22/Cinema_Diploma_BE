@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.showtime.getcinemaall;
+package sit.tu_varna.bg.api.operation.showtime.getcinemabydate;
 
 import sit.tu_varna.bg.api.base.ServiceOperation;
 

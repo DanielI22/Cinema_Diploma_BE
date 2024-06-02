@@ -3,9 +3,9 @@ package sit.tu_varna.bg.core.operationservice.showtime;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import sit.tu_varna.bg.api.dto.ShowtimeDto;
-import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByDateOperation;
-import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByDateRequest;
-import sit.tu_varna.bg.api.operation.showtime.getcinemaall.GetCinemaShowtimesByDateResponse;
+import sit.tu_varna.bg.api.operation.showtime.getcinemabydate.GetCinemaShowtimesByDateOperation;
+import sit.tu_varna.bg.api.operation.showtime.getcinemabydate.GetCinemaShowtimesByDateRequest;
+import sit.tu_varna.bg.api.operation.showtime.getcinemabydate.GetCinemaShowtimesByDateResponse;
 import sit.tu_varna.bg.core.mapper.ShowtimeMapper;
 import sit.tu_varna.bg.entity.Showtime;
 
@@ -23,7 +23,7 @@ public class GetCinemaShowtimesByDateService implements GetCinemaShowtimesByDate
         List<ShowtimeDto> showtimes = Showtime.findByDate(request.getShowtimeDate())
                 .stream()
                 .sorted(Comparator.comparing(Showtime::getStartTime))
-                .filter(s -> s.getCinema().getId().toString().equals(request.getCinemaId()))
+                .filter(s -> s.getCinema().getId().equals(request.getCinemaId()))
                 .map(sh -> showtimeMapper.showtimeToShowtimeDto(sh))
                 .collect(Collectors.toList());
 
