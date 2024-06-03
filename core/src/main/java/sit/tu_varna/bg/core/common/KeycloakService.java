@@ -26,6 +26,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -54,14 +55,15 @@ public class KeycloakService {
     @Inject
     ObjectMapper objectMapper;
 
-    public String createUser(String username, String email, String password, List<String> roles) {
+    public String createUser(String username, String email, String password, List<String> roles, boolean verified) {
         try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
             final RealmResource realmResource = keycloakAdmin.realm(realmName);
             final UsersResource usersResource = realmResource.users();
 
-            UserRepresentation newUser = createUserRepresentation(username, email);
+            UserRepresentation newUser = createUserRepresentation(username, email, verified);
             String userId = createUserAndGetId(usersResource, newUser);
 
+            sendVerificationMail(userId);
             List<RoleRepresentation> roleRepresentations = getOrCreateRoles(roles, realmResource);
             setUserPasswordAndRoles(usersResource, userId, password, roleRepresentations);
 
@@ -74,8 +76,17 @@ public class KeycloakService {
             try {
                 return keycloakUser.tokenManager().getAccessToken();
             } catch (Exception e) {
-                throw new WebApplicationException(Response.status(404).entity("Bad credentials").build());
+                if (e instanceof ClientWebApplicationException ce) {
+                    if (ce.getResponse().getStatus() == 401) {
+                        throw new WebApplicationException(Response.status(404).entity("Bad credentials").build());
+                    } else if (ce.getResponse().getStatus() == 400) {
+                        throw new WebApplicationException(Response.status(401).entity("Unverified email").build());
+                    }
+                } else {
+                    throw new WebApplicationException(Response.status(500).entity("Server error").build());
+                }
             }
+            throw new WebApplicationException(Response.status(500).entity("Server error").build());
         }
     }
 
@@ -193,13 +204,40 @@ public class KeycloakService {
         }
     }
 
+    public void sendVerificationMail(String userId) {
+        try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
+            final RealmResource realmResource = keycloakAdmin.realm(realmName);
+            try {
+                final UserResource userResource = realmResource.users().get(userId);
+                if (Objects.nonNull(userResource)) {
+                    userResource.sendVerifyEmail();
+                }
+            } catch (NotFoundException e) {
+                throw new WebApplicationException(Response.status(500).entity("Failed to send verification email").build());
+            }
+        }
+    }
 
-    private UserRepresentation createUserRepresentation(String username, String email) {
+    public void sendForgotPassword(String userId) {
+        try (Keycloak keycloakAdmin = getKeycloakAdmin()) {
+            final RealmResource realmResource = keycloakAdmin.realm(realmName);
+            try {
+                final UserResource userResource = realmResource.users().get(userId);
+                if (Objects.nonNull(userResource)) {
+                    userResource.executeActionsEmail(Collections.singletonList("UPDATE_PASSWORD"));
+                }
+            } catch (NotFoundException e) {
+                throw new WebApplicationException(Response.status(500).entity("Failed to send forgot password email").build());
+            }
+        }
+    }
+
+    private UserRepresentation createUserRepresentation(String username, String email, boolean verified) {
         UserRepresentation newUser = new UserRepresentation();
         newUser.setUsername(username);
         newUser.setEmail(email);
         newUser.setEnabled(true);
-        newUser.setEmailVerified(true);
+        newUser.setEmailVerified(verified);
         return newUser;
     }
 

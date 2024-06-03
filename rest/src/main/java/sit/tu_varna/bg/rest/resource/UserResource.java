@@ -14,6 +14,8 @@ import sit.tu_varna.bg.api.operation.user.changeusername.ChangeUsernameOperation
 import sit.tu_varna.bg.api.operation.user.changeusername.ChangeUsernameRequest;
 import sit.tu_varna.bg.api.operation.user.delete.DeleteUserOperation;
 import sit.tu_varna.bg.api.operation.user.delete.DeleteUserRequest;
+import sit.tu_varna.bg.api.operation.user.forgotpassword.ForgotPasswordOperation;
+import sit.tu_varna.bg.api.operation.user.forgotpassword.ForgotPasswordRequest;
 import sit.tu_varna.bg.api.operation.user.getall.GetUsersOperation;
 import sit.tu_varna.bg.api.operation.user.getall.GetUsersRequest;
 import sit.tu_varna.bg.api.operation.user.login.LoginOperation;
@@ -24,6 +26,8 @@ import sit.tu_varna.bg.api.operation.user.refresh.RefreshOperation;
 import sit.tu_varna.bg.api.operation.user.refresh.RefreshRequest;
 import sit.tu_varna.bg.api.operation.user.register.RegisterOperation;
 import sit.tu_varna.bg.api.operation.user.register.RegisterRequest;
+import sit.tu_varna.bg.api.operation.user.resend.ResendVerificationOperation;
+import sit.tu_varna.bg.api.operation.user.resend.ResendVerificationRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
@@ -48,6 +52,10 @@ public class UserResource {
     LogoutOperation logoutOperation;
     @Inject
     RefreshOperation refreshOperation;
+    @Inject
+    ResendVerificationOperation resendVerificationOperation;
+    @Inject
+    ForgotPasswordOperation forgotPasswordOperation;
     @Inject
     @SuppressWarnings("all")
     JsonWebToken jwt;
@@ -113,5 +121,17 @@ public class UserResource {
     @Path("/refresh")
     public Response refresh(@Valid RefreshRequest request) {
         return Response.ok(refreshOperation.process(request)).build();
+    }
+
+    @POST
+    @Path("/forgot-password")
+    public Response forgotPassword(@Valid ForgotPasswordRequest request) {
+        return Response.ok(forgotPasswordOperation.process(request)).build();
+    }
+
+    @POST
+    @Path("/resend-verification")
+    public Response resendVerification(@Valid ResendVerificationRequest request) {
+        return Response.ok(resendVerificationOperation.process(request)).build();
     }
 }

@@ -25,7 +25,7 @@ public class AddUserService implements AddUserOperation {
         String role = request.getRole();
 
         List<String> roles = Objects.nonNull(role) ? Collections.singletonList(role) : Collections.emptyList();
-        String userId = keycloakService.createUser(username, email, password, roles);
+        String userId = keycloakService.createUser(username, email, password, roles, true);
         if (Objects.nonNull(userId)) {
             User user = User.builder()
                     .id(UUID.fromString(userId))

@@ -8,6 +8,7 @@ import org.hibernate.annotations.SQLDelete;
 
 import java.time.Instant;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
@@ -50,4 +51,8 @@ public class User extends PanacheEntityBase {
     private Instant createdOn;
 
     private boolean deleted = Boolean.FALSE;
+
+    public static Optional<User> findByEmail(String email) {
+        return find("SELECT u FROM User u WHERE u.email = ?1", email).firstResultOptional();
+    }
 }
