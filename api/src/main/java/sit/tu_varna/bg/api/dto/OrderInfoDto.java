@@ -14,4 +14,5 @@ public class OrderInfoDto {
     private UUID showtimeId;
     private Collection<PurchaseSeatDto> seats;
     private UUID bookingId;
+    private String language;
 }

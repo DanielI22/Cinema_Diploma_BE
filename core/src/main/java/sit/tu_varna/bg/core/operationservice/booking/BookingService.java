@@ -3,12 +3,14 @@ package sit.tu_varna.bg.core.operationservice.booking;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import sit.tu_varna.bg.api.dto.PurchaseSeatDto;
 import sit.tu_varna.bg.api.exception.ResourceAlreadyExistsException;
 import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.booking.book.BookingOperation;
 import sit.tu_varna.bg.api.operation.booking.book.BookingRequest;
 import sit.tu_varna.bg.api.operation.booking.book.BookingResponse;
+import sit.tu_varna.bg.core.common.EmailService;
 import sit.tu_varna.bg.core.common.PricingService;
 import sit.tu_varna.bg.core.common.ShortCodeGenerator;
 import sit.tu_varna.bg.entity.*;
@@ -28,6 +30,10 @@ import static sit.tu_varna.bg.core.constants.BusinessConstants.MAX_BOOKING_SEATS
 public class BookingService implements BookingOperation {
     @Inject
     PricingService pricingService;
+    @Inject
+    EmailService emailService;
+    @ConfigProperty(name = "client.link")
+    String clientLink;
 
     @Override
     @Transactional
@@ -85,6 +91,11 @@ public class BookingService implements BookingOperation {
 
             ticket.persist();
             booking.getTickets().add(ticket);
+        }
+        try {
+            String language = request.getOrderInfo().getLanguage();
+            emailService.sendBookingConfirmationEmail(user.getEmail(), shortCode, clientLink + "/my-bookings", language);
+        } catch (Exception ignored) {
         }
 
         return BookingResponse.builder()

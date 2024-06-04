@@ -3,6 +3,7 @@ package sit.tu_varna.bg.core.operationservice.ticket;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import sit.tu_varna.bg.api.dto.PurchaseSeatDto;
 import sit.tu_varna.bg.api.exception.InvalidResourceException;
 import sit.tu_varna.bg.api.exception.ResourceAlreadyExistsException;
@@ -10,6 +11,7 @@ import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.ticket.purchase.AddTicketsOperation;
 import sit.tu_varna.bg.api.operation.ticket.purchase.AddTicketsRequest;
 import sit.tu_varna.bg.api.operation.ticket.purchase.AddTicketsResponse;
+import sit.tu_varna.bg.core.common.EmailService;
 import sit.tu_varna.bg.core.common.PricingService;
 import sit.tu_varna.bg.core.common.ShortCodeGenerator;
 import sit.tu_varna.bg.entity.Showtime;
@@ -31,6 +33,10 @@ import java.util.stream.Collectors;
 public class AddTicketsService implements AddTicketsOperation {
     @Inject
     PricingService pricingService;
+    @Inject
+    EmailService emailService;
+    @ConfigProperty(name = "client.link")
+    String clientLink;
 
     @Override
     @Transactional
@@ -78,6 +84,11 @@ public class AddTicketsService implements AddTicketsOperation {
 
             ticket.persist();
             ticketIds.add(ticket.getId());
+        }
+        try {
+            String language = request.getOrderInfo().getLanguage();
+            emailService.sendTicketConfirmationEmail(user.getEmail(), clientLink + "/my-tickets", language);
+        } catch (Exception ignored) {
         }
 
         return AddTicketsResponse.builder().ticketIds(ticketIds.stream().map(UUID::toString).collect(Collectors.toList())).build();

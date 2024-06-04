@@ -63,7 +63,9 @@ public class KeycloakService {
             UserRepresentation newUser = createUserRepresentation(username, email, verified);
             String userId = createUserAndGetId(usersResource, newUser);
 
-            sendVerificationMail(userId);
+            if (!verified) {
+                sendVerificationMail(userId);
+            }
             List<RoleRepresentation> roleRepresentations = getOrCreateRoles(roles, realmResource);
             setUserPasswordAndRoles(usersResource, userId, password, roleRepresentations);
 

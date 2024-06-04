@@ -4,12 +4,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import sit.tu_varna.bg.api.dto.PurchaseSeatDto;
+import sit.tu_varna.bg.api.exception.InvalidResourceException;
 import sit.tu_varna.bg.api.exception.ResourceAlreadyExistsException;
 import sit.tu_varna.bg.api.exception.ResourceNotFoundException;
 import sit.tu_varna.bg.api.operation.payment.PaymentOperation;
 import sit.tu_varna.bg.api.operation.payment.PaymentRequest;
 import sit.tu_varna.bg.api.operation.payment.PaymentResponse;
-import sit.tu_varna.bg.core.constants.BusinessConstants;
 import sit.tu_varna.bg.core.common.PricingService;
 import sit.tu_varna.bg.core.common.StripePaymentService;
 import sit.tu_varna.bg.entity.Showtime;
@@ -17,7 +17,6 @@ import sit.tu_varna.bg.entity.ShowtimeSeat;
 import sit.tu_varna.bg.entity.User;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -40,8 +39,8 @@ public class PaymentService implements PaymentOperation {
         Showtime showtime = (Showtime) Showtime.findByIdOptional(showtimeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Showtime with id " + showtimeId + " not found"));
 
-        if (Duration.between(LocalDateTime.now(), showtime.getStartTime()).toMinutes() <= BusinessConstants.BOOKING_EXPIRE_TIME) {
-            throw new ResourceAlreadyExistsException("Showtime has already started");
+        if (LocalDateTime.now().isAfter(showtime.getStartTime().plusMinutes(showtime.getMovie().getDuration()))) {
+            throw new InvalidResourceException("Showtime has ended");
         }
 
         for (PurchaseSeatDto bookingSeat : request.getOrderInfo().getSeats()) {

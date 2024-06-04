@@ -8,8 +8,12 @@ import sit.tu_varna.bg.api.operation.user.delete.DeleteUserOperation;
 import sit.tu_varna.bg.api.operation.user.delete.DeleteUserRequest;
 import sit.tu_varna.bg.api.operation.user.delete.DeleteUserResponse;
 import sit.tu_varna.bg.core.common.KeycloakService;
+import sit.tu_varna.bg.entity.Booking;
+import sit.tu_varna.bg.entity.Ticket;
 import sit.tu_varna.bg.entity.User;
+import sit.tu_varna.bg.enums.BookingStatus;
 
+import java.util.Collection;
 import java.util.UUID;
 
 @ApplicationScoped
@@ -26,6 +30,15 @@ public class DeleteUserService implements DeleteUserOperation {
                 .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
         if (user.isPersistent()) {
             user.delete();
+            user.getBookings().forEach(booking -> booking.setStatus(BookingStatus.CANCELLED));
+            user.getBookings().stream().
+                    map(Booking::getTickets)
+                    .flatMap(Collection::stream)
+                    .map(Ticket::getShowtimeSeat)
+                    .forEach(showtimeSeat -> {
+                        showtimeSeat.setBooked(false);
+                        showtimeSeat.persist();
+                    });
         }
         keycloakService.deleteUser(userId.toString());
         return DeleteUserResponse.builder().deleted(true).build();
