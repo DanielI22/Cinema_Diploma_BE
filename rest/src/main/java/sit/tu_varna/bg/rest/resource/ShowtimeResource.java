@@ -1,5 +1,8 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -28,7 +31,10 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.*;
+
 @Path("/api/showtimes")
+@Authenticated
 public class ShowtimeResource {
     @Inject
     GetShowtimesByDateOperation getShowtimesByDateOperation;
@@ -50,6 +56,7 @@ public class ShowtimeResource {
     EndShowtimeOperation endShowtimeOperation;
 
     @GET
+    @PermitAll
     public Response getShowtimesByDate(@QueryParam("date")
                                        @Pattern(regexp = ValidationConstants.LOCAL_DATE_REGEX,
                                                message = "Invalid Local Date format")
@@ -62,6 +69,7 @@ public class ShowtimeResource {
     }
 
     @GET
+    @RolesAllowed(PROJECTOR_ROLE)
     @Path("halls/{hallId}")
     public Response getShowtimesByHall(@PathParam("hallId")
                                        @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -92,11 +100,13 @@ public class ShowtimeResource {
     }
 
     @POST
+    @RolesAllowed(ADMIN_ROLE)
     public Response addShowtime(@Valid AddShowtimeRequest addShowtimeRequest) {
         return Response.ok(addShowtimeOperation.process(addShowtimeRequest)).build();
     }
 
     @PUT
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{showtimeId}")
     public Response editShowtime(@PathParam("showtimeId")
                                  @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -107,6 +117,7 @@ public class ShowtimeResource {
     }
 
     @DELETE
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{showtimeId}")
     public Response deleteShowtime(@PathParam("showtimeId")
                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -120,6 +131,7 @@ public class ShowtimeResource {
     }
 
     @PUT
+    @RolesAllowed(PROJECTOR_ROLE)
     @Path("/{showtimeId}/current")
     public Response setCurrentShowtime(@PathParam("showtimeId")
                                        @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -133,6 +145,7 @@ public class ShowtimeResource {
     }
 
     @PUT
+    @RolesAllowed(PROJECTOR_ROLE)
     @Path("/{showtimeId}/upcoming")
     public Response setUpcomingShowtime(@PathParam("showtimeId")
                                         @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -147,6 +160,7 @@ public class ShowtimeResource {
 
 
     @PUT
+    @RolesAllowed(PROJECTOR_ROLE)
     @Path("/{showtimeId}/end")
     public Response endShowtime(@PathParam("showtimeId")
                                 @Pattern(regexp = ValidationConstants.UUID_REGEX,

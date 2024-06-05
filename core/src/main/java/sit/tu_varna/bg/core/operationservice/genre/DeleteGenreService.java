@@ -8,14 +8,17 @@ import sit.tu_varna.bg.api.operation.genre.delete.DeleteGenreRequest;
 import sit.tu_varna.bg.api.operation.genre.delete.DeleteGenreResponse;
 import sit.tu_varna.bg.entity.Genre;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class DeleteGenreService implements DeleteGenreOperation {
 
     @Transactional
     @Override
     public DeleteGenreResponse process(DeleteGenreRequest request) {
-        Genre genre = (Genre) Genre.findByIdOptional(request.getGenreId())
-                .orElseThrow(() -> new ResourceNotFoundException("Genre does not exist"));
+        UUID genreId = request.getGenreId();
+        Genre genre = (Genre) Genre.findByIdOptional(genreId)
+                .orElseThrow(() -> new ResourceNotFoundException("Genre with id " + genreId + " not found"));
         if (genre.isPersistent()) {
             genre.delete();
         }

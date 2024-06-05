@@ -14,14 +14,14 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddMovieRequest implements ServiceRequest {
-    @NotBlank(message = "Title is required.")
+    @NotBlank()
     private String title;
     private String description;
     private String imageUrl;
     private String trailerUrl;
-    @NotNull(message = "Release year is required.")
+    @NotNull()
     private Integer releaseYear;
-    @NotNull(message = "Duration is required.")
+    @NotNull()
     private Integer duration;
     private Collection<GenreDto> genres;
 }

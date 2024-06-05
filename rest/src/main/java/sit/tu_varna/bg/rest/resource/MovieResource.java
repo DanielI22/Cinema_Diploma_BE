@@ -1,5 +1,8 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -26,7 +29,10 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.ADMIN_ROLE;
+
 @Path("/api/movies")
+@Authenticated
 public class MovieResource {
     @Inject
     GetAllMoviesOperation getAllMoviesOperation;
@@ -46,11 +52,13 @@ public class MovieResource {
     GetMovieShowtimesByDateOperation getMovieShowtimesByDateOperation;
 
     @GET
+    @PermitAll
     public Response getAllMovies() {
         return Response.ok(getAllMoviesOperation.process(new GetAllMoviesRequest())).build();
     }
 
     @GET
+    @PermitAll
     @Path("/{movieId}")
     public Response getMovie(@PathParam("movieId")
                              @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -64,6 +72,7 @@ public class MovieResource {
     }
 
     @GET
+    @PermitAll
     @Path("/{movieId}/showtimes")
     public Response getMovieShowtimesByDate(@PathParam("movieId")
                                             @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -82,11 +91,13 @@ public class MovieResource {
     }
 
     @POST
+    @RolesAllowed(ADMIN_ROLE)
     public Response addMovie(@Valid AddMovieRequest addMovieRequest) {
         return Response.ok(addMovieOperation.process(addMovieRequest)).build();
     }
 
     @PUT
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{movieId}")
     public Response editMovie(@PathParam("movieId")
                               @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -97,6 +108,7 @@ public class MovieResource {
     }
 
     @DELETE
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{movieId}")
     public Response deleteMovie(@PathParam("movieId")
                                 @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -110,6 +122,7 @@ public class MovieResource {
     }
 
     @GET
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/search/{query}")
     public Response getMoviesApi(@PathParam("query") String query) {
         SearchMoviesRequest request = SearchMoviesRequest
@@ -120,6 +133,7 @@ public class MovieResource {
     }
 
     @GET
+    @PermitAll
     @Path("/genre/{genreName}")
     public Response getMoviesByGenre(@PathParam("genreName") String genreName) {
         GetMoviesByGenreRequest request = GetMoviesByGenreRequest

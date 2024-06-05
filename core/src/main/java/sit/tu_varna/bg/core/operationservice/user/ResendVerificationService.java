@@ -18,7 +18,7 @@ public class ResendVerificationService implements ResendVerificationOperation {
     public ResendVerificationResponse process(ResendVerificationRequest request) {
         String userMail = request.getEmail();
         User user = User.findByEmail(userMail)
-                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + userMail + " not found"));
         keycloakService.sendVerificationMail(user.getId().toString());
 
         return ResendVerificationResponse.builder().sent(true).build();

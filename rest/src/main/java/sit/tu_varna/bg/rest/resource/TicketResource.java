@@ -1,6 +1,8 @@
 package sit.tu_varna.bg.rest.resource;
 
 import io.quarkus.hibernate.validator.runtime.interceptor.MethodValidated;
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -24,7 +26,10 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.*;
+
 @Path("/api/tickets")
+@Authenticated
 public class TicketResource {
     @Inject
     GetTicketOperation getTicketOperation;
@@ -43,6 +48,7 @@ public class TicketResource {
     JsonWebToken jwt;
 
     @GET
+    @RolesAllowed(OPERATOR_ROLE)
     @Path("/{ticketId}")
     public Response getTicket(@PathParam("ticketId")
                               @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -67,6 +73,7 @@ public class TicketResource {
     }
 
     @GET
+    @RolesAllowed(ADMIN_ROLE)
     @Path("showtimes/{showtimeId}")
     public Response getShowtimeTickets(@PathParam("showtimeId")
                                        @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -80,6 +87,7 @@ public class TicketResource {
     }
 
     @GET
+    @RolesAllowed(OPERATOR_ROLE)
     @Path("/history")
     public Response getOperatorHistory(@QueryParam("cinemaId")
                                        @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -108,6 +116,7 @@ public class TicketResource {
 
     @GET
     @MethodValidated
+    @RolesAllowed(VALIDATOR_ROLE)
     @Path("validate/{ticketShortCode}")
     public Response validateTicket(@PathParam("ticketShortCode") @Size(min = 5, max = 5) String ticketShortCode,
                                    @QueryParam("cinema")

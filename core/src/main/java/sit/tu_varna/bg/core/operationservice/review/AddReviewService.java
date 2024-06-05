@@ -26,9 +26,9 @@ public class AddReviewService implements AddReviewOperation {
         UUID movieId = request.getMovieId();
 
         User user = (User) User.findByIdOptional(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
         Movie movie = (Movie) Movie.findByIdOptional(movieId)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie not found with ID: " + movieId));
+                .orElseThrow(() -> new ResourceNotFoundException("Movie with id " + movieId + " not found"));
 
         Review review = Review.builder()
                 .movie(movie)

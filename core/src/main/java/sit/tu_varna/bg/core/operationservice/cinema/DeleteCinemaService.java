@@ -8,14 +8,17 @@ import sit.tu_varna.bg.api.operation.cinema.delete.DeleteCinemaRequest;
 import sit.tu_varna.bg.api.operation.cinema.delete.DeleteCinemaResponse;
 import sit.tu_varna.bg.entity.Cinema;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class DeleteCinemaService implements DeleteCinemaOperation {
 
     @Transactional
     @Override
     public DeleteCinemaResponse process(DeleteCinemaRequest request) {
-        Cinema cinema = (Cinema) Cinema.findByIdOptional(request.getCinemaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Cinema does not exist"));
+        UUID cinemaId = request.getCinemaId();
+        Cinema cinema = (Cinema) Cinema.findByIdOptional(cinemaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cinema with id " + cinemaId + " not found"));
         if (cinema.isPersistent()) {
             cinema.delete();
         }

@@ -27,7 +27,7 @@ public class DeleteUserService implements DeleteUserOperation {
     public DeleteUserResponse process(DeleteUserRequest request) {
         UUID userId = request.getUserId();
         User user = (User) User.findByIdOptional(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
         if (user.isPersistent()) {
             user.delete();
             user.getBookings().forEach(booking -> booking.setStatus(BookingStatus.CANCELLED));

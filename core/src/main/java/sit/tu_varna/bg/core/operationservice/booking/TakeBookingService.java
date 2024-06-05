@@ -25,11 +25,13 @@ public class TakeBookingService implements TakeBookingOperation {
     @Override
     @Transactional
     public TakeBookingResponse process(TakeBookingRequest request) {
-        Booking booking = (Booking) Booking.findByIdOptional(request.getBookingId())
-                .orElseThrow(() -> new ResourceNotFoundException("Booking does not exist"));
+        UUID bookingId = request.getBookingId();
+        Booking booking = (Booking) Booking.findByIdOptional(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking with id " + bookingId + " not found"));
 
-        User user = (User) User.findByIdOptional(request.getUserId())
-                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+        UUID userId = request.getUserId();
+        User user = (User) User.findByIdOptional(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
 
         if (!booking.getStatus().equals(BookingStatus.AVAILABLE)) {
             throw new InvalidResourceException("Booking is not available for taking");

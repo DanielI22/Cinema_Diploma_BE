@@ -13,9 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddCinemaRequest implements ServiceRequest {
-    @NotBlank(message = "Name is required.")
+    @NotBlank
     private String name;
-    @NotBlank(message = "Location is required.")
+    @NotBlank
     private String location;
     private String imageUrl;
     private Collection<UUID> halls;

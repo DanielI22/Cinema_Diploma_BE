@@ -10,6 +10,7 @@ import sit.tu_varna.bg.entity.Cinema;
 import sit.tu_varna.bg.entity.Hall;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -18,8 +19,9 @@ public class EditCinemaService implements EditCinemaOperation {
     @Transactional
     @Override
     public EditCinemaResponse process(EditCinemaRequest request) {
-        Cinema cinema = (Cinema) Cinema.findByIdOptional(request.getCinemaId())
-                .orElseThrow(() -> new ResourceNotFoundException("Cinema does not exist"));
+        UUID cinemaId = request.getCinemaId();
+        Cinema cinema = (Cinema) Cinema.findByIdOptional(cinemaId)
+                .orElseThrow(() -> new ResourceNotFoundException("Cinema with id " + cinemaId + " not found"));
         if (cinema.isPersistent()) {
             cinema.setLocation(request.getLocation());
             cinema.setImageUrl(request.getImageUrl());

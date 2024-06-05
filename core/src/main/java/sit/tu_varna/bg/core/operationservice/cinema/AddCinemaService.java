@@ -26,7 +26,7 @@ public class AddCinemaService implements AddCinemaOperation {
         List<Hall> newHalls = request.getHalls().stream()
                 .map(hallId -> {
                     Hall hall = (Hall) Hall.findByIdOptional(hallId)
-                            .orElseThrow(() -> new ResourceNotFoundException("Invalid hall id!"));
+                            .orElseThrow(() -> new ResourceNotFoundException("Hall with id " + hallId + " not found"));
                     hall.setCinema(cinema);
                     return hall;
                 })

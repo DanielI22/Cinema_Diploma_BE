@@ -11,10 +11,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ApplicationScoped
+@SuppressWarnings("all")
 public class EmailService {
     @Inject
     Mailer mailer;
-
     @Inject
     Template bookingConfirmationBg;
     @Inject

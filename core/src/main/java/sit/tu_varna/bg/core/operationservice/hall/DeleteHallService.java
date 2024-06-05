@@ -12,14 +12,17 @@ import sit.tu_varna.bg.entity.Row;
 import sit.tu_varna.bg.entity.Seat;
 import sit.tu_varna.bg.entity.ShowtimeSeat;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class DeleteHallService implements DeleteHallOperation {
 
     @Transactional
     @Override
     public DeleteHallResponse process(DeleteHallRequest request) {
-        Hall hall = (Hall) Hall.findByIdOptional(request.getHallId())
-                .orElseThrow(() -> new ResourceNotFoundException("Hall does not exist"));
+        UUID hallId = request.getHallId();
+        Hall hall = (Hall) Hall.findByIdOptional(hallId)
+                .orElseThrow(() -> new ResourceNotFoundException("Hall with id " + hallId + " not found"));
         if (hall.isPersistent()) {
             hall.getRows().stream().map(Row.class::cast)
                     .forEach(r -> r.getSeats().forEach(s -> ShowtimeSeat.findBySeatId(s.getId()).forEach(PanacheEntityBase::delete)));

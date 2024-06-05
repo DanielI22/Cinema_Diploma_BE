@@ -8,14 +8,17 @@ import sit.tu_varna.bg.api.operation.movie.delete.DeleteMovieRequest;
 import sit.tu_varna.bg.api.operation.movie.delete.DeleteMovieResponse;
 import sit.tu_varna.bg.entity.Movie;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class DeleteMovieService implements DeleteMovieOperation {
 
     @Transactional
     @Override
     public DeleteMovieResponse process(DeleteMovieRequest request) {
-        Movie movie = (Movie) Movie.findByIdOptional(request.getMovieId())
-                .orElseThrow(() -> new ResourceNotFoundException("Movie does not exist"));
+        UUID movieId = request.getMovieId();
+        Movie movie = (Movie) Movie.findByIdOptional(movieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie with id " + movieId + " not found"));
         if (movie.isPersistent()) {
             movie.delete();
         }

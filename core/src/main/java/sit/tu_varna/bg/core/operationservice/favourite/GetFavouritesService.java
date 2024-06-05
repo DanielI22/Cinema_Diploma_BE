@@ -23,7 +23,7 @@ public class GetFavouritesService implements GetFavouritesOperation {
     public GetFavouritesResponse process(GetFavouritesRequest request) {
         UUID userId = request.getUserId();
         User user = (User) User.findByIdOptional(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User not found with ID: " + userId));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
         Collection<MovieDto> favourites = user.getFavoriteMovies()
                 .stream()
                 .map(movieMapper::movieToMovieDto)

@@ -8,14 +8,17 @@ import sit.tu_varna.bg.api.operation.genre.edit.EditGenreRequest;
 import sit.tu_varna.bg.api.operation.genre.edit.EditGenreResponse;
 import sit.tu_varna.bg.entity.Genre;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class EditGenreService implements EditGenreOperation {
 
     @Transactional
     @Override
     public EditGenreResponse process(EditGenreRequest request) {
-        Genre genre = (Genre) Genre.findByIdOptional(request.getGenreId())
-                .orElseThrow(() -> new ResourceNotFoundException("Genre does not exist"));
+        UUID genreId = request.getGenreId();
+        Genre genre = (Genre) Genre.findByIdOptional(genreId)
+                .orElseThrow(() -> new ResourceNotFoundException("Genre with id " + genreId + " not found"));
         if (genre.isPersistent()) {
             genre.setName(request.getName());
             genre.persist();

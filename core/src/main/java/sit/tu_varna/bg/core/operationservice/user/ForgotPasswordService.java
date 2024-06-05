@@ -18,7 +18,7 @@ public class ForgotPasswordService implements ForgotPasswordOperation {
     public ForgotPasswrodResponse process(ForgotPasswordRequest request) {
         String userMail = request.getEmail();
         User user = User.findByEmail(userMail)
-                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with email " + userMail + " not found"));
         keycloakService.sendForgotPassword(user.getId().toString());
 
         return ForgotPasswrodResponse.builder().sent(true).build();

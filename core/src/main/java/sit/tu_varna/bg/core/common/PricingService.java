@@ -12,17 +12,6 @@ import java.util.Locale;
 
 @ApplicationScoped
 public class PricingService implements PricingOperation {
-
-    @Override
-    public BigDecimal calculateTicketPrice(TicketType ticketType, BigDecimal basePrice) {
-        if (TicketType.NORMAL.equals(ticketType)) {
-            return basePrice;
-        }
-        if (TicketType.REDUCED.equals(ticketType)) {
-            return basePrice.multiply(BigDecimal.valueOf(BusinessConstants.REDUCED_PERCENTAGE));
-        } else return basePrice;
-    }
-
     @Override
     public BigDecimal calculateOrderPrice(Collection<PurchaseSeatDto> seats, BigDecimal basePrice) {
         BigDecimal totalPrice = BigDecimal.ZERO;
@@ -32,5 +21,15 @@ public class PricingService implements PricingOperation {
             totalPrice = totalPrice.add(seatPrice);
         }
         return totalPrice;
+    }
+
+    @Override
+    public BigDecimal calculateTicketPrice(TicketType ticketType, BigDecimal basePrice) {
+        if (TicketType.NORMAL.equals(ticketType)) {
+            return basePrice;
+        }
+        if (TicketType.REDUCED.equals(ticketType)) {
+            return basePrice.multiply(BigDecimal.valueOf(BusinessConstants.REDUCED_PERCENTAGE));
+        } else return basePrice;
     }
 }

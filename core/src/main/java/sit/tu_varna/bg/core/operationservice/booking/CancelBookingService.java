@@ -12,14 +12,17 @@ import sit.tu_varna.bg.entity.ShowtimeSeat;
 import sit.tu_varna.bg.entity.Ticket;
 import sit.tu_varna.bg.enums.BookingStatus;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class CancelBookingService implements CancelBookingOperation {
 
     @Transactional
     @Override
     public CancelBookingResponse process(CancelBookingRequest request) {
-        Booking booking = (Booking) Booking.findByIdOptional(request.getBookingId())
-                .orElseThrow(() -> new ResourceNotFoundException("Booking does not exist"));
+        UUID bookingId = request.getBookingId();
+        Booking booking = (Booking) Booking.findByIdOptional(bookingId)
+                .orElseThrow(() -> new ResourceNotFoundException("Booking with id " + bookingId + " not found"));
 
         if (!booking.getStatus().equals(BookingStatus.AVAILABLE)) {
             throw new ResourceAlreadyExistsException("Booking is not available to be cancelled");

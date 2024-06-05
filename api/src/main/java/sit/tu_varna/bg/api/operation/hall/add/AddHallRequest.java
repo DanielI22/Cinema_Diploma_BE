@@ -13,7 +13,7 @@ import java.util.Collection;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddHallRequest implements ServiceRequest {
-    @NotBlank(message = "Name is required.")
+    @NotBlank
     private String name;
     private Collection<RowDto> rows;
 }

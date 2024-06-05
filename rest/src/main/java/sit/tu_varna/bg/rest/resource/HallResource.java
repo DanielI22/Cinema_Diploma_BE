@@ -1,5 +1,7 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -23,7 +25,10 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.ADMIN_ROLE;
+
 @Path("/api/halls")
+@Authenticated
 public class HallResource {
     @Inject
     GetAvailableHallsOperation getAvailableHallsOperation;
@@ -41,17 +46,20 @@ public class HallResource {
     DeleteHallOperation deleteHallOperation;
 
     @GET
+    @RolesAllowed(ADMIN_ROLE)
     public Response getAllHalls() {
         return Response.ok(getAllHallsOperation.process(new GetAllHallsRequest())).build();
     }
 
     @GET
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/available")
     public Response getAvailableHalls() {
         return Response.ok(getAvailableHallsOperation.process(new GetAvailableHallsRequest())).build();
     }
 
     @GET
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{hallId}")
     public Response getHall(@PathParam("hallId")
                             @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -78,12 +86,13 @@ public class HallResource {
     }
 
     @POST
-    @Consumes()
+    @RolesAllowed(ADMIN_ROLE)
     public Response addHall(@Valid AddHallRequest addHallRequest) {
         return Response.ok(addHallOperation.process(addHallRequest)).build();
     }
 
     @PUT
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{hallId}")
     public Response editHall(@PathParam("hallId")
                                @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -94,6 +103,7 @@ public class HallResource {
     }
 
     @DELETE
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{hallId}")
     public Response deleteHall(@PathParam("hallId")
                                @Pattern(regexp = ValidationConstants.UUID_REGEX,

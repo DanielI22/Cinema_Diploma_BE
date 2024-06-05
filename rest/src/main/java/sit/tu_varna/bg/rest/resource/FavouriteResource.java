@@ -1,5 +1,7 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.*;
@@ -17,7 +19,10 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ROLE;
+
 @Path("/api/favourites")
+@Authenticated
 public class FavouriteResource {
     @Inject
     GetFavouritesOperation getFavouritesOperation;

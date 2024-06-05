@@ -1,5 +1,7 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -11,7 +13,10 @@ import sit.tu_varna.bg.api.operation.payment.PaymentRequest;
 
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ROLE;
+
 @Path("/api/payments")
+@Authenticated
 public class PaymentResource {
     @Inject
     PaymentOperation paymentOperation;

@@ -36,8 +36,10 @@ public class SearchMoviesService implements SearchMoviesOperation {
         try {
             String query = URLEncoder.encode(request.getQuery(), StandardCharsets.UTF_8.toString());
             boolean isImdbTag = query.startsWith("tt");
-            String baseUri = isImdbTag ? "https://api.themoviedb.org/3/find/%s?external_source=imdb_id&api_key=%s" :
-                    "https://api.themoviedb.org/3/search/movie?query=%s&api_key=%s";
+            String imdbTagUri = "https://api.themoviedb.org/3/find/%s?external_source=imdb_id&api_key=%s";
+            String searchUri = "https://api.themoviedb.org/3/search/movie?query=%s&api_key=%s";
+
+            String baseUri = isImdbTag ? imdbTagUri : searchUri;
             URI uri = new URI(String.format(baseUri, query, apiKey));
 
             Collection<MovieApiResult> movieApiResults = fetchMovies(uri, isImdbTag);

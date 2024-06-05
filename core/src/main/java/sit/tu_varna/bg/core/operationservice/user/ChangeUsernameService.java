@@ -22,7 +22,7 @@ public class ChangeUsernameService implements ChangeUsernameOperation {
     public ChangeUsernameResponse process(ChangeUsernameRequest request) {
         UUID userId = request.getUserId();
         User.findByIdOptional(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
         keycloakService.updateUsername(userId.toString(), request.getUsername());
 
         return ChangeUsernameResponse.builder().userId(userId.toString()).build();

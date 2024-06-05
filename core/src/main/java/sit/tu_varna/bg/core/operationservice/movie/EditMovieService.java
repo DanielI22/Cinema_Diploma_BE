@@ -10,6 +10,7 @@ import sit.tu_varna.bg.entity.Genre;
 import sit.tu_varna.bg.entity.Movie;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @ApplicationScoped
@@ -18,8 +19,9 @@ public class EditMovieService implements EditMovieOperation {
     @Transactional
     @Override
     public EditMovieResponse process(EditMovieRequest request) {
-        Movie movie = (Movie) Movie.findByIdOptional(request.getMovieId())
-                .orElseThrow(() -> new ResourceNotFoundException("Movie does not exist"));
+        UUID movieId = request.getMovieId();
+        Movie movie = (Movie) Movie.findByIdOptional(movieId)
+                .orElseThrow(() -> new ResourceNotFoundException("Movie with id " + movieId + " not found"));
         if (movie.isPersistent()) {
             movie.setTitle(request.getTitle());
             movie.setDescription(request.getDescription());
@@ -38,7 +40,7 @@ public class EditMovieService implements EditMovieOperation {
             List<Genre> newGenres = request.getGenres().stream()
                     .map(genreId -> {
                         Genre genre = (Genre) Genre.findByIdOptional(genreId)
-                                .orElseThrow(() -> new ResourceNotFoundException("Invalid Genre id!"));
+                                .orElseThrow(() -> new ResourceNotFoundException("Genre with id " + genreId + " not found"));
                         genre.getMovies().add(movie);
                         return genre;
                     })

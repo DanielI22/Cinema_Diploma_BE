@@ -10,6 +10,6 @@ import sit.tu_varna.bg.api.base.ServiceRequest;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RefreshRequest implements ServiceRequest {
-    @NotNull(message = "Refresh token is required.")
+    @NotNull
     private String refreshToken;
 }

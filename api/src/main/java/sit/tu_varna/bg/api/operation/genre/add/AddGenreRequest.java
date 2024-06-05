@@ -10,6 +10,6 @@ import sit.tu_varna.bg.api.base.ServiceRequest;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddGenreRequest implements ServiceRequest {
-    @NotBlank(message = "Name is required.")
+    @NotBlank
     private String name;
 }

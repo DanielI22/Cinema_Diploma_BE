@@ -18,8 +18,9 @@ public class EditShowtimeService implements EditShowtimeOperation {
     @Transactional
     @Override
     public EditShowtimeResponse process(EditShowtimeRequest request) {
-        Showtime showtime = (Showtime) Showtime.findByIdOptional(request.getShowtimeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Showtime does not exist"));
+        UUID showtimeId = request.getShowtimeId();
+        Showtime showtime = (Showtime) Showtime.findByIdOptional(showtimeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Showtime with id " + showtimeId + " not found"));
 
         if (showtime.isPersistent()) {
             UUID cinemaId = request.getCinemaId();
@@ -27,11 +28,11 @@ public class EditShowtimeService implements EditShowtimeOperation {
             UUID hallId = request.getHallId();
 
             Cinema cinema = (Cinema) Cinema.findByIdOptional(cinemaId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Cinema not found with ID: " + cinemaId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Cinema with id " + cinemaId + " not found"));
             Movie movie = (Movie) Movie.findByIdOptional(movieId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Movie not found with ID: " + movieId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Movie with id " + movieId + " not found"));
             Hall hall = (Hall) Hall.findByIdOptional(hallId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Hall not found with ID: " + hallId));
+                    .orElseThrow(() -> new ResourceNotFoundException("Hall with id " + hallId + " not found"));
 
             // renew seats state if hall is changed
             if (showtime.getHall() != hall) {

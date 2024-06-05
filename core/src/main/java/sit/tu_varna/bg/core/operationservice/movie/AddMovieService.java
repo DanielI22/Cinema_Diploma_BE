@@ -31,9 +31,10 @@ public class AddMovieService implements AddMovieOperation {
         List<Genre> newGenres = request.getGenres().stream()
                 .map(genreDto -> {
                     Genre genre;
-                    if (genreDto.getId() != null) {
-                        genre = (Genre) Genre.findByIdOptional(UUID.fromString(genreDto.getId()))
-                                .orElseThrow(() -> new ResourceNotFoundException("Invalid genre id: " + genreDto.getId()));
+                    String genreId = genreDto.getId();
+                    if (genreId != null) {
+                        genre = (Genre) Genre.findByIdOptional(UUID.fromString(genreId))
+                                .orElseThrow(() -> new ResourceNotFoundException("Genre with id " + genreId + " not found"));
                     } else {
                         genre = (Genre) Genre.find("name", genreDto.getName()).firstResultOptional()
                                 .orElseGet(() -> {

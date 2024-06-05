@@ -1,5 +1,8 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -13,10 +16,10 @@ import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.edit.EditCinemaRequest;
 import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaOperation;
 import sit.tu_varna.bg.api.operation.cinema.get.GetCinemaRequest;
-import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsOperation;
-import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsRequest;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasOperation;
 import sit.tu_varna.bg.api.operation.cinema.getall.GetAllCinemasRequest;
+import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsOperation;
+import sit.tu_varna.bg.api.operation.cinema.gethalls.GetCinemaHallsRequest;
 import sit.tu_varna.bg.api.operation.showtime.getcinemabydate.GetCinemaShowtimesByDateOperation;
 import sit.tu_varna.bg.api.operation.showtime.getcinemabydate.GetCinemaShowtimesByDateRequest;
 import sit.tu_varna.bg.core.constants.ValidationConstants;
@@ -24,7 +27,11 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 import java.time.LocalDate;
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.ADMIN_ROLE;
+import static sit.tu_varna.bg.core.constants.BusinessConstants.PROJECTOR_ROLE;
+
 @Path("/api/cinemas")
+@Authenticated
 public class CinemaResource {
     @Inject
     GetAllCinemasOperation getAllCinemasOperation;
@@ -42,11 +49,13 @@ public class CinemaResource {
     GetCinemaShowtimesByDateOperation getCinemaShowtimesByDateOperation;
 
     @GET
+    @PermitAll
     public Response getAllCinemas() {
         return Response.ok(getAllCinemasOperation.process(new GetAllCinemasRequest())).build();
     }
 
     @GET
+    @PermitAll
     @Path("/{cinemaId}")
     public Response getCinema(@PathParam("cinemaId")
                               @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -60,11 +69,13 @@ public class CinemaResource {
     }
 
     @POST
+    @RolesAllowed(ADMIN_ROLE)
     public Response addCinema(@Valid AddCinemaRequest addCinemaRequest) {
         return Response.ok(addCinemaOperation.process(addCinemaRequest)).build();
     }
 
     @PUT
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{cinemaId}")
     public Response editCinema(@PathParam("cinemaId")
                                @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -75,6 +86,7 @@ public class CinemaResource {
     }
 
     @DELETE
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{cinemaId}")
     public Response deleteCinema(@PathParam("cinemaId")
                                  @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -88,6 +100,7 @@ public class CinemaResource {
     }
 
     @GET
+    @RolesAllowed({ADMIN_ROLE, PROJECTOR_ROLE})
     @Path("/{cinemaId}/halls")
     public Response getCinemaHalls(@PathParam("cinemaId")
                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -101,6 +114,7 @@ public class CinemaResource {
     }
 
     @GET
+    @PermitAll
     @Path("/{cinemaId}/showtimes")
     public Response getCinemaShowtimesByDate(@PathParam("cinemaId")
                                             @Pattern(regexp = ValidationConstants.UUID_REGEX,

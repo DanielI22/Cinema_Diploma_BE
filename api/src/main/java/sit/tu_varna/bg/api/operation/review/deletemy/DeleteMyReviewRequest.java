@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.api.operation.booking.take;
+package sit.tu_varna.bg.api.operation.review.deletemy;
 
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceRequest;
@@ -10,7 +10,8 @@ import java.util.UUID;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TakeBookingRequest implements ServiceRequest {
-    private UUID bookingId;
+public class DeleteMyReviewRequest implements ServiceRequest {
+    @NonNull
+    private UUID reviewId;
     private UUID userId;
 }

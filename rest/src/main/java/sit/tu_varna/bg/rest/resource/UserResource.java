@@ -1,5 +1,8 @@
 package sit.tu_varna.bg.rest.resource;
 
+import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -32,7 +35,10 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.ADMIN_ROLE;
+
 @Path("/api/users")
+@Authenticated
 public class UserResource {
     @Inject
     GetUsersOperation getUsersOperation;
@@ -61,11 +67,13 @@ public class UserResource {
     JsonWebToken jwt;
 
     @GET
+    @RolesAllowed(ADMIN_ROLE)
     public Response getAllUsers() {
         return Response.ok(getUsersOperation.process(new GetUsersRequest())).build();
     }
 
     @POST
+    @RolesAllowed(ADMIN_ROLE)
     public Response addUser(@Valid AddUserRequest request) {
         return Response.ok(addUserOperation.process(request)).build();
     }
@@ -87,6 +95,7 @@ public class UserResource {
     }
 
     @DELETE
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{userId}")
     public Response deleteUser(@PathParam("userId")
                                @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -100,36 +109,42 @@ public class UserResource {
     }
 
     @POST
+    @PermitAll
     @Path("/register")
     public Response register(@Valid RegisterRequest request) {
         return Response.ok(registerOperation.process(request)).build();
     }
 
     @POST
+    @PermitAll
     @Path("/login")
     public Response login(@Valid LoginRequest request) {
         return Response.ok(loginOperation.process(request)).build();
     }
 
     @POST
+    @PermitAll
     @Path("/logout")
     public Response logout(@Valid LogoutRequest request) {
         return Response.ok(logoutOperation.process(request)).build();
     }
 
     @POST
+    @PermitAll
     @Path("/refresh")
     public Response refresh(@Valid RefreshRequest request) {
         return Response.ok(refreshOperation.process(request)).build();
     }
 
     @POST
+    @PermitAll
     @Path("/forgot-password")
     public Response forgotPassword(@Valid ForgotPasswordRequest request) {
         return Response.ok(forgotPasswordOperation.process(request)).build();
     }
 
     @POST
+    @PermitAll
     @Path("/resend-verification")
     public Response resendVerification(@Valid ResendVerificationRequest request) {
         return Response.ok(resendVerificationOperation.process(request)).build();

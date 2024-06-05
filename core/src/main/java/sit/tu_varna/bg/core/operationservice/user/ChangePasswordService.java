@@ -20,7 +20,7 @@ public class ChangePasswordService implements ChangePasswordOperation {
     public ChangePasswordResponse process(ChangePasswordRequest request) {
         UUID userId = request.getUserId();
         User.findByIdOptional(userId)
-                .orElseThrow(() -> new ResourceNotFoundException("User does not exist"));
+                .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
         keycloakService.updatePassword(userId.toString(), request.getPassword());
 
         return ChangePasswordResponse.builder().userId(userId.toString()).build();

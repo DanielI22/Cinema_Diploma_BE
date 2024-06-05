@@ -10,6 +10,6 @@ import sit.tu_varna.bg.api.base.ServiceRequest;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SearchMoviesRequest implements ServiceRequest {
-    @NotBlank(message = "Search query is required.")
+    @NotBlank()
     private String query;
 }

@@ -15,6 +15,7 @@ import sit.tu_varna.bg.entity.Seat;
 import sit.tu_varna.bg.entity.ShowtimeSeat;
 
 import java.util.Collection;
+import java.util.UUID;
 
 @ApplicationScoped
 public class EditHallService implements EditHallOperation {
@@ -22,8 +23,9 @@ public class EditHallService implements EditHallOperation {
     @Transactional
     @Override
     public EditHallResponse process(EditHallRequest request) {
-        Hall hall = (Hall) Hall.findByIdOptional(request.getHallId())
-                .orElseThrow(() -> new ResourceNotFoundException("Hall not found"));
+        UUID hallId = request.getHallId();
+        Hall hall = (Hall) Hall.findByIdOptional(hallId)
+                .orElseThrow(() -> new ResourceNotFoundException("Hall with id " + hallId + " not found"));
 
         hall.setName(request.getName());
 

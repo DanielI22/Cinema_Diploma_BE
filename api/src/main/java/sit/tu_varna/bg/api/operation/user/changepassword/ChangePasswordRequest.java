@@ -15,7 +15,7 @@ import java.util.UUID;
 public class ChangePasswordRequest implements ServiceRequest {
     private UUID userId;
 
-    @NotBlank(message = "Password is required.")
+    @NotBlank
     @Size(min = 3, max = 100, message = "'Password' must have a length between 3 and 100")
     private String password;
 }

@@ -10,14 +10,17 @@ import sit.tu_varna.bg.api.operation.showtime.delete.DeleteShowtimeResponse;
 import sit.tu_varna.bg.entity.Showtime;
 import sit.tu_varna.bg.entity.ShowtimeSeat;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class DeleteShowtimeService implements DeleteShowtimeOperation {
 
     @Transactional
     @Override
     public DeleteShowtimeResponse process(DeleteShowtimeRequest request) {
-        Showtime showtime = (Showtime) Showtime.findByIdOptional(request.getShowtimeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Showtime does not exist"));
+        UUID showtimeId = request.getShowtimeId();
+        Showtime showtime = (Showtime) Showtime.findByIdOptional(showtimeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Showtime with id " + showtimeId + " not found"));
         if (showtime.isPersistent()) {
             ShowtimeSeat.findByShowtimeId(showtime.getId()).forEach(PanacheEntityBase::delete);
             showtime.delete();

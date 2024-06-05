@@ -12,15 +12,15 @@ import sit.tu_varna.bg.api.base.ServiceRequest;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddUserRequest implements ServiceRequest {
-    @NotBlank(message = "Username is required.")
+    @NotBlank
     @Size(min = 3, max = 255, message = "'Username' must have a length between 3 and 255")
     private String username;
 
     @Email(message = "Invalid email format.", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
-    @NotBlank(message = "Email is required.")
+    @NotBlank
     private String email;
 
-    @NotBlank(message = "Password is required.")
+    @NotBlank
     private String password;
 
     private String role;

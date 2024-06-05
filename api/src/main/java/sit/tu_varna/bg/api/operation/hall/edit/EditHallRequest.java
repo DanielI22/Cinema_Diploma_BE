@@ -15,7 +15,7 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EditHallRequest implements ServiceRequest {
     private UUID hallId;
-    @NotBlank(message = "Name is required.")
+    @NotBlank
     private String name;
     private Collection<RowDto> rows;
 }

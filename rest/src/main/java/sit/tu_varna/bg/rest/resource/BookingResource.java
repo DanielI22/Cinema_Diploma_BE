@@ -2,6 +2,7 @@ package sit.tu_varna.bg.rest.resource;
 
 import io.quarkus.hibernate.validator.runtime.interceptor.MethodValidated;
 import io.quarkus.security.Authenticated;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Pattern;
@@ -25,7 +26,10 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
 
+import static sit.tu_varna.bg.core.constants.BusinessConstants.*;
+
 @Path("/api/bookings")
+@Authenticated
 public class BookingResource {
     @Inject
     GetMyBookingsOperation getMyBookingsOperation;
@@ -55,6 +59,7 @@ public class BookingResource {
     }
 
     @GET
+    @RolesAllowed(ADMIN_ROLE)
     @Path("showtimes/{showtimeId}")
     public Response getShowtimeBookings(@PathParam("showtimeId")
                                         @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -68,7 +73,6 @@ public class BookingResource {
     }
 
     @POST
-    @Authenticated
     public Response book(@Valid BookingRequest bookingRequest) {
         String userId = jwt.getClaim("sub").toString();
         bookingRequest.setUserId(UUID.fromString(userId));
@@ -76,6 +80,7 @@ public class BookingResource {
     }
 
     @PUT
+    @RolesAllowed(ADMIN_ROLE)
     @Path("/{bookingId}")
     public Response cancelBooking(@PathParam("bookingId")
                                   @Pattern(regexp = ValidationConstants.UUID_REGEX,
@@ -90,6 +95,7 @@ public class BookingResource {
 
     @GET
     @MethodValidated
+    @RolesAllowed(OPERATOR_ROLE)
     @Path("validate/{bookingShortCode}")
     public Response validateBooking(@PathParam("bookingShortCode") @Size(min = 5, max = 5) String bookingShortCode,
                                     @QueryParam("cinema")
@@ -105,6 +111,7 @@ public class BookingResource {
     }
 
     @PUT
+    @RolesAllowed(OPERATOR_ROLE)
     @Path("take/{bookingId}")
     public Response takeBooking(@PathParam("bookingId")
                                 @Pattern(regexp = ValidationConstants.UUID_REGEX,

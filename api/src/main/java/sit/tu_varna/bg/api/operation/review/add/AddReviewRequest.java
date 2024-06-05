@@ -14,6 +14,6 @@ import java.util.UUID;
 public class AddReviewRequest implements ServiceRequest {
     private UUID movieId;
     private UUID userId;
-    @NotBlank(message = "Review text is required.")
+    @NotBlank
     private String reviewText;
 }

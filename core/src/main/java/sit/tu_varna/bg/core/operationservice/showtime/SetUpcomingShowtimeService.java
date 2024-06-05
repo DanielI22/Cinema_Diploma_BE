@@ -8,14 +8,17 @@ import sit.tu_varna.bg.api.operation.showtime.upcoming.SetUpcomingShowtimeReques
 import sit.tu_varna.bg.api.operation.showtime.upcoming.SetUpcomingShowtimeResponse;
 import sit.tu_varna.bg.entity.Showtime;
 
+import java.util.UUID;
+
 @ApplicationScoped
 public class SetUpcomingShowtimeService implements SetUpcomingShowtimeOperation {
 
     @Override
     @Transactional
     public SetUpcomingShowtimeResponse process(SetUpcomingShowtimeRequest request) {
-        Showtime showtime = (Showtime) Showtime.findByIdOptional(request.getShowtimeId())
-                .orElseThrow(() -> new ResourceNotFoundException("Showtime does not exist"));
+        UUID showtimeId = request.getShowtimeId();
+        Showtime showtime = (Showtime) Showtime.findByIdOptional(showtimeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Showtime with id " + showtimeId + " not found"));
 
         showtime.setCurrent(false);
         showtime.setEnded(false);

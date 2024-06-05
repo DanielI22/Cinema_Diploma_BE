@@ -27,11 +27,11 @@ public class AddShowtimeService implements AddShowtimeOperation {
         UUID hallId = request.getHallId();
 
         Cinema cinema = (Cinema) Cinema.findByIdOptional(cinemaId)
-                .orElseThrow(() -> new ResourceNotFoundException("Cinema not found with ID: " + cinemaId));
+                .orElseThrow(() -> new ResourceNotFoundException("Cinema with id " + cinemaId + " not found"));
         Movie movie = (Movie) Movie.findByIdOptional(movieId)
-                .orElseThrow(() -> new ResourceNotFoundException("Movie not found with ID: " + movieId));
+                .orElseThrow(() -> new ResourceNotFoundException("Movie with id " + movieId + " not found"));
         Hall hall = (Hall) Hall.findByIdOptional(hallId)
-                .orElseThrow(() -> new ResourceNotFoundException("Hall not found with ID: " + hallId));
+                .orElseThrow(() -> new ResourceNotFoundException("Hall with id " + hallId + " not found"));
 
         LocalDateTime startingTime = request.getStartingTime();
         BigDecimal ticketPrice = request.getTicketPrice();

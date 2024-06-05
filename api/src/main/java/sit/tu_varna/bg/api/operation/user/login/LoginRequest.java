@@ -12,9 +12,9 @@ import sit.tu_varna.bg.api.base.ServiceRequest;
 @NoArgsConstructor
 public class LoginRequest implements ServiceRequest {
     @Email(message = "Invalid email format.", regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$")
-    @NotBlank(message = "Email is required.")
+    @NotBlank
     private String email;
 
-    @NotBlank(message = "Password is required.")
+    @NotBlank
     private String password;
 }

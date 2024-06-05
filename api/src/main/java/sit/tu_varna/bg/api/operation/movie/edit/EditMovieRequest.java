@@ -15,14 +15,14 @@ import java.util.UUID;
 @NoArgsConstructor
 public class EditMovieRequest implements ServiceRequest {
     private UUID movieId;
-    @NotBlank(message = "Title is required.")
+    @NotBlank
     private String title;
     private String description;
     private String imageUrl;
     private String trailerUrl;
-    @NotNull(message = "Release year is required.")
+    @NotNull
     private Integer releaseYear;
-    @NotNull(message = "Duration is required.")
+    @NotNull
     private Integer duration;
     private Collection<UUID> genres;
 }
