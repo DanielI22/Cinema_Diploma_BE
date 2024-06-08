@@ -1,7 +1,6 @@
 package sit.tu_varna.bg.rest.resource;
 
 import io.quarkus.security.Authenticated;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.POST;
@@ -13,7 +12,7 @@ import sit.tu_varna.bg.api.operation.payment.PaymentRequest;
 
 import java.util.UUID;
 
-import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ROLE;
+import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ID_CLAIM;
 
 @Path("/api/payments")
 @Authenticated
@@ -27,7 +26,7 @@ public class PaymentResource {
     @POST
     @Path("/create-payment-intent")
     public Response createPaymentIntent(@Valid PaymentRequest paymentRequest) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         paymentRequest.setUserId(UUID.fromString(userId));
         return Response.ok(paymentOperation.process(paymentRequest)).build();
     }
