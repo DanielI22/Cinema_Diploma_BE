@@ -6,6 +6,7 @@ public class BusinessConstants {
     public static final int TICKET_VALID_BEFORE_SHOWTIME = 30;
     public static final int MAX_BOOKING_SEATS = 5;
     public static final String KEYCLOAK_DEFAULT_ROLE = "default-roles-cinema";
+    public static final String USER_ID_CLAIM = "sub";
     public static final String USER_ROLE = "user";
     public static final String ADMIN_ROLE = "admin";
     public static final String OPERATOR_ROLE = "operator";

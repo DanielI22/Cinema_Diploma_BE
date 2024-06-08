@@ -14,6 +14,8 @@ import sit.tu_varna.bg.api.operation.booking.book.BookingOperation;
 import sit.tu_varna.bg.api.operation.booking.book.BookingRequest;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingOperation;
 import sit.tu_varna.bg.api.operation.booking.cancel.CancelBookingRequest;
+import sit.tu_varna.bg.api.operation.booking.cancelmy.CancelMyBookingOperation;
+import sit.tu_varna.bg.api.operation.booking.cancelmy.CancelMyBookingRequest;
 import sit.tu_varna.bg.api.operation.booking.getmybookings.GetMyBookingsOperation;
 import sit.tu_varna.bg.api.operation.booking.getmybookings.GetMyBookingsRequest;
 import sit.tu_varna.bg.api.operation.booking.getshowtime.GetShowtimeBookingsOperation;
@@ -40,6 +42,8 @@ public class BookingResource {
     @Inject
     CancelBookingOperation cancelBookingOperation;
     @Inject
+    CancelMyBookingOperation cancelMyBookingOperation;
+    @Inject
     ValidateBookingOperation validateBookingOperation;
     @Inject
     TakeBookingOperation takeBookingOperation;
@@ -50,7 +54,7 @@ public class BookingResource {
     @GET
     @Path("my-bookings")
     public Response getMyBookings() {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         GetMyBookingsRequest request = GetMyBookingsRequest
                 .builder()
                 .userId(UUID.fromString(userId))
@@ -74,7 +78,7 @@ public class BookingResource {
 
     @POST
     public Response book(@Valid BookingRequest bookingRequest) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         bookingRequest.setUserId(UUID.fromString(userId));
         return Response.ok(bookingOperation.process(bookingRequest)).build();
     }
@@ -91,6 +95,21 @@ public class BookingResource {
                 .bookingId(UUID.fromString(bookingId))
                 .build();
         return Response.ok(cancelBookingOperation.process(cancelBookingRequest)).build();
+    }
+
+    @PUT
+    @Path("/{bookingId}/my")
+    public Response cancelMyBooking(@PathParam("bookingId")
+                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
+                                            message = "Invalid UUID format")
+                                            String bookingId) {
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
+        CancelMyBookingRequest cancelMyBookingRequest = CancelMyBookingRequest
+                .builder()
+                .bookingId(UUID.fromString(bookingId))
+                .userId(UUID.fromString(userId))
+                .build();
+        return Response.ok(cancelMyBookingOperation.process(cancelMyBookingRequest)).build();
     }
 
     @GET
@@ -117,7 +136,7 @@ public class BookingResource {
                                 @Pattern(regexp = ValidationConstants.UUID_REGEX,
                                         message = "Invalid UUID format")
                                         String bookingId) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         TakeBookingRequest request = TakeBookingRequest
                 .builder()
                 .bookingId(UUID.fromString(bookingId))

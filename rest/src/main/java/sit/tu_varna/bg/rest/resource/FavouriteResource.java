@@ -1,7 +1,6 @@
 package sit.tu_varna.bg.rest.resource;
 
 import io.quarkus.security.Authenticated;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.constraints.Pattern;
 import jakarta.ws.rs.*;
@@ -19,7 +18,7 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 
 import java.util.UUID;
 
-import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ROLE;
+import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ID_CLAIM;
 
 @Path("/api/favourites")
 @Authenticated
@@ -39,7 +38,7 @@ public class FavouriteResource {
 
     @GET
     public Response getFavourites() {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         GetFavouritesRequest getFavouritesRequest = GetFavouritesRequest.builder().userId(UUID.fromString(userId)).build();
         return Response.ok(getFavouritesOperation.process(getFavouritesRequest)).build();
     }
@@ -51,7 +50,7 @@ public class FavouriteResource {
                                             message = "Invalid UUID format")
                                             String movieId) {
         VerifyFavouriteRequest verifyFavouriteRequest = VerifyFavouriteRequest.builder().movieId(UUID.fromString(movieId)).build();
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         verifyFavouriteRequest.setUserId(UUID.fromString(userId));
         return Response.ok(verifyFavouriteOperation.process(verifyFavouriteRequest)).build();
     }
@@ -63,7 +62,7 @@ public class FavouriteResource {
                                          message = "Invalid UUID format")
                                          String movieId) {
         AddFavouriteRequest addFavouriteRequest = AddFavouriteRequest.builder().movieId(UUID.fromString(movieId)).build();
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         addFavouriteRequest.setUserId(UUID.fromString(userId));
         return Response.ok(addFavouriteOperation.process(addFavouriteRequest)).build();
     }
@@ -75,7 +74,7 @@ public class FavouriteResource {
                                             message = "Invalid UUID format")
                                             String movieId) {
         DeleteFavouriteRequest deleteFavouriteRequest = DeleteFavouriteRequest.builder().movieId(UUID.fromString(movieId)).build();
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         deleteFavouriteRequest.setUserId(UUID.fromString(userId));
         return Response.ok(deleteFavouriteOperation.process(deleteFavouriteRequest)).build();
     }

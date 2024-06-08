@@ -36,6 +36,7 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 import java.util.UUID;
 
 import static sit.tu_varna.bg.core.constants.BusinessConstants.ADMIN_ROLE;
+import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ID_CLAIM;
 
 @Path("/api/users")
 @Authenticated
@@ -81,7 +82,7 @@ public class UserResource {
     @PUT
     @Path("/change-username")
     public Response changeUsername(@Valid ChangeUsernameRequest request) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         request.setUserId(UUID.fromString(userId));
         return Response.ok(changeUsernameOperation.process(request)).build();
     }
@@ -89,7 +90,7 @@ public class UserResource {
     @PUT
     @Path("/change-password")
     public Response changePassword(@Valid ChangePasswordRequest request) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         request.setUserId(UUID.fromString(userId));
         return Response.ok(changePasswordOperation.process(request)).build();
     }

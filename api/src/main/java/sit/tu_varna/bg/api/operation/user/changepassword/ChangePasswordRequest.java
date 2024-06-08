@@ -1,7 +1,7 @@
 package sit.tu_varna.bg.api.operation.user.changepassword;
 
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceRequest;
 
@@ -16,6 +16,6 @@ public class ChangePasswordRequest implements ServiceRequest {
     private UUID userId;
 
     @NotBlank
-    @Size(min = 3, max = 100, message = "'Password' must have a length between 3 and 100")
+    @Pattern(message = "Invalid password format.", regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
     private String password;
 }

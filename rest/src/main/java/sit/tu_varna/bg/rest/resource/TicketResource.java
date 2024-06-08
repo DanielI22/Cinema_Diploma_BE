@@ -64,7 +64,7 @@ public class TicketResource {
     @GET
     @Path("my-tickets")
     public Response getMyTickets() {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         GetMyTicketsRequest request = GetMyTicketsRequest
                 .builder()
                 .userId(UUID.fromString(userId))
@@ -95,7 +95,7 @@ public class TicketResource {
                                                String cinemaId,
                                        @QueryParam("pageNumber") int pageNumber,
                                        @QueryParam("pageSize") int pageSize) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         HistoryTicketsRequest historyTicketsRequest = HistoryTicketsRequest.builder()
                 .cinemaId(UUID.fromString(cinemaId))
                 .userId(UUID.fromString(userId))
@@ -109,7 +109,7 @@ public class TicketResource {
 
     @POST
     public Response add(@Valid AddTicketsRequest addTicketsRequest) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         addTicketsRequest.setUserId(UUID.fromString(userId));
         return Response.ok(addTicketsOperation.process(addTicketsRequest)).build();
     }
@@ -122,16 +122,11 @@ public class TicketResource {
                                    @QueryParam("cinema")
                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
                                            message = "Invalid UUID format")
-                                           String cinema,
-                                   @QueryParam("showtime")
-                                   @Pattern(regexp = ValidationConstants.UUID_REGEX,
-                                           message = "Invalid UUID format")
-                                           String showtime) {
+                                           String cinema) {
         ValidateTicketRequest request = ValidateTicketRequest
                 .builder()
                 .shortCode(ticketShortCode)
                 .cinemaId(UUID.fromString(cinema))
-                .showtimeId(UUID.fromString(showtime))
                 .build();
         return Response.ok(validateTicketOperation.process(request)).build();
     }

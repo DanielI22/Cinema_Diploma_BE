@@ -22,6 +22,7 @@ import sit.tu_varna.bg.core.constants.ValidationConstants;
 import java.util.UUID;
 
 import static sit.tu_varna.bg.core.constants.BusinessConstants.ADMIN_ROLE;
+import static sit.tu_varna.bg.core.constants.BusinessConstants.USER_ID_CLAIM;
 
 @Path("/api/reviews")
 @Authenticated
@@ -58,7 +59,7 @@ public class ReviewResource {
                                    @Pattern(regexp = ValidationConstants.UUID_REGEX,
                                            message = "Invalid UUID format")
                                            String movieId, @Valid AddReviewRequest addReviewRequest) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         addReviewRequest.setMovieId(UUID.fromString(movieId));
         addReviewRequest.setUserId(UUID.fromString(userId));
         return Response.ok(addReviewOperation.process(addReviewRequest)).build();
@@ -79,12 +80,12 @@ public class ReviewResource {
     }
 
     @DELETE
-    @Path("/{reviewId}")
+    @Path("/{reviewId}/my")
     public Response deleteMyReview(@PathParam("reviewId")
                                  @Pattern(regexp = ValidationConstants.UUID_REGEX,
                                          message = "Invalid UUID format")
                                          String reviewId) {
-        String userId = jwt.getClaim("sub").toString();
+        String userId = jwt.getClaim(USER_ID_CLAIM).toString();
         DeleteMyReviewRequest deleteReviewRequest = DeleteMyReviewRequest
                 .builder()
                 .reviewId(UUID.fromString(reviewId))
