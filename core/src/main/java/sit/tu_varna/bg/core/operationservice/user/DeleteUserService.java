@@ -29,7 +29,6 @@ public class DeleteUserService implements DeleteUserOperation {
         User user = (User) User.findByIdOptional(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id " + userId + " not found"));
         if (user.isPersistent()) {
-            user.delete();
             user.getBookings().forEach(booking -> booking.setStatus(BookingStatus.CANCELLED));
             user.getBookings().stream().
                     map(Booking::getTickets)
@@ -39,6 +38,7 @@ public class DeleteUserService implements DeleteUserOperation {
                         showtimeSeat.setBooked(false);
                         showtimeSeat.persist();
                     });
+            user.delete();
         }
         keycloakService.deleteUser(userId.toString());
         return DeleteUserResponse.builder().deleted(true).build();

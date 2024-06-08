@@ -12,4 +12,5 @@ public class ReviewDto {
     private String userId;
     private String username;
     private String reviewText;
+    private String sentiment;
 }

@@ -4,6 +4,7 @@ import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import sit.tu_varna.bg.enums.Sentiment;
 
 import java.time.Instant;
 import java.util.List;
@@ -34,6 +35,9 @@ public class Review extends PanacheEntityBase {
 
     @CreationTimestamp
     private Instant createdOn;
+
+    @Enumerated(EnumType.STRING)
+    private Sentiment sentiment;
 
     public static List<Review> findByMovieId(UUID movieId) {
         return find("SELECT r FROM Review r WHERE r.movie.id = ?1", movieId).list();
