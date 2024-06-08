@@ -32,9 +32,7 @@ public class ValidateTicketService implements ValidateTicketOperation {
             throw new ResourceNotFoundException("Invalid ticket. Wrong cinema");
         }
 
-        if (!ticket.getShowtime().getId().equals(request.getShowtimeId())) {
-            throw new ResourceNotFoundException("Invalid ticket. Wrong showtime");
-        }
+
         // Check ticket status
         if (!ticket.getTicketStatus().equals(TicketStatus.PURCHASED)) {
             throw new InvalidResourceException("Invalid ticket. Ticket is not purchased");
@@ -50,7 +48,7 @@ public class ValidateTicketService implements ValidateTicketOperation {
 
         // Check if the showtime starts within the next 30 minutes
         if (now.isBefore(showtimeStart.minusMinutes(TICKET_VALID_BEFORE_SHOWTIME))) {
-            throw new InvalidResourceException("Invalid ticket. Showtime starts in more than 30 minutes");
+            throw new InvalidResourceException("Invalid ticket. Showtime starts in more than 30 minutes - " + showtimeStart.toLocalDate() + " " + showtimeStart.toLocalTime());
         }
         return ValidateTicketResponse.builder().ticket(ticketMapper.ticketToTicketDto(ticket)).build();
     }
