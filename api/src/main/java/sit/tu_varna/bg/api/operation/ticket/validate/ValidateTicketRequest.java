@@ -13,5 +13,4 @@ import java.util.UUID;
 public class ValidateTicketRequest implements ServiceRequest {
     private String shortCode;
     private UUID cinemaId;
-    private UUID showtimeId;
 }
