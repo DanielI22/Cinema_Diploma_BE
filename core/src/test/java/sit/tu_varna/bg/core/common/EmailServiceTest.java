@@ -1,7 +1,7 @@
 package sit.tu_varna.bg.core.common;
 
 import io.quarkus.mailer.Mail;
-import io.quarkus.mailer.Mailer;
+import io.quarkus.mailer.reactive.ReactiveMailer;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
 import org.junit.jupiter.api.BeforeEach;
@@ -13,12 +13,13 @@ import org.mockito.MockitoAnnotations;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 class EmailServiceTest {
 
     @Mock
-    Mailer mailer;
+    ReactiveMailer mailer;
 
     @Mock
     Template bookingConfirmationBg;

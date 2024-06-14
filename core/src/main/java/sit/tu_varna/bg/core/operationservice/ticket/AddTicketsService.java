@@ -85,11 +85,11 @@ public class AddTicketsService implements AddTicketsOperation {
             ticket.persist();
             ticketIds.add(ticket.getId());
         }
-        try {
-            String language = request.getOrderInfo().getLanguage();
-            emailService.sendTicketConfirmationEmail(user.getEmail(), clientLink + "/my-tickets", language);
-        } catch (Exception ignored) {
-        }
+
+        String language = request.getOrderInfo().getLanguage();
+        emailService.sendTicketConfirmationEmail(user.getEmail(), clientLink + "/my-tickets", language)
+                .subscribe().with(
+                        success -> System.out.println("Email sent successfully"), failure -> System.err.println("Failed to send email: " + failure.getMessage()));
 
         return AddTicketsResponse.builder().ticketIds(ticketIds.stream().map(UUID::toString).collect(Collectors.toList())).build();
     }

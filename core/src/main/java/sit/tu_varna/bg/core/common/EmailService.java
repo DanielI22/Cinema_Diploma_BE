@@ -1,9 +1,10 @@
 package sit.tu_varna.bg.core.common;
 
 import io.quarkus.mailer.Mail;
-import io.quarkus.mailer.Mailer;
+import io.quarkus.mailer.reactive.ReactiveMailer;
 import io.quarkus.qute.Template;
 import io.quarkus.qute.TemplateInstance;
+import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -14,7 +15,7 @@ import java.util.Map;
 @SuppressWarnings("all")
 public class EmailService {
     @Inject
-    Mailer mailer;
+    ReactiveMailer mailer;
     @Inject
     Template bookingConfirmationBg;
     @Inject
@@ -24,7 +25,7 @@ public class EmailService {
     @Inject
     Template ticketConfirmationEn;
 
-    public void sendBookingConfirmationEmail(String email, String shortcode, String bookingsLink, String language) {
+    public Uni<Void> sendBookingConfirmationEmail(String email, String shortcode, String bookingsLink, String language) {
         Map<String, String> data = new HashMap<>();
         data.put("email", email);
         data.put("shortcode", shortcode);
@@ -37,10 +38,10 @@ public class EmailService {
             instance = bookingConfirmationEn.data(data);
         }
 
-        mailer.send(Mail.withHtml(email, "Booking Confirmation", instance.render()));
+        return mailer.send(Mail.withHtml(email, "Booking Confirmation", instance.render()));
     }
 
-    public void sendTicketConfirmationEmail(String email, String ticketsLink, String language) {
+    public Uni<Void> sendTicketConfirmationEmail(String email, String ticketsLink, String language) {
         Map<String, String> data = new HashMap<>();
         data.put("email", email);
         data.put("ticketsLink", ticketsLink);
@@ -52,6 +53,6 @@ public class EmailService {
             instance = ticketConfirmationEn.data(data);
         }
 
-        mailer.send(Mail.withHtml(email, "Ticket Confirmation", instance.render()));
+       return mailer.send(Mail.withHtml(email, "Ticket Confirmation", instance.render()));
     }
 }

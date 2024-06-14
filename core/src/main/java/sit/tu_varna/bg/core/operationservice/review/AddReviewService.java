@@ -37,7 +37,12 @@ public class AddReviewService implements AddReviewOperation {
                 .orElseThrow(() -> new ResourceNotFoundException("Movie with id " + movieId + " not found"));
 
         String reviewText = request.getReviewText();
-        Sentiment sentiment = Sentiment.valueOf(sentimentAnalysisService.analyzeSentiment(reviewText).toUpperCase(Locale.ROOT));
+        Sentiment sentiment = Sentiment.NEUTRAL;
+        try {
+            sentiment = Sentiment.valueOf(sentimentAnalysisService.analyzeSentiment(reviewText).toUpperCase(Locale.ROOT));
+        } catch (Exception ignored) {
+        }
+        
         Review review = Review.builder()
                 .movie(movie)
                 .user(user)

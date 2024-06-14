@@ -92,11 +92,11 @@ public class BookingService implements BookingOperation {
             ticket.persist();
             booking.getTickets().add(ticket);
         }
-        try {
-            String language = request.getOrderInfo().getLanguage();
-            emailService.sendBookingConfirmationEmail(user.getEmail(), shortCode, clientLink + "/my-bookings", language);
-        } catch (Exception ignored) {
-        }
+        String language = request.getOrderInfo().getLanguage();
+
+        emailService.sendBookingConfirmationEmail(user.getEmail(), shortCode, clientLink + "/my-bookings", language)
+                .subscribe().with(
+                        success -> System.out.println("Email sent successfully"), failure -> System.err.println("Failed to send email: " + failure.getMessage()));
 
         return BookingResponse.builder()
                 .bookingId(booking.getId().toString())
