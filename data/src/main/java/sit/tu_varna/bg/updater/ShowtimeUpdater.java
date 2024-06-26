@@ -1,4 +1,4 @@
-package sit.tu_varna.bg.seeder;
+package sit.tu_varna.bg.updater;
 
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -15,7 +15,7 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 @ApplicationScoped
-public class ShowtimeSeeder {
+public class ShowtimeUpdater {
     @ConfigProperty(name = "app.update-showtimes")
     boolean updateShowtimes;
 

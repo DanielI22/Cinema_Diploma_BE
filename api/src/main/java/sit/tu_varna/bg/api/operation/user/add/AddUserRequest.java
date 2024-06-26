@@ -2,6 +2,7 @@ package sit.tu_varna.bg.api.operation.user.add;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import sit.tu_varna.bg.api.base.ServiceRequest;
@@ -21,6 +22,7 @@ public class AddUserRequest implements ServiceRequest {
     private String email;
 
     @NotBlank
+    @Pattern(message = "Invalid password format.", regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$")
     private String password;
 
     private String role;
